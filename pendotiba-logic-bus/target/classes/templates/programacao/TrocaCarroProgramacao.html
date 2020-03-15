@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+	<title>Trocar carro da Programação</title>
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Troca de carro da programação do dia [[${{trocaCarroProgramacaoDTO.dataCompetencia}}]]</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/programacao}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<form method="POST" th:object="${trocaCarroProgramacaoDTO}" class="form-vertical  js-form-loading  js-formulario-principal" 
+			  th:action="@{/trocar-carro-programacao}">
+			
+			<logic-bus:message/>
+			
+			<input id="id" type="hidden" th:field="*{idProgramacao}"/>
+			<input type="hidden" th:field="*{carroNumeroDeOrdem}"/>
+			<input type="hidden" th:field="*{idCarroSubstituido}"/>
+			<input type="hidden" th:field="*{roletaInicial1CarroAtual}"/>
+			<!-- <input type="hidden" th:field="*{roletaInicial2CarroAtual}"/>
+			<input type="hidden" th:field="*{roletaInicial3CarroAtual}"/> -->
+			<input type="hidden" th:value="${contador}"/>
+			<input type="hidden" th:value="${viagens}"/>
+			
+			<div class="row">
+				<div class="form-group  col-sm-4">
+					<label for="carroAtual" class="control-label">Carro substituído</label>
+					<input type="text" class="form-control" id="carroAtual" th:field="*{carroNumeroDeOrdem}" maxlength="5" th:disabled="disable" />
+				</div>
+				
+				<div class="form-group  col-sm-4  logic-bus-required" logic-bus:classforerror="idTipoMotivoTroca"> 
+					<label for="idTipoMotivoTroca" class="control-label">Motivo da troca</label>
+					<select id="idTipoMotivoTroca" class="form-control" th:field="*{idTipoMotivoTroca}">
+						<option value="">Selecione o motivo da troca</option>
+						<option th:each="motivo : ${motivos}" th:value="${motivo.id}" th:text="${motivo}" />
+					</select>
+				</div>
+
+				<div class="form-group  col-sm-2">
+					<label for="roletaInicial1CarroAtual" class="control-label">Roleta inicial</label>
+					<input type="text" class="form-control" id="roletaInicial1CarroAtual" th:field="*{roletaInicial1CarroAtual}" maxlength="5" th:disabled="disable" />
+				</div>
+				
+				<div class="form-group  col-sm-2  logic-bus-required" logic-bus:classforerror="roletaFinal1">
+					<label for="roletaFinal1" class="control-label" >Roleta final</label>
+					<input type="text" class="form-control" id="roletaFinal1" th:field="*{roletaFinal1}" maxlength="5" />
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-sm-12" >
+					<label for="observacao" class="control-label">Observações sobre a troca do carro</label>
+					<textArea class="form-control" id="observacao" th:field="*{observacao}" rows="3" style="resize: none" ></textArea>
+				</div>
+			</div>
+			
+			<hr />
+			
+			<div class="row">
+				<div class="form-group  col-sm-3  logic-bus-required" logic-bus:classforerror="idCarro"> 
+					<label for="idCarro" class="control-label">Carro substituto</label>
+					<select id="idCarro" class="form-control" th:field="*{idCarro}">
+						<option value="">Selecione o carro</option>
+						<option th:each="carro : ${carros}" th:value="${carro.id}" th:text="${carro}" />
+					</select>
+				</div>
+				
+				<div class="form-group  col-sm-2  logic-bus-required" logic-bus:classforerror="roletaInicial1">
+					<label for="roletaInicial1" class="control-label">Roleta inicial</label>
+					<input type="text" class="form-control" id="roletaInicial1" th:field="*{roletaInicial1}" maxlength="5" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<a th:href="@{/programacao/inicial}" class="btn  btn-default" >Voltar</a>
+				<button type="submit" class="btn  btn-primary" th:unless="${trocaCarroProgramacaoDTO.nova}" >Salvar</button>
+			</div>
+			
+			
+			<div class="bw-field-action__icon">
+				<label class="control-label">Viagens</label>
+			</div>
+			<div class="table-responsive">
+				<table id="tabelaViagens" class="table  table-striped  table-bordered  table-hover  table-condensed  js-sticky-table" >
+					<thead>
+						<tr>
+							<th class="logic-bus-colCentro">Ordem</th>
+							<th class="logic-bus-colCentro">Saída P.</th>
+							<th class="logic-bus-colCentro">Saída R.</th>
+							<th class="logic-bus-colCentro">Chegada</th>
+							<th>Linha programada</th>
+							<th>Linha realizada</th>
+							<th>Ponto origem</th>
+							<th>Ponto destino</th>
+							<th class="logic-bus-colCentro">Sentido</th>
+							<th class="logic-bus-colCentro">Roleta</th>
+						</tr>
+					</thead>
+					
+					<tbody>
+						<tr id="viagens" th:each="viagem : ${viagens}" >
+							<td class="logic-bus-colCentro" th:text="${viagem.ordemViagem}"></td>
+							<td class="logic-bus-colCentro" th:text="${{viagem.horaSaidaProgramada}}"></td>
+							<td class="logic-bus-colCentro" th:text="${{viagem.horaSaidaRealizada}}"></td>
+							<td class="logic-bus-colCentro" th:text="${{viagem.horaChegada}}"></td>
+							<td th:text="${viagem.linhaProgramada != null ? viagem.linhaProgramada : 'N/E'}" th:classappend="${viagem.linhaProgramada == null} ? logic-bus-vermelho"></td>
+							<td th:text="${viagem.linhaRealizada != null ? viagem.linhaRealizada : ''}"></td>
+							<td th:text="${viagem.pontoLinha != null ? viagem.pontoLinha.pontoOrigem : 'N/E'}" th:classappend="${viagem.pontoLinha.pontoOrigem == null} ? logic-bus-vermelho"></td>
+							<td th:text="${viagem.pontoLinha != null ? viagem.pontoLinha.pontoDestino : 'N/E'}" th:classappend="${viagem.pontoLinha.pontoDestino == null} ? logic-bus-vermelho"></td>
+							<td class="logic-bus-colCentro" th:text="${viagem.pontoLinha.sentido != null ? viagem.pontoLinha.sentido : 'N/E'}" th:classappend="${viagem.pontoLinha.sentido == null} ? logic-bus-vermelho"></td>
+							<td class="logic-bus-colDireita" th:text="${viagem.roletaFinal1Str}"></td>
+						</tr>
+						<tr th:if="${viagens.isEmpty()}">
+							<td colspan="10">Nenhuma viagem encontrada</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</form>
+	</div>
+</section>
+
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Mapas diários das bombas de abastecimento</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="GET" th:object="${mapaDiarioBombaAbastecimentoFilter}" th:action="@{/mapa-diario-bomba-abastecimento}" >
+		
+			<div class="row">
+				<div class="form-group  col-sm-3">
+					<label for="bomba" class="control-label">Bomba</label>
+					<select id="bomba" class="form-control" th:field="*{bombaAbastecimento}" >
+						<option value="">Todos as bombas</option>
+						<option th:each="bomba : ${bombas}" th:value="${bomba.id}" th:text="${bomba.descricao}"/>
+					</select>
+				</div>
+					
+				<div class="form-group  col-sm-4">
+					<label for="dataInicial">Período</label>
+					<div class="form-inline ">
+						<input type="text" class="form-control  logic-form-control-inline-sm  js-date" id="dataInicial" th:field="*{dataInicial}" autocomplete="off" />
+						<label for="dataFinal" class="logic-form-label-between">até</label>
+						<input type="text" class="form-control  logic-form-control-inline-sm  js-date" id="dataFinal" th:field="*{dataFinal}" autocomplete="off" />
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<button class="btn  btn-primary" type="submit">Consultar</button>
+			</div>
+		</form>
+		
+		<div class="table-responsive">
+			<table id="tabelaCarros" class="table  table-striped  table-bordered  table-hover  table-condensed  js-sticky-table">
+				<thead class="logic-table-header-solid">
+					<tr>
+						<th>Data de competência</th>
+						<th>Bomba abast</th>
+						<th>Tipo da bomba</th>
+						<th>Leitura inicial</th>
+						<th>Leitura final</th>
+						<th>Volume pela leitura</th>
+						<th>Volume pelo abastecimento</th>
+						<th>Diferença leitura/abastecimento</th>
+						<th class="logic-bus-colCentro  logic-bus-col10p" >Ações</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="mapaDiarioBombaAbastecimento : ${pagina.conteudo}" > 
+						<td th:text="${{mapaDiarioBombaAbastecimento.dataCompetencia}}" />
+						<td th:text="${mapaDiarioBombaAbastecimento.bombaAbastecimento.descricao}" />
+						<td th:text="${mapaDiarioBombaAbastecimento.bombaAbastecimento.tipoBomba.descricao}" />
+						<td th:text="${mapaDiarioBombaAbastecimento.volumeInicialStr}" class="logic-bus-colDireita js-volume" />
+						<td th:text="${mapaDiarioBombaAbastecimento.volumeFinalStr}" class="logic-bus-colDireita js-volume" />
+						<td th:text="${mapaDiarioBombaAbastecimento.volumeTotalStr}" class="logic-bus-colDireita js-volume" />
+						<td th:text="${mapaDiarioBombaAbastecimento.volumePeloAbastecimentoStr}" class="logic-bus-colDireita js-volume" />
+						<td th:text="${mapaDiarioBombaAbastecimento.diferencaMapaAbastecimentoStr}" class="logic-bus-colDireita js-volume" />
+						<td class="logic-bus-colCentro">
+							<a class="btn  btn-link  btn-xs" title="Editar" th:href="@{/mapa-diario-bomba-abastecimento/{id}(id=${mapaDiarioBombaAbastecimento.id})}" 
+								th:if="${mapaDiarioBombaAbastecimento.podeAlterar}">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+							
+							<!-- 
+							<a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir" href="#" 
+								data:url="@{/mapa-diario-bomba-abastecimento/{id}(id=${mapaDiarioBombaAbastecimento.id})}"
+								data:objeto="${mapaDiarioBombaAbastecimento.bombaAbastecimento}">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a> 
+							-->
+						</td>
+					</tr>
+					<tr th:if="${pagina.vazia}">
+						<td colspan="9">Nenhum registro encontrado</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<logic-bus:pagination page="${pagina}"/>
+	</div>
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/vendors/bootstrap-switch.min.js}"></script>
+	<script>
+		$('.js-status').bootstrapSwitch();
+	</script>
+</th:block>
+
+</body>
+</html>
+	

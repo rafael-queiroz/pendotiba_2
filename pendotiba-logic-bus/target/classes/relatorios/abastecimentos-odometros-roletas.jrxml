@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="abastecimentos-odometros-roletas" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9f080b22-32a2-4c20-8f77-82989ae029f0">
+	<property name="ireport.zoom" value="1.9487171000000014"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="zebra" mode="Opaque">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) != 0)]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FBFBFB"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="fornecedor" class="java.lang.String"/>
+	<parameter name="dataInicial" class="java.util.Date"/>
+	<parameter name="dataFinal" class="java.util.Date"/>
+	<field name="dataCompetencia" class="java.util.Date"/>
+	<field name="carro.numeroDeOrdem" class="java.lang.Object"/>
+	<field name="volumeDieselStr" class="java.lang.String"/>
+	<field name="odometroStr" class="java.lang.String"/>
+	<field name="roletaStr" class="java.lang.String"/>
+	<field name="dataHoraCadastro" class="java.util.Date"/>
+	<field name="volumeDieselAnteriorStr" class="java.lang.String"/>
+	<field name="roletaAnteriorStr" class="java.lang.String"/>
+	<field name="odometroAnteriorStr" class="java.lang.String"/>
+	<field name="diferencaOdometro" class="java.lang.Number"/>
+	<field name="diferencaRoleta" class="java.lang.Number"/>
+	<field name="volumeDiesel" class="java.math.BigDecimal"/>
+	<field name="odometro" class="java.lang.Number"/>
+	<field name="roleta" class="java.lang.Number"/>
+	<variable name="volumeDieselStr_1" class="java.lang.Number" calculation="Sum">
+		<variableExpression><![CDATA[$F{volumeDiesel}]]></variableExpression>
+	</variable>
+	<variable name="kmPercorrida_1" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{diferencaOdometro}]]></variableExpression>
+	</variable>
+	<variable name="passageiros_1" class="java.lang.Number" calculation="Sum">
+		<variableExpression><![CDATA[$F{diferencaRoleta}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="62" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="1" width="555" height="59" uuid="a71c0bd3-2873-466d-9281-396f52a2ff99"/>
+				<graphicElement>
+					<pen lineWidth="0.1"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="3" y="3" width="429" height="12" uuid="18db8955-14b5-4a04-993f-d5b6cef6426d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[VIAÇÃO PENDOTIBA  -  TELEFONE: 21 2703-4350]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="71" y="31" width="68" height="12" uuid="17902279-2ee2-4c05-9b67-dda9dc685c6e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataInicial}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="277" y="17" width="33" height="12" uuid="a2195029-553b-4df2-ab27-349c084c142d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[DATA: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="17" width="249" height="12" uuid="3f5c1ee6-ced6-4ed7-a590-6b5964543d32"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[ABASTECIMENTOS, ODÔMETROS E ROLETAS]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH:mm">
+				<reportElement x="310" y="17" width="154" height="12" uuid="2e9e1ffa-aca6-4ac2-b810-02cd192c767b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="31" width="62" height="12" uuid="e55d449a-5e15-446b-ba31-b4c4e65d03ac"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[PERÍODO DE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="139" y="31" width="21" height="12" uuid="67236497-eb62-47a4-9329-7e145b39614c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[ATÉ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="160" y="31" width="68" height="12" uuid="939d8d35-48e4-4644-8d78-929436fc8e00"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataFinal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="14" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="344" y="0" width="49" height="14" backcolor="#DDDDDD" uuid="9f715d47-ae67-45b5-805a-9240ffb68178"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[ROLETA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="293" y="0" width="50" height="14" backcolor="#DDDDDD" uuid="4223578d-6f37-48b8-9bee-575f42bc1a3b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[ROLETA A.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="70" height="14" backcolor="#DDDDDD" uuid="01f36538-81da-4ef1-9af5-54d72e83780d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[CARRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="121" y="0" width="50" height="14" backcolor="#DDDDDD" uuid="c682153f-5be2-4462-a823-f9f0c8d8db0d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[ODÔM. A.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="222" y="0" width="70" height="14" backcolor="#DDDDDD" uuid="54d91fc5-fb43-470c-b7ee-26c8f308513e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[KM PERCORRIDA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="465" y="0" width="90" height="14" backcolor="#DDDDDD" uuid="8a81032e-e958-4946-ad7e-0f049a57a376"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[DATA CADASTRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="172" y="0" width="49" height="14" backcolor="#DDDDDD" uuid="a98e9e18-a199-4295-bc1d-a29071887d45"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[ODÔMETRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="71" y="0" width="49" height="14" backcolor="#DDDDDD" uuid="43e78f61-8183-4860-802e-5d87f368835f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[DIESEL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="394" y="0" width="70" height="14" backcolor="#DDDDDD" uuid="a1c78e91-ba70-4c84-8cd1-07ed9d95e829"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[QTD PASSAG.]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="344" y="0" width="50" height="12" uuid="4689eab2-4ac0-4fb4-ab17-6b98b04cd246"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{roletaStr}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="121" y="0" width="50" height="12" uuid="94dca5e7-c3e1-488d-b043-8c481deaa459"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{odometroAnteriorStr}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="1" y="0" width="70" height="12" uuid="026336b8-8e56-4ade-b01f-2170cbf98ffc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{carro.numeroDeOrdem}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="293" y="0" width="50" height="12" uuid="7b7d743b-5e0a-4a40-bd2a-fa36f0120fda"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{roletaAnteriorStr}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="222" y="0" width="70" height="12" uuid="7061cfc4-35f5-4f4c-b510-3b4b3ff06745"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{diferencaOdometro}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="466" y="0" width="89" height="12" uuid="486347f0-fc43-4683-916c-0dce8ffe2cde"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dataHoraCadastro}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="171" y="0" width="50" height="12" uuid="5888ae9e-80f4-49ee-9d8b-61cecf04ac96"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{odometroStr}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="70" y="0" width="50" height="12" uuid="ec2c2172-ccf4-43c0-8ce5-ad203e54511d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{volumeDieselStr}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="395" y="0" width="69" height="12" uuid="a904e372-759b-4ab7-80ef-e3fc77247c1c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{diferencaRoleta}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="28" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="2" width="555" height="2" uuid="003bd5ff-530c-4798-81af-ab42cf63147d"/>
+				<graphicElement>
+					<pen lineWidth="0.25"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="454" y="10" width="80" height="10" uuid="cf7fa5cd-21fd-43dd-883f-083bc1c68d2f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="537" y="10" width="18" height="10" uuid="24ad1ac3-81af-4107-8509-586d13ae791b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="15" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="70" height="14" backcolor="#DDDDDD" uuid="8df91768-eadb-4af2-a5e5-91f0aa3fe587"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[TOTAL DIESEL]]></text>
+			</staticText>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement x="70" y="0" width="50" height="14" uuid="e956c1f4-ef48-408f-a109-2af883241abb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{volumeDieselStr_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="222" y="0" width="70" height="14" uuid="ecc9434c-573b-4505-b923-2577650fca2b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{kmPercorrida_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="394" y="0" width="70" height="14" uuid="1cb72727-d953-412f-bd9c-2388706a4c7e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{passageiros_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="121" y="0" width="100" height="14" backcolor="#DDDDDD" uuid="21417fb7-c10d-412e-844f-6b97f6a99013"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[TOTAL KM PERCORRIDA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="294" y="0" width="100" height="14" backcolor="#DDDDDD" uuid="5e28d0ac-1256-4f9c-a9e5-98557faedab4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[TOTAL PASSAGEIROS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="465" y="0" width="90" height="14" backcolor="#DDDDDD" uuid="73e63728-8922-40de-845a-b4c2e6a1646d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

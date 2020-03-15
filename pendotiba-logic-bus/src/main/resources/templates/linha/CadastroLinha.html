@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com">
+	
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${linha.nova}">Cadastro de linha</h1>
+					<h1 th:unless="${linha.nova}">Edição de linha - [[${linha}]]</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/linha}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<form method="POST" th:object="${linha}" class="form-vertical  js-form-loading" th:action="${linha.nova} ? @{/linha/novo} : @{/linha/{id}(id=${linha.id})}">
+		
+			<logic-bus:message />
+			
+			<input type="hidden" th:field="*{id}"/>
+			
+			<div class="row">
+				<div class="form-group  col-sm-3  logic-bus-required" logic-bus:classforerror="codigo">
+					<label for="codigo" class="control-label">Código</label>
+					<input id="codigo" type="text" class="form-control" autofocus="autofocus" th:field="*{codigo}"/>
+				</div>
+			
+				<div class="form-group  col-sm-4  logic-bus-required" logic-bus:classforerror="descricao">
+					<label for="descricao" class="control-label">Descrição</label>
+					<input id="descricao" type="text" class="form-control" th:field="*{descricao}"/>
+				</div>
+				
+				<div class="form-group  col-sm-3" >
+					<label class="control-label">Operacional ?</label>
+					<div>
+						<input type="checkbox" class="js-operacional" data-size="small" data-off-color="danger" 
+							data-on-text="Sim" data-off-text="Não" th:field="*{operacional}"/>
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<a href="javascript:history.back()" class="btn  btn-default">Cancelar</a>
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+			</div>
+	
+		</form>
+	</div>
+	
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/vendors/bootstrap-switch.min.js}"></script>
+	<script>
+		$('.js-operacional').bootstrapSwitch();
+	</script>
+</th:block>
+
+</html>

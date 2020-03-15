@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com">
+	
+<body>
+	<div class="modal fade" id="cadastroViagemModal" tabindex="-1" role="dialog"  th:fragment="modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Cadastro de viagem</h4>
+				</div>
+				
+				<div class="modal-body">
+					<div class="alert  alert-danger  hidden  js-mensagem-cadastro-viagem" role="alert"></div>
+					
+					<form class="form-vertical  js-form-loading">
+					
+						<div class="row">
+							<div class="form-group  col-sm-12  logic-bus-required">
+								<label for="horaSaidaProgramada" class="control-label" >Hora de saída programada</label>
+								<div><input type="text" class="form-control  js-hora" id="horaSaidaProgramada" /></div>
+							</div>
+						</div>
+						
+						<div class="row">	
+							<div class="form-group  col-sm-12  logic-bus-required">
+								<label for="linhaProgramada" class="control-label">Linha</label>
+								<select id="linhaProgramada" class="form-control" >
+									<option value="">Selecione a linha</option>
+									<option th:each="linhaProgramada : ${linhas}" th:value="${linhaProgramada.id}" th:text="${linhaProgramada}" />
+								</select>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="form-group  col-sm-12  logic-bus-required">
+								<label for="pontoOrigem" class="control-label">Ponto de origem</label>
+								<select id="pontoOrigem" class="form-control">
+									<option value="">Selecione o ponto de origem</option>
+									<option th:each="pontoOrigem : ${pontos}" th:value="${pontoOrigem.id}" th:text="${pontoOrigem}" />
+								</select>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="form-group  col-sm-12  logic-bus-required">
+								<label for="pontoDestino" class="control-label">Ponto de destino</label>
+								<select id="pontoDestino" class="form-control">
+									<option value="">Selecione o ponto de destino</option>
+									<option th:each="pontoDestino : ${pontos}" th:value="${pontoDestino.id}" th:text="${pontoDestino}" />
+								</select>
+							</div>
+						</div>
+					</form>
+					
+					<button type="button" class="btn  btn-primary  js-modal-cadastro-viagem-salvar-btn" 
+							data:url-consulta="@{/rest/viagem/listarPorProgramacao}" >Salvar</button>
+					<button type="button" class="btn  btn-default" data-dismiss="modal">Cancelar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

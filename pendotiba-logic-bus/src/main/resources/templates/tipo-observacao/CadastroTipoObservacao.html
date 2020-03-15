@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com">
+	
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${tipoObservacao.novo}">Cadastro de tipo de observação</h1>
+					<h1 th:unless="${tipoObservacao.novo}">Edição de tipo de observação - [[${tipoObservacao.descricao}]]</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/tipo-observacao}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<form method="POST" th:object="${tipoObservacao}" class="form-vertical  js-form-loading" th:action="@{/tipo-observacao/novo}">
+		
+			<logic-bus:message />
+			
+			<input type="hidden" th:field="*{id}"/>
+			
+			<div class="row">
+				<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="descricao">
+					<label for="descricao" class="control-label">Descrição</label>
+					<input id="descricao" type="text" class="form-control" autofocus="autofocus" th:field="*{descricao}"/>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<a href="javascript:history.back()" class="btn  btn-default">Cancelar</a>
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+			</div>
+	
+		</form>
+	</div>
+	
+</section>
+	
+</html>

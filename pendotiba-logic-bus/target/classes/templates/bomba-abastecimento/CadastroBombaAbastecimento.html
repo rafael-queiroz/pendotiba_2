@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com">
+	
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${bombaAbastecimento.nova}">Cadastro de bomba-abastecimento</h1>
+					<h1 th:unless="${bombaAbastecimento.nova}">Edição de bomba-abastecimento - [[${bombaAbastecimento}]]</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/bomba-abastecimento}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<form method="POST" th:object="${bombaAbastecimento}" class="form-vertical  js-form-loading" th:action="@{/bomba-abastecimento/novo}">
+		
+			<logic-bus:message />
+			
+			<input type="hidden" th:field="*{id}"/>
+			
+			<div class="row">
+				<div class="form-group  col-sm-3  logic-bus-required" logic-bus:classforerror="codigo">
+					<label for="codigo" class="control-label">Código</label>
+					<input id="codigo" type="text" class="form-control" autofocus="autofocus" th:field="*{codigo}" />
+				</div>
+			
+				<div class="form-group  col-sm-4  logic-bus-required" logic-bus:classforerror="descricao">
+					<label for="descricao" class="control-label">Descrição</label>
+					<input id="descricao" type="text" class="form-control" th:field="*{descricao}"  />
+				</div>
+				
+				<div class="form-group  col-sm-2  logic-bus-required" logic-bus:classforerror="tipoBomba">
+					<label class="control-label">Tipo de bomba</label> 
+					<div>
+						<th:block th:each="tipoBomba : ${tiposBomba}">
+							<div class="radio  radio-inline">
+							      <input type="radio" th:id="|id_${tipoBomba}|" class="form-control" 
+							            th:field="*{tipoBomba}" th:value="${tipoBomba}"> 
+							      <label class="control-label" th:for="|id_${tipoBomba}|" th:text="${tipoBomba.descricao}"></label>
+							</div>
+						</th:block>
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<a href="javascript:history.back()" class="btn  btn-default">Cancelar</a>
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+			</div>
+	
+		</form>
+	</div>
+	
+</section>
+
+</html>

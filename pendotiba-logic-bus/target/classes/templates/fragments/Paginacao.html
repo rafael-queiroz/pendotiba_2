@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt" 
+	  xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:th="http://www.thymeleaf.org">
+	
+<th:block th:fragment="pagination (pagina)">
+	<div class="col-sm-12  text-center" th:if="${not pagina.vazia}">
+		<nav>
+			<ul class="pagination  pagination-sm" th:with="paginaAtual=${pagina.atual}">
+				<li th:class="${pagina.primeira} ? disabled">
+					<a th:href="${pagina.urlParaPagina(0)}" th:remove="${pagina.primeira} ? tag"><span>Primeira</span></a>
+				</li>
+				
+				<li th:class="${pagina.primeira} ? disabled">
+					<a th:href="${pagina.urlParaPagina(paginaAtual - 1)}" th:remove="${pagina.primeira} ? tag"><span>Anterior</span></a>
+				</li>
+
+				<!-- 
+				<li th:class="disabled" th:remove="${pagina.primeira} ? all">
+					<a th:href="${pagina.urlParaPagina(paginaAtual - 1)}" ><span>...</span></a>
+				</li>
+				-->
+				
+				<!-- <th:block th:each="p : ${#numbers.sequence(paginaAtual -1, pagina.paginaLimite)}" th:with="numeroPagina=${p - 1}"> -->
+				<th:block th:each="p : ${#numbers.sequence(pagina.inicial, pagina.paginaLimite)}" th:with="numeroPagina=${p - 1}">
+					<li th:class="${paginaAtual == numeroPagina} ? active">
+						<a th:href="${pagina.urlParaPagina(numeroPagina)}">[[${p}]]</a>
+					</li>
+				</th:block>
+				
+				<!--
+				<li th:class="disabled" th:remove="${pagina.ultima} ? all">
+					<a th:href="${pagina.urlParaPagina(paginaAtual + 1)}" ><span>...</span></a>
+				</li>
+				-->
+				
+				<li th:class="${pagina.ultima} ? disabled">
+					<a th:href="${pagina.urlParaPagina(paginaAtual + 1)}" th:remove="${pagina.ultima} ? tag"><span>Próxima</span></a>
+				</li>
+				
+				<li th:class="${pagina.ultima} ? disabled">
+					<a th:href="${pagina.urlParaPagina(pagina.total - 1)}" th:remove="${pagina.ultima} ? tag"><span>Última</span></a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</th:block>
+	
+</html>

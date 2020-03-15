@@ -1,0 +1,872 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="entrada_saida_de_carro_da_garagem" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9f080b22-32a2-4c20-8f77-82989ae029f0">
+	<property name="ireport.zoom" value="1.610510000000007"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="48"/>
+	<style name="zebra" mode="Opaque">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) != 0)]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FBFBFB"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="filtro" class="java.lang.String"/>
+	<field name="carro.numeroDeOrdem" class="java.lang.Object"/>
+	<field name="dataCompetencia" class="java.util.Date"/>
+	<field name="qtdViagemProgramadaIda" class="java.math.BigDecimal"/>
+	<field name="qtdViagemRealizadaIda" class="java.math.BigDecimal"/>
+	<field name="qtdPassageiro" class="java.lang.Number"/>
+	<field name="linha.id" class="java.lang.Long"/>
+	<field name="linha.codigo" class="java.lang.String"/>
+	<field name="linha.descricao" class="java.lang.String"/>
+	<field name="turno.agrupamento" class="java.lang.String"/>
+	<field name="linha.operacional" class="java.lang.Boolean"/>
+	<field name="qtdViagemProgramadaVolta" class="java.math.BigDecimal"/>
+	<field name="qtdViagemRealizadaVolta" class="java.math.BigDecimal"/>
+	<variable name="qtdViagemProgramadaIda" class="java.math.BigDecimal" resetType="Group" resetGroup="linha" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtdViagemProgramadaIda}]]></variableExpression>
+	</variable>
+	<variable name="qtdPassageiro_1" class="java.lang.Number" resetType="Group" resetGroup="linha" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtdPassageiro}]]></variableExpression>
+	</variable>
+	<variable name="qtdViagemRealizadaIda" class="java.math.BigDecimal" resetType="Group" resetGroup="linha" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtdViagemRealizadaIda}]]></variableExpression>
+	</variable>
+	<variable name="qtdCarro_1" class="java.lang.Number" resetType="Group" resetGroup="linha" calculation="Count">
+		<variableExpression><![CDATA[$F{carro.numeroDeOrdem}]]></variableExpression>
+	</variable>
+	<variable name="totalGeralViagemProgramadaIda" class="java.math.BigDecimal" incrementType="Group" incrementGroup="linha" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true ? $V{qtdViagemProgramadaIda} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalGeralPassageiro" class="java.lang.Number" incrementType="Group" incrementGroup="linha" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true ? $V{qtdPassageiro_1} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalGeralViagemRealizadaIda" class="java.math.BigDecimal" incrementType="Group" incrementGroup="linha" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true ? $V{qtdViagemRealizadaIda} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalGeralCarro" class="java.lang.Number" incrementType="Group" incrementGroup="linha" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true ? $V{qtdCarro_1} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="qtdCarroTurno" class="java.lang.Number" resetType="Group" resetGroup="turno" calculation="Count">
+		<variableExpression><![CDATA[$F{carro.numeroDeOrdem}]]></variableExpression>
+	</variable>
+	<variable name="qtdViagemProgramadaIdaTurno" class="java.math.BigDecimal" resetType="Group" resetGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtdViagemProgramadaIda}]]></variableExpression>
+	</variable>
+	<variable name="qtdViagemRealizadaIdaTurno" class="java.math.BigDecimal" resetType="Group" resetGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtdViagemRealizadaIda}]]></variableExpression>
+	</variable>
+	<variable name="qtdPassageiroTurno" class="java.lang.Number" resetType="Group" resetGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtdPassageiro}]]></variableExpression>
+	</variable>
+	<variable name="totalCarroPrimeiroTurnoLinhaOperacional" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true && $F{turno.agrupamento}.equals("1º Turno") ? $V{qtdCarroTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalCarroSegundoTurnoLinhaOperacional" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true && $F{turno.agrupamento}.equals("2º Turno") ? $V{qtdCarroTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalCarroTerceiroTurnoLinhaOperacional" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true && $F{turno.agrupamento}.equals("3º Turno") ? $V{qtdCarroTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalCarroPrimeiroTurno" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == false && $F{turno.agrupamento}.equals("1º Turno") ? $V{qtdCarroTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalCarroSegundoTurno" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == false && $F{turno.agrupamento}.equals("2º Turno") ? $V{qtdCarroTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalCarroTerceiroTurno" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == false && $F{turno.agrupamento}.equals("3º Turno") ? $V{qtdCarroTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalProgramadaIdaPrimeiroTurnoLinhaOperacional" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true && $F{turno.agrupamento}.equals("1º Turno") ? $V{qtdViagemProgramadaIdaTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalProgramadaIdaSegundoTurnoLinhaOperacional" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true && $F{turno.agrupamento}.equals("2º Turno") ? $V{qtdViagemProgramadaIdaTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalProgramadaIdaTerceiroTurnoLinhaOperacional" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true && $F{turno.agrupamento}.equals("3º Turno") ? $V{qtdViagemProgramadaIdaTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalRealizadaIdaPrimeiroTurnoLinhaOperacional" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true && $F{turno.agrupamento}.equals("1º Turno") ? $V{qtdViagemRealizadaIdaTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalRealizadaIdaSegundoTurnoLinhaOperacional" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true && $F{turno.agrupamento}.equals("2º Turno") ? $V{qtdViagemRealizadaIdaTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalRealizadaIdaTerceiroTurnoLinhaOperacional" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true && $F{turno.agrupamento}.equals("3º Turno") ? $V{qtdViagemRealizadaIdaTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalPassageiroPrimeiroTurnoLinhaOperacional" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true && $F{turno.agrupamento}.equals("1º Turno") ? $V{qtdPassageiroTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalPassageiroSegundoTurnoLinhaOperacional" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true && $F{turno.agrupamento}.equals("2º Turno") ? $V{qtdPassageiroTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalPassageiroTerceiroTurnoLinhaOperacional" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true && $F{turno.agrupamento}.equals("3º Turno") ? $V{qtdPassageiroTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalProgramadaIdaPrimeiroTurno" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == false && $F{turno.agrupamento}.equals("1º Turno") ? $V{qtdViagemProgramadaIdaTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalProgramadaIdaSegundoTurno" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == false && $F{turno.agrupamento}.equals("2º Turno") ? $V{qtdViagemProgramadaIdaTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalProgramadaIdaTerceiroTurno" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == false && $F{turno.agrupamento}.equals("3º Turno") ? $V{qtdViagemProgramadaIdaTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="qtdViagemProgramadaVoltaTurno" class="java.math.BigDecimal" resetType="Group" resetGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtdViagemProgramadaVolta}]]></variableExpression>
+	</variable>
+	<variable name="qtdViagemRealizadaVoltaTurno" class="java.math.BigDecimal" resetType="Group" resetGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtdViagemRealizadaVolta}]]></variableExpression>
+	</variable>
+	<variable name="qtdViagemProgramadaVolta" class="java.math.BigDecimal" resetType="Group" resetGroup="linha" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtdViagemProgramadaVolta}]]></variableExpression>
+	</variable>
+	<variable name="qtdViagemRealizadaVolta" class="java.math.BigDecimal" resetType="Group" resetGroup="linha" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtdViagemRealizadaVolta}]]></variableExpression>
+	</variable>
+	<variable name="totalProgramadaVoltaPrimeiroTurnoLinhaOperacional" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true && $F{turno.agrupamento}.equals("1º Turno") ? $V{qtdViagemProgramadaVoltaTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalProgramadaVoltaSegundoTurnoLinhaOperacional" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true && $F{turno.agrupamento}.equals("2º Turno") ? $V{qtdViagemProgramadaVoltaTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalProgramadaVoltaTerceiroTurnoLinhaOperacional" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true && $F{turno.agrupamento}.equals("3º Turno") ? $V{qtdViagemProgramadaVoltaTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalRealizadaVoltaPrimeiroTurnoLinhaOperacional" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true && $F{turno.agrupamento}.equals("1º Turno") ? $V{qtdViagemRealizadaVoltaTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalRealizadaVoltaSegundoTurnoLinhaOperacional" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true && $F{turno.agrupamento}.equals("2º Turno") ? $V{qtdViagemRealizadaVoltaTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalRealizadaVoltaTerceiroTurnoLinhaOperacional" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true && $F{turno.agrupamento}.equals("3º Turno") ? $V{qtdViagemRealizadaVoltaTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalGeralViagemRealizadaVolta" class="java.math.BigDecimal" incrementType="Group" incrementGroup="linha" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true ? $V{qtdViagemRealizadaVolta} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalGeralViagemProgramadaVolta" class="java.math.BigDecimal" incrementType="Group" incrementGroup="linha" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == true ? $V{qtdViagemProgramadaVolta} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalProgramadaVoltaPrimeiroTurno" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == false && $F{turno.agrupamento}.equals("1º Turno") ? $V{qtdViagemProgramadaVoltaTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalProgramadaVoltaSegundoTurno" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == false && $F{turno.agrupamento}.equals("2º Turno") ? $V{qtdViagemProgramadaVoltaTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<variable name="totalProgramadaVoltaTerceiroTurno" class="java.lang.Number" incrementType="Group" incrementGroup="turno" calculation="Sum">
+		<variableExpression><![CDATA[$F{linha.operacional}.booleanValue() == false && $F{turno.agrupamento}.equals("3º Turno") ? $V{qtdViagemProgramadaVoltaTurno} : new Integer(0)]]></variableExpression>
+	</variable>
+	<group name="linha">
+		<groupExpression><![CDATA[$F{linha.id}]]></groupExpression>
+		<groupHeader>
+			<band height="14">
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement style="zebra" mode="Opaque" x="0" y="0" width="555" height="13" uuid="94bbddc1-29b1-42e8-9cad-89019c1870c7"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Courier New" size="9" isBold="true" pdfFontName="Courier-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{linha.codigo}.concat(" - ").concat($F{linha.descricao})]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="27">
+				<textField pattern="#,##0.0" isBlankWhenNull="true">
+					<reportElement style="zebra" mode="Opaque" x="202" y="0" width="70" height="12" backcolor="#F1F1F1" uuid="9a33c3fa-055a-47b2-98c8-0b287cf17132"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="9" isBold="true" pdfFontName="Courier-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{qtdViagemProgramadaIda}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.0" isBlankWhenNull="true">
+					<reportElement style="zebra" mode="Opaque" x="415" y="0" width="70" height="12" backcolor="#F1F1F1" uuid="db7e0a67-4a77-4123-b49c-5fbe5e7199f1"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="9" isBold="true" pdfFontName="Courier-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{qtdViagemRealizadaVolta}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0" isBlankWhenNull="true">
+					<reportElement style="zebra" mode="Opaque" x="486" y="0" width="69" height="12" backcolor="#F1F1F1" uuid="80a47faf-06bc-4be2-bb52-0b186f13bc58"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="9" isBold="true" pdfFontName="Courier-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{qtdPassageiro_1}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="0" width="100" height="12" backcolor="#F1F1F1" uuid="25c46fc4-5151-4d4a-aea4-f3709862021c"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+					</textElement>
+					<text><![CDATA[Total da linha]]></text>
+				</staticText>
+				<textField pattern="#,##0" isBlankWhenNull="true">
+					<reportElement style="zebra" mode="Opaque" x="101" y="0" width="100" height="12" backcolor="#F1F1F1" uuid="1555b636-3fb5-4e3e-aa10-ceacfae701cb"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Courier New" size="9" isBold="true" pdfFontName="Courier-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{qtdCarro_1}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="12" width="555" height="1" uuid="9db021a2-8d7d-4e13-8777-2454a7ae1028"/>
+					<graphicElement>
+						<pen lineWidth="0.25"/>
+					</graphicElement>
+				</line>
+				<textField pattern="#,##0.0" isBlankWhenNull="true">
+					<reportElement style="zebra" mode="Opaque" x="273" y="0" width="70" height="12" backcolor="#F1F1F1" uuid="ef9d9573-a622-447d-9dcc-dac145a32f92"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="9" isBold="true" pdfFontName="Courier-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{qtdViagemProgramadaVolta}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.0" isBlankWhenNull="true">
+					<reportElement style="zebra" mode="Opaque" x="344" y="0" width="70" height="12" backcolor="#F1F1F1" uuid="ddab53b2-6658-4086-8765-6628952cd505"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="9" isBold="true" pdfFontName="Courier-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{qtdViagemRealizadaIda}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="turno">
+		<groupExpression><![CDATA[$F{turno.agrupamento}]]></groupExpression>
+		<groupHeader>
+			<band height="13">
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement style="zebra" mode="Opaque" x="10" y="0" width="545" height="13" uuid="008ecaac-fadb-43b8-8b1b-d538ecae7040"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Courier New" size="9" isBold="true" pdfFontName="Courier-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{turno.agrupamento}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="12">
+				<staticText>
+					<reportElement mode="Opaque" x="10" y="0" width="90" height="12" backcolor="#F1F1F1" uuid="655eb2cf-c7b3-4e50-bb75-fff5ba7b7304"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+					</textElement>
+					<text><![CDATA[Total do turno]]></text>
+				</staticText>
+				<textField pattern="#,##0.0" isBlankWhenNull="true">
+					<reportElement style="zebra" mode="Opaque" x="202" y="0" width="70" height="12" backcolor="#F1F1F1" uuid="5fd26a37-4b6d-4aed-87bd-69135e1fef47"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="9" isBold="true" pdfFontName="Courier-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{qtdViagemProgramadaIdaTurno}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0" isBlankWhenNull="true">
+					<reportElement style="zebra" mode="Opaque" x="486" y="0" width="69" height="12" backcolor="#F1F1F1" uuid="5282d631-0766-4bf0-b245-226b6e1a171f"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="9" isBold="true" pdfFontName="Courier-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{qtdPassageiroTurno}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0" isBlankWhenNull="true">
+					<reportElement style="zebra" mode="Opaque" x="101" y="0" width="100" height="12" backcolor="#F1F1F1" uuid="0c640360-69af-425f-b245-4085a8a4a52c"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Courier New" size="9" isBold="true" pdfFontName="Courier-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{qtdCarroTurno}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.0" isBlankWhenNull="true">
+					<reportElement style="zebra" mode="Opaque" x="415" y="0" width="70" height="12" backcolor="#F1F1F1" uuid="7cdd4986-3ba0-43f2-9270-81b201ef67d1"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="9" isBold="true" pdfFontName="Courier-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{qtdViagemRealizadaVoltaTurno}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.0" isBlankWhenNull="true">
+					<reportElement style="zebra" mode="Opaque" x="273" y="0" width="70" height="12" backcolor="#F1F1F1" uuid="63082231-537d-48a1-8ff9-91cdffc939fc"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="9" isBold="true" pdfFontName="Courier-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{qtdViagemProgramadaVoltaTurno}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.0" isBlankWhenNull="true">
+					<reportElement style="zebra" mode="Opaque" x="344" y="0" width="70" height="12" backcolor="#F1F1F1" uuid="cbf18867-3094-41b0-b385-6e3e716d5598"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Courier New" size="9" isBold="true" pdfFontName="Courier-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{qtdViagemRealizadaIdaTurno}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="44" splitType="Stretch">
+			<rectangle>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="1" width="555" height="41" uuid="a71c0bd3-2873-466d-9281-396f52a2ff99"/>
+				<graphicElement>
+					<pen lineWidth="0.1"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="3" y="3" width="429" height="12" uuid="18db8955-14b5-4a04-993f-d5b6cef6426d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[VIAÇÃO PENDOTIBA  -  TELEFONE: 21 2703-4350]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="277" y="16" width="33" height="12" uuid="a2195029-553b-4df2-ab27-349c084c142d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[DATA: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="16" width="249" height="12" uuid="3f5c1ee6-ced6-4ed7-a590-6b5964543d32"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[ENTRADAS E SAÍDAS DOS CARROS DA GARAGEM]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH:mm">
+				<reportElement x="310" y="16" width="154" height="12" uuid="2e9e1ffa-aca6-4ac2-b810-02cd192c767b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="53" y="29" width="502" height="12" uuid="b0bdfb13-0f3f-4c75-803f-097d45fd7793"/>
+				<textElement>
+					<font fontName="Courier New" size="10" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{filtro}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="29" width="50" height="12" uuid="ea85c186-6e2a-4681-9bc0-baa49318a736"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[FILTROS:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="14" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="486" y="0" width="69" height="14" backcolor="#DDDDDD" uuid="9f715d47-ae67-45b5-805a-9240ffb68178"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[QTD PASSAGEIROS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="415" y="0" width="70" height="14" backcolor="#DDDDDD" uuid="4223578d-6f37-48b8-9bee-575f42bc1a3b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[V. REA. VOLTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="100" height="14" backcolor="#DDDDDD" uuid="01f36538-81da-4ef1-9af5-54d72e83780d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[DATA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="101" y="0" width="100" height="14" backcolor="#DDDDDD" uuid="c682153f-5be2-4462-a823-f9f0c8d8db0d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[CARRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="202" y="0" width="70" height="14" backcolor="#DDDDDD" uuid="54d91fc5-fb43-470c-b7ee-26c8f308513e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[V. PRO. IDA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="273" y="0" width="70" height="14" backcolor="#DDDDDD" uuid="cf1185e4-e16b-4e15-baa8-65dfb27aeb11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[V. PRO. VOLTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="344" y="0" width="70" height="14" backcolor="#DDDDDD" uuid="a6bfbe61-d85f-454b-9398-676d26da6bc6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[V. REA. IDA]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="1" y="0" width="100" height="12" uuid="026336b8-8e56-4ade-b01f-2170cbf98ffc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dataCompetencia}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="415" y="0" width="70" height="12" uuid="7b7d743b-5e0a-4a40-bd2a-fa36f0120fda"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtdViagemRealizadaVolta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="202" y="0" width="70" height="12" uuid="7061cfc4-35f5-4f4c-b510-3b4b3ff06745"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtdViagemProgramadaIda}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="101" y="0" width="100" height="12" uuid="ec2c2172-ccf4-43c0-8ce5-ad203e54511d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{carro.numeroDeOrdem}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="486" y="0" width="69" height="12" uuid="a904e372-759b-4ab7-80ef-e3fc77247c1c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtdPassageiro}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="273" y="0" width="70" height="12" uuid="25b7856b-a1db-4bab-94d9-59ad58bde0c4"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtdViagemProgramadaVolta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="344" y="0" width="70" height="12" uuid="f981987a-d4fa-4a18-9b6d-d0aef548de0c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtdViagemRealizadaIda}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="28" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="2" width="555" height="1" uuid="003bd5ff-530c-4798-81af-ab42cf63147d"/>
+				<graphicElement>
+					<pen lineWidth="0.25"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="454" y="10" width="80" height="10" uuid="cf7fa5cd-21fd-43dd-883f-083bc1c68d2f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="537" y="10" width="18" height="10" uuid="24ad1ac3-81af-4107-8509-586d13ae791b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="356" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="39" width="100" height="12" uuid="688ff666-febd-4260-8e6d-0989b52f0c8d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[1º TURNO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="10" width="555" height="14" backcolor="#DDDDDD" uuid="27ce9e67-9795-40fa-af88-9a156753bc1b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[TOTALIZADORES DAS LINHAS OPERACIONAIS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="25" width="100" height="14" backcolor="#DDDDDD" uuid="d536d650-451d-41fb-b335-63d9420fa6d0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[TURNO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="101" y="25" width="100" height="14" backcolor="#DDDDDD" uuid="3ce15b9f-a114-4524-a859-f356847ad370"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[CARROS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="415" y="25" width="70" height="14" backcolor="#DDDDDD" uuid="6d75d5cd-4073-4348-bc9d-ef9bde418e6c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[V. REA. VOLTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="486" y="25" width="69" height="14" backcolor="#DDDDDD" uuid="1c1b883a-d1dd-4cbe-b349-1446b95cfed6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[QTD PASSAGEIROS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="202" y="25" width="70" height="14" backcolor="#DDDDDD" uuid="d0fb2357-92e6-443b-9608-82f6b7b95172"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[V. PRO. IDA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="51" width="100" height="12" uuid="0d47b482-9043-408a-ae4e-74000779245c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[2º TURNO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="63" width="100" height="12" uuid="2e009bb5-c4c1-4ea5-a2d2-248ae908826b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[3º TURNO]]></text>
+			</staticText>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="101" y="39" width="100" height="12" uuid="825fface-d2c2-4a2b-8e8b-9a51904112c0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalCarroPrimeiroTurnoLinhaOperacional}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="101" y="51" width="100" height="12" uuid="be07bddd-af58-49fd-895c-d54bf474a6bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalCarroSegundoTurnoLinhaOperacional}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="101" y="63" width="100" height="12" uuid="0bbfbf04-a68f-4b76-bd0e-89fe73d7c5e7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalCarroTerceiroTurnoLinhaOperacional}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="202" y="39" width="70" height="12" uuid="2f9d1163-975a-492b-a6e6-3c4f840c8144"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalProgramadaIdaPrimeiroTurnoLinhaOperacional}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="202" y="51" width="70" height="12" uuid="81b99b74-1942-4cea-8af4-c3d5f85dd5aa"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalProgramadaIdaSegundoTurnoLinhaOperacional}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="202" y="63" width="70" height="12" uuid="f9f266a1-df7f-4b93-a7da-e578c46bbfd1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalProgramadaIdaTerceiroTurnoLinhaOperacional}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="415" y="39" width="70" height="12" uuid="451840f8-f6c9-4894-a3d3-ac652dd8d6c1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalRealizadaVoltaPrimeiroTurnoLinhaOperacional}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="415" y="51" width="70" height="12" uuid="e33259bb-ede0-4fbf-929d-614e9c8c4dd5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalRealizadaVoltaSegundoTurnoLinhaOperacional}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="415" y="63" width="70" height="12" uuid="3053675d-eaad-4064-bc16-0d5a3dbfdffa"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalRealizadaVoltaTerceiroTurnoLinhaOperacional}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="486" y="39" width="69" height="12" uuid="b680cf25-a8ad-454d-a733-a5b5cfbd875c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalPassageiroPrimeiroTurnoLinhaOperacional}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="486" y="51" width="69" height="12" uuid="ebdaf53a-3b8e-464b-8d23-6acbc21b2d4c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalPassageiroSegundoTurnoLinhaOperacional}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="486" y="63" width="69" height="12" uuid="096ac6df-3911-4f9c-a357-b0083b8c6d53"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalPassageiroTerceiroTurnoLinhaOperacional}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="105" width="555" height="14" backcolor="#DDDDDD" uuid="bbef1718-3f5a-45b2-b0b1-150a9961322e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[TOTALIZADORES DAS LINHAS NÃO OPERACIONAIS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="119" width="100" height="12" uuid="77a3982f-4475-48a9-a2fc-ac779b8b1cb8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[1º TURNO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="143" width="100" height="12" uuid="30b46640-f389-474d-b01f-f7a7bc6d4368"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[3º TURNO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="131" width="100" height="12" uuid="fd5ec20e-09df-462d-b4a5-bc0ad4c45fd0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[2º TURNO]]></text>
+			</staticText>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="101" y="119" width="100" height="12" uuid="c99abdd4-d896-45d7-92b6-0d0d6d9a358c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalCarroPrimeiroTurno}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="101" y="131" width="100" height="12" uuid="d0c87cb3-9005-4a62-89d2-1b5d96748e06"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalCarroSegundoTurno}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="101" y="143" width="100" height="12" uuid="457bad55-73ed-4b7d-aba4-1f2683e4b49c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalCarroTerceiroTurno}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="202" y="75" width="70" height="12" uuid="d675c62d-ed6d-4c86-b55a-f4d804086628"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalGeralViagemProgramadaIda}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="75" width="100" height="12" uuid="fb02ac21-6fd6-4362-b567-a27882c9cbd4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[GERAL]]></text>
+			</staticText>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="486" y="75" width="69" height="12" uuid="865555ef-ec09-46aa-86b9-d14675e6862b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalGeralPassageiro}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="415" y="75" width="70" height="12" uuid="e09ef51a-39a8-4000-bff4-dc892ce8e66c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalGeralViagemRealizadaVolta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="101" y="75" width="100" height="12" uuid="4ab36338-90cc-41b5-a8a3-3df4f2be2b2b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalGeralCarro}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="202" y="131" width="70" height="12" uuid="6097b937-6e78-444f-99d4-dd709c94e3ad">
+					<printWhenExpression><![CDATA[$V{totalProgramadaIdaSegundoTurno}.intValue() > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalProgramadaIdaSegundoTurno}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="202" y="143" width="70" height="12" uuid="fe89edbb-d71a-4ec3-9922-ed8875a8c75c">
+					<printWhenExpression><![CDATA[$V{totalProgramadaIdaTerceiroTurno}.intValue() > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalProgramadaIdaTerceiroTurno}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="202" y="119" width="70" height="12" uuid="2913a19b-268a-4c32-93ab-3b266c0cbc44">
+					<printWhenExpression><![CDATA[$V{totalProgramadaIdaPrimeiroTurno}.intValue() > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalProgramadaIdaPrimeiroTurno}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="75" width="555" height="1" uuid="59d8d209-2a49-4223-81a9-bee83aeaf3f3"/>
+				<graphicElement>
+					<pen lineWidth="0.25"/>
+				</graphicElement>
+			</line>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="273" y="39" width="70" height="12" uuid="6366726d-b6d3-4d06-a396-78b3b4e6e741"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalProgramadaVoltaPrimeiroTurnoLinhaOperacional}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="273" y="75" width="70" height="12" uuid="f3d72955-3f61-471b-a0e0-69f500643c85"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalGeralViagemProgramadaVolta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="273" y="51" width="70" height="12" uuid="1555cf55-6aa6-422e-ae7b-fcac7db890a2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalProgramadaVoltaSegundoTurnoLinhaOperacional}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="273" y="63" width="70" height="12" uuid="5ce3d8e4-9186-49d0-9f64-56e8bdf913b9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalProgramadaVoltaTerceiroTurnoLinhaOperacional}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="273" y="25" width="70" height="14" backcolor="#DDDDDD" uuid="f6d18ae7-e132-4bb6-9993-9c45214c565a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[V. PRO. VOLTA]]></text>
+			</staticText>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="344" y="51" width="70" height="12" uuid="f4761404-c77e-4398-97b8-febb86c4429d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalRealizadaIdaSegundoTurnoLinhaOperacional}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="344" y="25" width="70" height="14" backcolor="#DDDDDD" uuid="f2df9519-aef3-4b21-a5e9-4faf2e4ed342"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[V. REA. IDA]]></text>
+			</staticText>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="344" y="39" width="70" height="12" uuid="272d1e64-9020-4c0c-b93d-f4594e46f1af"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalRealizadaIdaPrimeiroTurnoLinhaOperacional}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="344" y="63" width="70" height="12" uuid="b3d112aa-2305-4fca-987c-d469bdd56662"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalRealizadaIdaTerceiroTurnoLinhaOperacional}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="344" y="75" width="70" height="12" uuid="bc8e2426-153d-4906-b1c6-471f0e664780"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalGeralViagemRealizadaIda}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="273" y="143" width="70" height="12" uuid="2bdb0d66-6325-4c1a-9931-3a0757d0e027">
+					<printWhenExpression><![CDATA[$V{totalProgramadaVoltaTerceiroTurno}.intValue() > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalProgramadaVoltaTerceiroTurno}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="273" y="119" width="70" height="12" uuid="cf847d35-aee3-4357-8cb6-290157452427">
+					<printWhenExpression><![CDATA[$V{totalProgramadaVoltaPrimeiroTurno}.intValue() > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalProgramadaVoltaPrimeiroTurno}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Transparent" x="273" y="131" width="70" height="12" uuid="f86e87b9-7bda-454e-9086-d3b1c44decd8">
+					<printWhenExpression><![CDATA[$V{totalProgramadaVoltaSegundoTurno}.intValue() > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalProgramadaVoltaSegundoTurno}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

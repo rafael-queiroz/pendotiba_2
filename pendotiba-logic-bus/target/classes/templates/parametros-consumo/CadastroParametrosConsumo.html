@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com">
+	
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${parametrosConsumo.novo}">Cadastro de parâmetros de consumo</h1>
+					<h1 th:unless="${parametrosConsumo.novo}">Edição de parâmetros de consumo - [[${parametrosConsumo}]]</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/parametros-consumo}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<form method="POST" th:object="${parametrosConsumo}" class="form-vertical  js-form-loading" 
+				th:action="${parametrosConsumo.novo} ? @{/parametros-consumo/novo} : @{/parametros-consumo/{id}(id=${parametrosConsumo.id})}">
+		
+			<logic-bus:message />
+			
+			<input type="hidden" th:field="*{id}"/>
+			
+			<div class="row">
+				<div class="form-group  col-sm-6  logic-bus-required" logic-bus:classforerror="tipoChassi">
+					<label for="tipoChassi" class="control-label">Tipo de chassi</label>
+					<select id="tipoChassi" class="form-control" th:field="*{tipoChassi}" >
+						<option value="">Selecione o tipo de chassi</option>
+						<option th:each="tipoChassi : ${tiposChassi}" th:value="${tipoChassi.id}" th:text="${tipoChassi}"/>
+					</select>
+				</div>
+
+				<div class="form-group  col-sm-6  logic-bus-required" logic-bus:classforerror="linha">
+					<label for="linha" class="control-label">Linha</label>
+					<select id="linha" class="form-control" th:field="*{linha}" >
+						<option value="">Selecione a linha</option>
+						<option th:each="linha : ${linhas}" th:value="${linha.id}" th:text="${linha}"/>
+					</select>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-sm-2  form-group  logic-bus-required" logic-bus:classforerror="metaConsumoMes01Str">
+					<label for="metaConsumoMes01Str" class="control-label">Janeiro</label>
+					<input id="metaConsumoMes01Str" type="text" class="form-control  js-consumo-diesel" th:field="*{metaConsumoMes01Str}" maxlength="3" />
+				</div>
+				
+				<div class="col-sm-2  form-group  logic-bus-required" logic-bus:classforerror="metaConsumoMes02Str">
+					<label for="metaConsumoMes02Str" class="control-label">Fevereiro</label>
+					<input id="metaConsumoMes02Str" type="text" class="form-control  js-consumo-diesel" th:field="*{metaConsumoMes02Str}" maxlength="3" />
+				</div>
+				
+				<div class="col-sm-2  form-group  logic-bus-required" logic-bus:classforerror="metaConsumoMes03Str">
+					<label for="metaConsumoMes03Str" class="control-label">Março</label>
+					<input id="metaConsumoMes03Str" type="text" class="form-control  js-consumo-diesel" th:field="*{metaConsumoMes03Str}" maxlength="3" />
+				</div>
+				
+				<div class="col-sm-2  form-group  logic-bus-required" logic-bus:classforerror="metaConsumoMes04Str">
+					<label for="metaConsumoMes04Str" class="control-label">Abril</label>
+					<input id="metaConsumoMes04Str" type="text" class="form-control  js-consumo-diesel" th:field="*{metaConsumoMes04Str}" maxlength="3" />
+				</div>
+				
+				<div class="col-sm-2  form-group  logic-bus-required" logic-bus:classforerror="metaConsumoMes05Str">
+					<label for="metaConsumoMes05Str" class="control-label">Maio</label>
+					<input id="metaConsumoMes05Str" type="text" class="form-control  js-consumo-diesel" th:field="*{metaConsumoMes05Str}" maxlength="3" />
+				</div>
+				
+				<div class="col-sm-2  form-group  logic-bus-required" logic-bus:classforerror="metaConsumoMes06Str">
+					<label for="metaConsumoMes06Str" class="control-label">Junho</label>
+					<input id="metaConsumoMes06Str" type="text" class="form-control  js-consumo-diesel" th:field="*{metaConsumoMes06Str}" maxlength="3" />
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-sm-2  form-group  logic-bus-required" logic-bus:classforerror="metaConsumoMes07Str">
+					<label for="metaConsumoMes07Str" class="control-label">Julho</label>
+					<input id="metaConsumoMes07Str" type="text" class="form-control  js-consumo-diesel" th:field="*{metaConsumoMes07Str}" maxlength="3" />
+				</div>
+				
+				<div class="col-sm-2  form-group  logic-bus-required" logic-bus:classforerror="metaConsumoMes08Str">
+					<label for="metaConsumoMes08Str" class="control-label">Agosto</label>
+					<input id="metaConsumoMes08Str" type="text" class="form-control  js-consumo-diesel" th:field="*{metaConsumoMes08Str}" maxlength="3" />
+				</div>
+				
+				<div class="col-sm-2  form-group  logic-bus-required" logic-bus:classforerror="metaConsumoMes09Str">
+					<label for="metaConsumoMes09Str" class="control-label">Setembro</label>
+					<input id="metaConsumoMes09Str" type="text" class="form-control  js-consumo-diesel" th:field="*{metaConsumoMes09Str}" maxlength="3" />
+				</div>
+				
+				<div class="col-sm-2  form-group  logic-bus-required" logic-bus:classforerror="metaConsumoMes10Str">
+					<label for="metaConsumoMes10Str" class="control-label">Outubro</label>
+					<input id="metaConsumoMes10Str" type="text" class="form-control  js-consumo-diesel" th:field="*{metaConsumoMes10Str}" maxlength="3" />
+				</div>
+				
+				<div class="col-sm-2  form-group  logic-bus-required" logic-bus:classforerror="metaConsumoMes11Str">
+					<label for="metaConsumoMes11Str" class="control-label">Novembro</label>
+					<input id="metaConsumoMes11Str" type="text" class="form-control  js-consumo-diesel" th:field="*{metaConsumoMes11Str}" maxlength="3" />
+				</div>
+				
+				<div class="col-sm-2  form-group  logic-bus-required" logic-bus:classforerror="metaConsumoMes12Str">
+					<label for="metaConsumoMes12Str" class="control-label">Dezembro</label>
+					<input id="metaConsumoMes12Str" type="text" class="form-control  js-consumo-diesel" th:field="*{metaConsumoMes12Str}" maxlength="3" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<a th:href="@{/parametros-consumo/inicial}" class="btn  btn-default" >Voltar</a>
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+			</div>
+	
+		</form>
+	</div>
+	
+</section>
+	
+</html>

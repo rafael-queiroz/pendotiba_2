@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+	<title>Cadastro de Programação</title>
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Programação e suas viagens</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/programacao}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="form-group  col-sm-3" >
+				<label for="dataCompetencia" class="control-label">Competência</label>
+				<output class="form-control  js-date" id="dataCompetencia" th:text="${{programacao.dataCompetencia}}" th:disabled="disable" ></output>
+			</div>
+
+			<div class="form-group  col-sm-3"> 
+				<label for="carroProgramado" class="control-label">Carro programado</label>
+				<output class="form-control" id="carroProgramado" th:text="${programacao.carroProgramado}" th:disabled="disable" ></output>
+			</div>
+			
+			<div class="form-group  col-sm-3">
+				<label for="turno" class="control-label">Turno</label>
+				<output class="form-control" id="turno" th:text="${programacao.turno}" th:disabled="disable" ></output>
+			</div>
+			
+			<div class="form-group  col-sm-3">
+				<label for="status" class="control-label">Status</label>
+				<output class="form-control" id="status" th:text="${programacao.status}" th:disabled="disable" ></output>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="form-group  col-sm-6">
+				<label for="motorista" class="control-label">Motorista programado</label>
+				<output class="form-control" id="motorista" th:text="${programacao.motoristaProgramado}" th:disabled="disable" ></output>
+			</div>
+			
+			<div class="form-group  col-sm-6">
+				<label for="motorista" class="control-label">Motorista realizado</label>
+				<output class="form-control" id="motorista" th:text="${programacao.motorista}" th:disabled="disable" ></output>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="form-group  col-sm-6">
+				<label for="cobrador" class="control-label">Cobrador</label>
+				<output class="form-control" id="cobrador" th:text="${programacao.parceiro.id != null ? programacao.parceiro : null}" th:disabled="disable" ></output>
+			</div>
+		
+			<div class="form-group  col-sm-6">
+				<label for="linha" class="control-label">Linha</label>
+				<output class="form-control" id="linha" th:text="${programacao.linha}" th:disabled="disable" ></output>
+			</div>
+		</div>
+		
+		<div class="row">	
+			<div class="form-group  col-sm-6">
+				<label for="pontoPegadaMotorista" class="control-label">Ponto de pegada</label>
+				<output class="form-control" id="pontoPegadaMotorista" th:text="${programacao.pontoPegadaMotorista}" th:disabled="disable" ></output>
+			</div>
+
+			<div class="form-group  col-sm-2">
+				<label for="inicioJornada" class="control-label" >Início da jornada</label>
+				<output class="form-control  js-hora" id="inicioJornada" th:text="${programacao.inicioJornada}" th:disabled="disable" ></output>
+			</div>
+
+			<div class="form-group  col-sm-2" >
+				<label for="terminoJornada" class="control-label">Término da jornada</label>
+				<output class="form-control  js-hora" id="terminoJornada" th:text="${programacao.terminoJornada}" th:disabled="disable" ></output>
+			</div>
+			
+			<div class="form-group  col-sm-2" >
+				<label for=inicioTrabalho class="control-label">Início do trabalho</label>
+				<output class="form-control  js-hora" id="inicioTrabalho" th:text="${programacao.inicioTrabalho}" th:disabled="disable" ></output>
+			</div>
+		</div>
+		
+		<div class="bw-field-action__icon">
+			<label class="control-label">Carros</label>
+		</div>
+		<div class="table-responsive">
+			<table id="tabelaRoletas" class="table  table-striped  table-bordered  table-hover  table-condensed  js-sticky-table" >
+				<thead>
+					<tr>
+						<th class="logic-bus-colCentro">Carro</th>
+						<th class="logic-bus-colCentro">Hora de vínculo</th>
+						<th>Roleta inicial</th>
+						<th>Roleta final</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr th:each="roleta : ${programacao.roletas}" >
+						<td class="logic-bus-colCentro" th:text="${roleta.carro}"></td>
+						<td class="logic-bus-colCentro" th:text="${{roleta.dataCompetencia}}"></td>
+						<td th:text="${roleta.roletaInicial1Str}"></td>
+						<td th:text="${roleta.roletaFinal1Str}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<div class="bw-field-action__icon">
+			<label class="control-label">Viagens</label>
+		</div>
+		<div class="table-responsive">
+			<table id="tabelaViagens" class="table  table-striped  table-bordered  table-hover  table-condensed  js-sticky-table" >
+				<thead>
+					<tr>
+						<th class="logic-bus-colCentro">Ordem</th>
+						<th class="logic-bus-colCentro">Saída P.</th>
+						<th class="logic-bus-colCentro">Saída R.</th>
+						<th class="logic-bus-colCentro">Chegada</th>
+						<th>Linha programada</th>
+						<th>Linha realizada</th>
+						<th>Ponto origem</th>
+						<th>Ponto destino</th>
+						<th>Carro R.</th>
+						<th class="logic-bus-colCentro">Sentido</th>
+						<th class="logic-bus-colCentro">Roleta</th>
+						<th class="logic-bus-colCentro">Ações</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr id="viagens" th:each="viagem : ${programacao.viagens}" >
+						<td class="logic-bus-colCentro" th:text="${viagem.ordemViagem}"></td>
+						<td class="logic-bus-colCentro" th:text="${{viagem.horaSaidaProgramada}}"></td>
+						<td class="logic-bus-colCentro" th:text="${{viagem.horaSaidaRealizada}}"></td>
+						<td class="logic-bus-colCentro" th:text="${{viagem.horaChegada}}"></td>
+						<td th:text="${viagem.linhaProgramada != null ? viagem.linhaProgramada : 'N/E'}" th:classappend="${viagem.linhaProgramada == null} ? logic-bus-vermelho"></td>
+						<td th:text="${viagem.linhaRealizada != null ? viagem.linhaRealizada : ''}"></td>
+						<td th:text="${viagem.pontoLinha != null ? viagem.pontoLinha.pontoOrigem : 'N/E'}" th:classappend="${viagem.pontoLinha.pontoOrigem == null} ? logic-bus-vermelho"></td>
+						<td th:text="${viagem.pontoLinha != null ? viagem.pontoLinha.pontoDestino : 'N/E'}" th:classappend="${viagem.pontoLinha.pontoDestino == null} ? logic-bus-vermelho"></td>
+						<td th:text="${viagem.carroRealizado != null ? viagem.carroRealizado : 'N/E'}" th:classappend="${viagem.carroRealizado == null} ? logic-bus-vermelho"></td>
+						<td class="logic-bus-colCentro" th:text="${viagem.pontoLinha.sentido != null ? viagem.pontoLinha.sentido : 'N/E'}" th:classappend="${viagem.pontoLinha.sentido == null} ? logic-bus-vermelho"></td>
+						<td class="logic-bus-colDireita" th:text="${viagem.roletaFinal1Str}"></td>
+						
+						<td class="text-center" >
+							<a class="btn  btn-link  btn-xs  js-tooltip" title="Editar" th:href="@{/viagem/{id}(id=${viagem.id})}" 
+							   th:if="${viagem.podeAlterar() and viagem.podeAlterarPorUsuario(#authentication.principal.usuario) and !viagem.programacao.encerrado()}" > 
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>		
+							<a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir" href="#"
+							   th:if="${viagem.podeAlterar() and !viagem.programacao.encerrado()}"
+							   data:url="@{/viagem/{id}(id=${viagem.id})}"
+							   data:objeto="${viagem}">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</td>
+					</tr>
+					<tr th:if="${programacao.viagens.isEmpty()}">
+						<td colspan="12">Nenhuma viagem encontrada</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<div class="form-group">
+			<a th:href="@{/programacao/inicial}" class="btn  btn-default" >Voltar</a>
+		</div>
+	</div>
+	
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/vendors/bootstrap-switch.min.js}"></script>
+	<script>
+		$('.js-status').bootstrapSwitch();
+	</script>
+</th:block>
+
+</html>

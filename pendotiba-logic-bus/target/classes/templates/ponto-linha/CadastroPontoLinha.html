@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com">
+	
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Cadastro da Relação Ponto-Linha</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/ponto-linha}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<form method="POST" th:object="${pontoLinha}" class="form-vertical  js-form-loading" th:action="${pontoLinha.novo} ? @{/ponto-linha/novo} : @{/ponto-linha/{id}(id=${pontoLinha.id})}">
+		
+			<logic-bus:message />
+			
+			<input type="hidden" th:field="*{id}"/>
+			
+			<div class="row">
+				<div class="form-group  col-sm-3" >
+					<label for="linha" class="control-label">Linha</label>
+					<select id="linha" class="form-control" th:field="*{linha}">
+						<option value="">Selecione a linha</option>
+						<option th:each="linha : ${linhas}" th:value="${linha.id}" th:text="${linha}" />
+					</select>
+				</div>
+				
+				<div class="form-group  col-sm-3" >
+					<label for="pontoOrigem" class="control-label">Ponto origem</label>
+					<select id="pontoOrigem" class="form-control" th:field="*{pontoOrigem}">
+						<option value="">Selecione o ponto de origem</option>
+						<option th:each="pontoOrigem : ${pontos}" th:value="${pontoOrigem.id}" th:text="${pontoOrigem}" />
+					</select>
+				</div>
+				
+				<div class="form-group  col-sm-3" >
+					<label for="pontoDestino" class="control-label">Ponto destido</label>
+					<select id="pontoDestino" class="form-control" th:field="*{pontoDestino}">
+						<option value="">Selecione o ponto de destino</option>
+						<option th:each="pontoDestino : ${pontos}" th:value="${pontoDestino.id}" th:text="${pontoDestino}" />
+					</select>
+				</div>
+				
+				<div class="form-group  col-sm-3" >
+					<label for="sentido" class="control-label">Sentido</label>
+					<select id="sentido" class="form-control" th:field="*{sentido}">
+						<option value="">Selecione o sentido</option>
+						<option th:each="sentido : ${sentidos}" th:value="${sentido}" th:text="${sentido}" />
+					</select>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-sm-3  form-group  logic-bus-required" logic-bus:classforerror="distanciaOciosaStr">
+					<label for="distanciaOciosaStr" class="control-label">Distância ociosa</label>
+					<input id="distanciaOciosaStr" type="text" class="form-control  js-volume-duas-casas-decimais" th:field="*{distanciaOciosaStr}" maxlength="5" />
+				</div>
+				
+				<div class="col-sm-3  form-group  logic-bus-required" logic-bus:classforerror="distanciaProdutivaStr">
+					<label for="distanciaProdutivaStr" class="control-label">Distância produtiva</label>
+					<input id="distanciaProdutivaStr" type="text" class="form-control  js-volume-duas-casas-decimais" th:field="*{distanciaProdutivaStr}" maxlength="5" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<a href="javascript:history.back()" class="btn  btn-default">Cancelar</a>
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+			</div>
+	
+		</form>
+	</div>
+	
+</section>
+
+</html>

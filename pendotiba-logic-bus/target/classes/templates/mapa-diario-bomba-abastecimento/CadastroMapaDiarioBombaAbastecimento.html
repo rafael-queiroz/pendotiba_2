@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com">
+	
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Cadastro mapa diário para bomba de abastecimento</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/mapa-diario-bomba-abastecimento/inicial}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<form method="POST" th:object="${mapaDiarioBombaAbastecimento}" class="form-vertical  js-form-loading" th:action="${mapaDiarioBombaAbastecimento.novo}">
+		
+			<logic-bus:message />
+			
+			<input type="hidden" th:field="*{id}">
+			<input type="hidden" th:field="*{dataCompetencia}">
+			<input type="hidden" th:field="*{bombaAbastecimento}">
+			<input type="hidden" th:field="*{volumeInicialStr}">
+							
+			<div class="row">
+				<div class="form-group  col-sm-4 logic-bus-required" logic-bus:classforerror="dataCompetencia">
+					<label for="dataCompetencia" class="control-label">Data de competência</label>
+					<input type="text" class="form-control  js-date" id="dataCompetencia" th:field="*{{dataCompetencia}}" autocomplete="off"  th:disabled="${id != null}"/>
+				</div>
+				
+				<div class="form-group col-sm-4" >
+					<label for="bombaAbastecimento" class="control-label">Bomba de abastecimento</label>
+					<select id="bombaAbastecimento" class="form-control" th:field="*{bombaAbastecimento}" th:disabled="${id != null}">
+						<option value="">Selecione a bomba de abastecimento</option>
+						<option th:each="bombaAbastecimento : ${bombas}" th:value="${bombaAbastecimento.id}" th:text="${bombaAbastecimento.descricao}"   />
+					</select>
+				</div>
+
+				<div class="col-sm-2  form-group  logic-bus-required" logic-bus:classforerror="volumeInicialStr">
+					<label for="volumeInicialStr" class="control-label">Volume inicial</label>
+					<input id="volumeInicialStr" type="text" class="form-control  js-volume" th:field="*{volumeInicialStr}" maxlength="8"   th:disabled="${id != null}"/>
+				</div>
+				
+				<div class="col-sm-2  form-group  logic-bus-required" logic-bus:classforerror="volumeFinalStr">
+					<label for="volumeFinalStr" class="control-label">Volume final</label>
+					<input id="volumeFinalStr" type="text" class="form-control  js-volume" th:field="*{volumeFinalStr}" maxlength="8" />
+				</div>
+			</div>
+				
+			<div class="form-group">
+				<a th:href="@{/mapa-diario-bomba-abastecimento/inicial}" class="btn  btn-default" >Voltar</a>
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+			</div>
+		</form>
+	</div>
+</section>
+	
+<th:block layout:fragment="javascript-extra">
+	
+</th:block>
+
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com">
+	
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${carro.novo}">Cadastro de carro</h1>
+					<h1 th:unless="${carro.novo}">Edição do carro - [[${carro}]]</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/carro/inicial}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<form method="POST" th:object="${carro}" class="form-vertical  js-form-loading" th:action="${carro.novo} ? @{/carro/novo} : @{/carro/{id}(id=${carro.id})}">
+		
+			<logic-bus:message />
+			
+			<input type="hidden" th:field="*{id}"/>
+			<input type="hidden" th:field="*{numeroDeOrdem}" th:if="${carro.id != null}"/>
+			<input type="hidden" th:field="*{quantidadeRoletas}"/>
+			<input type="hidden" th:field="*{roleta1}"/>
+			<input type="hidden" th:field="*{odometro}"/>
+			<input type="hidden" th:field="*{ultimoAbastecimentoDiesel}"/>
+			<input type="hidden" th:field="*{ultimoAbastecimentoArla}"/>
+			
+			<div class="row">
+				<div class="col-sm-3  form-group  logic-bus-required" logic-bus:classforerror="numeroDeOrdem">
+					<label for="numeroDeOrdem" class="control-label">Número de ordem</label>
+					<input id="numeroDeOrdem" type="text" class="form-control" th:field="*{numeroDeOrdem}" th:disabled="${carro.id != null}"/>
+				</div>
+				
+				<div class="col-sm-3  form-group  logic-bus-required" logic-bus:classforerror="tipoCarro">
+					<label for="tipoCarro" class="control-label">Tipo de carro</label>
+					<select id="tipoCarro" class="form-control" th:field="*{tipoCarro}">
+						<option value="">Selecione o tipo do carro</option>
+						<option th:each="tipoCarro : ${tiposCarro}" th:value="${tipoCarro.id}" th:text="${tipoCarro}" />
+					</select>
+				</div>
+				
+				<div class="col-sm-3  form-group  logic-bus-required" logic-bus:classforerror="tipoChassi">
+					<label for="tipoChassi" class="control-label">Tipo de chassi</label>
+					<select id="tipoChassi" class="form-control" th:field="*{tipoChassi}">
+						<option value="">Selecione o tipo do chassi</option>
+						<option th:each="tipoChassi : ${tiposChassi}" th:value="${tipoChassi.id}" th:text="${tipoChassi}" />
+					</select>
+				</div>
+				
+				<div class="col-sm-3  form-group  logic-bus-required" logic-bus:classforerror="ano">
+					<label for="ano" class="control-label">Ano</label>
+					<input id="ano" type="text" class="form-control" th:field="*{ano}" maxlength="4"/>
+				</div>
+			</div>	
+			
+			<div class="row">
+				<div class="col-sm-2  form-group  logic-bus-required" logic-bus:classforerror="placa">
+					<label for="placa" class="control-label">Placa</label>
+					<input id="placa" type="text" class="form-control js-placa" th:field="*{placa}" />
+				</div>
+				
+				<div class="col-sm-3  form-group  logic-bus-required" logic-bus:classforerror="carroceria">
+					<label for="carroceria" class="control-label">Carroceria</label>
+					<input id="carroceria" type="text" class="form-control" th:field="*{carroceria}" />
+				</div>
+				
+				<div class="col-sm-3  form-group  logic-bus-required" logic-bus:classforerror="chassi">
+					<label for="chassi" class="control-label">Chassi</label>
+					<input id="chassi" type="text" class="form-control" th:field="*{chassi}" />
+				</div>
+				
+				<div class="col-sm-3  form-group  logic-bus-required" logic-bus:classforerror="renavam">
+					<label for="renavam" class="control-label">Renavam</label>
+					<input id="renavam" type="text" class="form-control" th:field="*{renavam}" />
+				</div>
+			</div>	
+			
+			<div class="row">
+				<div class="form-group  col-sm-2" >
+					<label class="control-label">Status</label>
+					<div>
+						<input type="checkbox" class="js-status" data-size="small" data-off-color="danger" 
+							data-on-text="Ativo" data-off-text="Inativo" th:field="*{ativo}"/>
+					</div>
+				</div>
+				
+				<div class="form-group  col-sm-2" >
+					<label class="control-label">Exporta Transoft</label>
+					<div>
+						<input type="checkbox" class="js-status" data-size="small" data-off-color="danger" 
+							data-on-text="Sim" data-off-text="Não" th:field="*{exportaTransoft}"/>
+					</div>
+				</div>
+				
+				<div class="form-group  col-sm-6  logic-bus-required" logic-bus:classforerror="localDeAtuacao">
+					<label class="control-label">Local de atuação</label> 
+					<div>
+						<th:block th:each="localDeAtuacao : ${locaisDeAtuacao}">
+							<div class="radio  radio-inline">
+							      <input type="radio" th:id="|id_${localDeAtuacao}|" class="form-control" 
+							            th:field="*{localDeAtuacao}" th:value="${localDeAtuacao}"> 
+							      <label class="control-label" th:for="|id_${localDeAtuacao}|" th:text="${localDeAtuacao.descricao}"></label>
+							</div>
+						</th:block>
+					</div>
+				</div>
+			</div>	
+			
+			<div class="form-group">
+				<a th:href="@{/carro/inicial}" class="btn  btn-default" >Voltar</a>
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+			</div>
+	
+		</form>
+	</div>
+</section>
+	
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/vendors/bootstrap-switch.min.js}"></script>
+	<script>
+		$('.js-status').bootstrapSwitch();
+
+	</script>
+</th:block>
+
+</html>

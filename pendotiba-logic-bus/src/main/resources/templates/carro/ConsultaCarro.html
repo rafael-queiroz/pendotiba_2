@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Consulta de Carros</h1>
+				</div>
+				
+				<div class="col-xs-2"  sec:authorize-url="/carro/novo">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/carro/novo}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Novo carro</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="GET" th:object="${carroFilter}" th:action="@{/carro}" >
+		
+			<logic-bus:message />
+		
+			<div class="row">
+				<div class="form-group  col-sm-3">
+					<label for="numeroDeOrdem" class="control-label">Número de ordem</label>
+					<input id="numeroDeOrdem" type="text" class="form-control" th:field="*{numeroDeOrdem}" />
+				</div>
+	
+				<div class="form-group  col-sm-3">
+					<label for="tipoCarro" class="control-label">Tipo de carro</label>
+					<select id="tipoCarro" class="form-control" th:field="*{tipoCarro}" >
+						<option value="">Todos os tipos</option>
+						<option th:each="tipoCarro : ${tiposCarro}" th:value="${tipoCarro.id}" th:text="${tipoCarro}"/>
+					</select>
+				</div>
+				
+				<div class="form-group  col-sm-3">
+					<label for="tipoChassi" class="control-label">Tipo de chassi</label>
+					<select id="tipoChassi" class="form-control" th:field="*{tipoChassi}" >
+						<option value="">Todos os tipos</option>
+						<option th:each="tipoChassi : ${tiposChassi}" th:value="${tipoChassi.id}" th:text="${tipoChassi}"/>
+					</select>
+				</div>
+
+				<div class="form-group  col-sm-2" >
+					<label class="control-label">Status</label>
+					<div>
+						<input type="checkbox" class="js-status" data-size="small" data-off-color="danger" 
+							data-on-text="Ativo" data-off-text="Inativo" th:field="*{ativo}"/>
+					</div>
+				</div>
+			</div>
+			
+			
+			<div class="form-group">
+				<button class="btn  btn-primary" type="submit">Consultar</button>
+			</div>
+		</form>
+		
+		<div class="table-responsive">
+			<table id="tabelaCarros" class="table  table-striped  table-bordered  table-hover  table-condensed  js-sticky-table">
+				<thead class="logic-table-header-solid">
+					<tr>
+						<th><logic-bus:order page="${pagina}" field="numeroDeOrdem" text="Número"/></th>
+						<th>Tipo</th>
+						<th>Tipo chassi</th>
+						<th>Roleta</th>
+						<th>Odômetro</th>
+						<th>Últ. abst. diesel</th>
+						<th>Status</th>
+						<th>Exporta Transoft</th>
+						<th class="logic-bus-colCentro  logic-bus-col10p" >Ações</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="carro : ${pagina.conteudo}" > 
+						<td th:text="${carro.numeroDeOrdem}" />
+						<td th:text="${carro.tipoCarro}" />
+						<td th:text="${carro.tipoChassi}" />
+						<td th:text="${carro.roletaStr}"  class="logic-bus-colDireita" />
+						<td th:text="${carro.odometroStr}"  class="logic-bus-colDireita" />
+						<td th:text="${carro.ultimoAbastecimentoDieselStr}"  class="logic-bus-colDireita" />
+						
+						<td class="logic-bus-colCentro">
+							<th:block th:if="${carro.ativo}">
+								<span class="label  label-success">Ativo</span>
+							</th:block>
+							<th:block th:if="${not carro.ativo}">
+								<span class="label  label-danger" >Inativo</span>
+							</th:block>
+						</td>
+						
+						<td class="logic-bus-colCentro">
+							<th:block th:if="${carro.exportaTransoft}">
+								<span class="label  label-success">Sim</span>
+							</th:block>
+							<th:block th:if="${not carro.exportaTransoft}">
+								<span class="label  label-danger" >Não</span>
+							</th:block>
+						</td>
+						
+						<td class="logic-bus-colCentro">
+							<a class="btn  btn-link  btn-xs" title="Editar" th:href="@{/carro/{id}(id=${carro.id})}">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+							
+							<a class="btn  btn-link  btn-xs  js-tooltip" title="Visualizar" th:href="@{/carro/visualizar/{id}(id=${carro.id})}"> 
+								<i class="glyphicon  glyphicon-eye-open"></i>
+							</a>
+							
+							<a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir" href="#" 
+								data:url="@{/carro/{id}(id=${carro.id})}"
+								data:objeto="${carro}">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</td>
+					</tr>
+					<tr th:if="${pagina.vazia}">
+						<td colspan="8">Nenhum carro encontrado</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<logic-bus:pagination page="${pagina}"/>
+	</div>
+	
+	<th:block th:replace="carro/AtualizarRoletasModal :: atualizarRoletasModal"></th:block>
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/vendors/bootstrap-switch.min.js}"></script>
+	<script>
+		$('.js-status').bootstrapSwitch();
+	</script>
+</th:block>
+
+</body>
+</html>
+	

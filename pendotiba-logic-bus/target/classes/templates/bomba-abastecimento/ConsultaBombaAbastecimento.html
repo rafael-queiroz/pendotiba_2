@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Consulta de Bombas de abastecimento</h1>
+				</div>
+				
+				<div class="col-xs-2"  sec:authorize-url="/bomba-abastecimento/novo">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/bomba-abastecimento/novo}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Nova bomba de abastecimento</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<div class="table-responsive">
+			<table id="tabela-bomba-abastecimentos" class="table  table-striped  table-bordered  table-hover  table-condensed  js-sticky-table">
+				<thead class="logic-table-header-solid">
+					<tr>
+						<th>Código</th>
+						<th>Descrição</th>
+						<th>Tipo de bomba</th>
+						<th>Volume atual</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="bombaAbastecimento : ${bombasAbastecimento}">
+						<td th:text="${bombaAbastecimento.codigo}" />
+						<td th:text="${bombaAbastecimento.descricao}" />
+						<td th:text="${bombaAbastecimento.tipoBomba}" />
+						<td th:text="${bombaAbastecimento.volumeAtualStr}" />
+						
+					</tr>
+					<tr th:if="${bombasAbastecimento.isEmpty()}">
+						<td colspan="4">Nenhuma bomba de abastecimento encontrada</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</section>
+
+</body>
+</html>
+	

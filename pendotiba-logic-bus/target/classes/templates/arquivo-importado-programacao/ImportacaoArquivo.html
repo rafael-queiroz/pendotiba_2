@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com">
+	
+<head>
+	<title>Importação de Programação</title>
+	
+	<link rel="stylesheet" th:href="@{/stylesheets/vendors/upload.min.css}"/>
+</head>
+	
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Importação de programação</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/importacao-arquivo-programacao}">
+							<i class="glyphicon  glyphicon-search"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="uploadArquivo" class="container-fluid">
+		<form method="POST" th:object="${arquivoImportado}" class="form-vertical  js-form-loading" th:action="@{/importacao-arquivo-programacao/salvar}">
+		
+			<logic-bus:message />
+			
+			<div class="row">
+				<div class="form-group  col-sm-12">
+					<input type="hidden" th:field="*{nomeArquivo}">
+					<input type="hidden" th:field="*{nomeArquivoOriginal}">
+					<input type="hidden" th:field="*{contentTypeArquivo}">
+					
+					<label class="control-label">Importar programação</label>
+					<div class="js-upload-arquivo">
+						<div id="upload-drop" class="logic-bus-upload">
+							<i class="glyphicon  glyphicon-cloud-upload"></i>
+							<span>Arraste o arquivo aqui ou </span>
+							<a class="logic-bus-upload-form-file">selecione 
+								<input id="upload-select" type="file" accept=".txt"/>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<button id="button" class="btn  btn-primary  hidden" type="submit" 
+						data-toggle="modal" data-target="#modalProcessando">Salvar</button>
+			</div>
+	
+		</form>
+	</div>
+	<th:block th:replace="hbs/ImportacaoArquivoRetorno"></th:block>
+	<th:block th:replace="hbs/ModalAguarde"></th:block>
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/vendors/uikit.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/upload.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/handlebars.min.js}"></script>
+	<script>
+		$(function(){
+			var settings ={
+				type: 'json',
+				filelimit: 1,
+				allow: '*.(txt)',
+				action: '/pendotiba-logic-bus/importacao-arquivo-programacao/importar',
+				complete: function(resposta){
+					var nomeArquivo = $('input[name=nomeArquivo]');
+					var nomeArquivoOriginal = $('input[name=nomeArquivoOriginal]');
+					var contentTypeArquivo = $('input[name=contentTypeArquivo]');
+					
+					var htmlUploadArquivoTemplate = $('#upload-arquivo').html();
+					var template = Handlebars.compile(htmlUploadArquivoTemplate);
+					var htmlUploadArquivo = template({nomeArquivoOriginal: resposta.nomeArquivoOriginal});
+					
+					var uploadDrop = $('#upload-drop');
+					var containerUploadArquivo = $('.js-upload-arquivo');
+					
+					var buttonGerarProgramacao = $('#button');
+					
+					nomeArquivo.val(resposta.nomeArquivo);
+					nomeArquivoOriginal.val(resposta.nomeArquivoOriginal);
+					contentTypeArquivo.val(resposta.contentTypeArquivo);
+					
+					uploadDrop.addClass('hidden');
+					containerUploadArquivo.append(htmlUploadArquivo);
+					
+					buttonGerarProgramacao.removeClass('hidden');	
+					
+					$('.js-remove-arquivo').on('click', function () {
+						$('.js-arquivo').remove();
+						uploadDrop.removeClass('hidden');
+						nomeArquivo.val('');
+						nomeArquivoOriginal.val('');
+						contentTypeArquivo.val('');
+						buttonGerarProgramacao.addClass('hidden');
+					});
+				},
+				beforeSend: adicionarCsrfToken
+			};
+			
+			UIkit.uploadSelect($('#upload-select'), settings);
+			UIkit.uploadDrop($('#upload-drop'), settings);
+		});
+		
+		function adicionarCsrfToken(xhr) {
+			var token = $('input[name=_csrf]').val();
+			var header = $('input[name=_csrf_header]').val();
+			xhr.setRequestHeader(header, token);
+		}
+	</script>
+</th:block>
+	
+</html>

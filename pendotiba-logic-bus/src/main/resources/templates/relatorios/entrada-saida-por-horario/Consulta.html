@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Relatório de entrada e saída por horário</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="GET" th:object="${relatorioEntradaSaidaPorHorarioFilter}" th:action="@{/relatorios/entrada-saida-por-horario}" >
+		
+			<logic-bus:message />
+			
+			<div class="row">
+				<div class="form-group  col-sm-3">
+					<label for="turno" class="control-label">Turno</label>
+					<select id="turno" class="form-control" th:field="*{turno}" >
+						<option value="">Todos os turnos</option>
+						<option th:each="turno : ${turnos}" th:value="${turno.id}" th:text="${turno}"/>
+					</select>
+				</div>
+				
+				<div class="form-group  col-sm-3">
+					<label for="linha" class="control-label">Linha</label>
+					<select id="linha" class="form-control" th:field="*{linha}" >
+						<option value="">Todas as linhas</option>
+						<option th:each="linha : ${linhas}" th:value="${linha.id}" th:text="${linha}"/>
+					</select>
+				</div>
+
+				<div class="form-group col-sm-6" >
+					<label for="datas" class="control-label">Datas</label>
+				    <input id="datas" type="text" class="form-control js-multi-date" placeholder="Selecione os dias" th:field="*{datasStr}" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<button class="btn  btn-primary" type="submit">Consultar</button>
+
+				<a class="btn btn-info"  title="Imprimir" th:href="@{/relatorios/entrada-saida-por-horario/imprimir}" target="_blank" th:unless="${lista.isEmpty()}"> 
+					<i class="glyphicon glyphicon-print"></i>
+				</a>
+			</div>
+		</form>
+		
+		<div class="table-responsive">
+			<table id="tabelaCarros" class="table  table-striped  table-bordered  table-hover  table-condensed  js-sticky-table">
+				<thead class="logic-table-header-solid">
+					<tr>
+						<th>Data / Faixa Hora</th>
+						<th>00</th>
+						<th>01</th>
+						<th>02</th>
+						<th>03</th>
+						<th>04</th>
+						<th>05</th>
+						<th>06</th>
+						<th>07</th>
+						<th>08</th>
+						<th>09</th>
+						<th>10</th>
+						<th>11</th>
+						<th>12</th>
+						<th>13</th>
+						<th>14</th>
+						<th>15</th>
+						<th>16</th>
+						<th>17</th>
+						<th>18</th>
+						<th>19</th>
+						<th>20</th>
+						<th>21</th>
+						<th>22</th>
+						<th>23</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="linha : ${lista}" > 
+						<td th:text="${{linha.dataCompetencia}}" />
+						<td th:text="${linha.quantidadeFaixa00}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa01}" class="logic-bus-colDireita"/>
+						<td th:text="${linha.quantidadeFaixa02}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa03}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa04}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa05}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa06}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa07}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa08}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa09}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa10}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa11}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa12}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa13}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa14}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa15}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa16}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa17}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa18}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa19}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa20}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa21}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa22}" class="logic-bus-colDireita" />
+						<td th:text="${linha.quantidadeFaixa23}" class="logic-bus-colDireita" />
+					</tr>
+					<tr th:if="${lista.isEmpty()}">
+						<td colspan="25">Nenhum registro encontrado</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+</section>
+</body>
+</html>
+	

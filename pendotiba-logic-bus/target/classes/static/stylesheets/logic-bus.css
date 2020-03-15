@@ -1,0 +1,350 @@
+/*
+######################
+# UTILIDADES
+######################
+*/
+.logic-bus-glyphicon-large {
+	font-size: 18px;
+}
+
+.logic-bus-required>.logic-bus-control-label:after {
+	content: "*";
+}
+
+/* Tabela Simples */
+.logic-bus-tabela-simples {
+	margin-top: 15px;
+}
+
+.logic-bus-tabela-simples table tr th {
+	border-bottom-width: 1px;
+}
+
+.logic-bus-tabela-simples table tr td {
+	border-top: none;
+	border-bottom: 1px solid #e7eaec;
+	padding: 10px;
+	vertical-align: middle;
+}
+
+.logic-bus-tabela-materiais {
+	margin-bottom: 15px;
+}
+
+.logic-bus-tabela-materiais__vazio {
+	padding: 15px 15px;
+	border: 1px dashed #ddd;
+	text-align: center;
+	font-size: 1.2em;
+	font-weight: 300;
+	color: #555;
+}
+
+/*
+######################
+# COMPONENTES
+######################
+*/
+
+/* Field Action */
+.logic-bus-field-action {
+	display: flex;
+}
+
+.logic-bus-field-action__icon {
+	margin: 6px 0 0 5px;
+}
+
+/* Upload */
+.logic-bus-upload {
+	padding: 15px;
+	border: 1px dashed #ddd;
+	border-radius: 4px;
+	background: #fafafa;
+	text-align: center;
+}
+
+.logic-bus-upload-form-file {
+	display: inline-block;
+	vertical-align: middle;
+	position: relative;
+	overflow: hidden;
+	margin-bottom: 1px;
+}
+
+.logic-bus-upload-form-file>input[type=file] {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	width: 100%;
+	opacity: 0;
+	cursor: pointer;
+	font-size: 500px;
+}
+
+.logic-bus-col1p {
+	width: 1%;
+}
+
+.logic-bus-col3p {
+	width: 3%;
+}
+
+.logic-bus-col4p {
+	width: 4%;
+}
+
+.logic-bus-col5p {
+	width: 5%;
+}
+
+.logic-bus-col6p {
+	width: 6%;
+}
+
+.logic-bus-col7p {
+	width: 7%;
+}
+
+.logic-bus-col8p {
+	width: 8%;
+}
+
+.logic-bus-col9p {
+	width: 9%;
+}
+
+.logic-bus-col10p {
+	width: 10%;
+}
+
+.logic-bus-col11p {
+	width: 11%;
+}
+
+.logic-bus-col12p {
+	width: 12%;
+}
+
+.logic-bus-col13p {
+	width: 13%;
+}
+
+.logic-bus-col14p {
+	width: 14%;
+}
+
+.logic-bus-col15p {
+	width: 15%;
+}
+
+.logic-bus-col20p {
+	width: 20%;
+}
+
+.logic-bus-col25p {
+	width: 25%;
+}
+
+.logic-bus-col30p {
+	width: 30%;
+}
+
+.logic-bus-col40p {
+	width: 40%;
+}
+
+.logic-bus-col50p {
+	width: 50%;
+}
+
+.logic-bus-col60p {
+	width: 60%;
+}
+
+.logic-bus-col70p {
+	width: 70%;
+}
+
+.logic-bus-col75p {
+	width: 75%;
+}
+
+.logic-bus-col80p {
+	width: 80%;
+}
+
+.logic-bus-col90p {
+	width: 90%;
+}
+
+.logic-bus-colCentro {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.logic-bus-colEsquerda {
+	text-align: left;
+	vertical-align: middle;
+}
+
+.logic-bus-colDireita {
+	text-align: right;
+	vertical-align: middle;
+}
+
+/*
+######################################
+# CUSTOMIZA«√O DE COMPONENTES
+######################################
+*/
+.checkbox input[type="checkbox"]:checked+input+label::after {
+	font-family: 'FontAwesome';
+	content: "\f00c";
+}
+
+/* Easy Autocomplete */
+.easy-autocomplete input {
+	border-radius: 2px !important;
+}
+
+.easy-autocomplete-container ul li {
+	font-size: 1em !important;
+	padding: 0px 5px !important;
+}
+
+/* Box */
+.negativo .aw-box__value {
+	color: red;
+}
+
+/* Tabela Item */
+.logic-bus-tabela-item {
+	position: relative;
+	/* Para que o painel de exclus√£o apare√ßa dentro da linha */
+	padding: 15px 0;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+.logic-bus-tabela-item:after {
+	clear: both;
+	display: block;
+	content: "";
+}
+
+.logic-bus-tabela-item ~ .logic-bus-tabela-item {
+	border-top: 1px solid #ddd;
+}
+
+.logic-bus-tabela-item__coluna {
+	padding: 0 10px;
+}
+
+.logic-bus-tabela-item__coluna--foto {
+	float: left;
+	width: 60px;
+	text-align: center;
+}
+
+.logic-bus-tabela-item__coluna--valores {
+	padding-right: 0px;
+}
+
+.logic-bus-tabela-item__coluna--detalhes,
+	.logic-bus-tabela-item__coluna--valores {
+	margin-left: 60px;
+}
+
+.logic-bus-tabela-material-descricao {
+	font-weight: 500;
+	font-size: 1.1em;
+	display: block;
+}
+
+.logic-bus-tabela-material-grupo {
+	color: #aaa;
+	display: block;
+	font-weight: 200;
+}
+
+.logic-bus-tabela-cerveja-campo-quantidade {
+	width: 30px;
+	text-align: right;
+}
+
+.logic-bus-tabela-cerveja-valor-pequeno {
+	font-weight: 300;
+	font-size: 1em;
+}
+
+.logic-bus-tabela-material-valor-medio {
+	font-weight: 300;
+	font-size: 1.3em;
+}
+
+.logic-bus-tabela-cerveja-valor-grande {
+	font-weight: 300;
+	font-size: 1.6em;
+}
+
+.logic-bus-tabela-item__painel-exclusao {
+	position: absolute;
+	top: 0;
+	right: 100000px;
+	height: 100%;
+	width: 50%;
+	text-align: center;
+	padding-top: 35px;
+	background-color: #f0ad4e;
+	opacity: 0;
+	transition: opacity 0.5s;
+}
+
+.solicitando-exclusao .logic-bus-tabela-item__painel-exclusao {
+	right: 0;
+	opacity: 1;
+}
+
+.logic-bus-tabela-item__titulo-exclusao {
+	display: block;
+	margin-bottom: 5px;
+	color: #fff;
+	font-size: 1.3em;
+}
+
+@media ( min-width : 768px) { /* screen-sm-min */
+	.logic-bus-tabela-item__painel-exclusao {
+		width: 40%;
+		padding-top: 10px;
+	}
+	.logic-bus-tabela-item__coluna {
+		float: left;
+		margin-left: 0px;
+	}
+	.logic-bus-tabela-item__coluna--detalhes {
+		width: calc(70% - 30px);
+	}
+	.logic-bus-tabela-item__coluna--valores {
+		width: calc(30% - 30px);
+		text-align: right;
+	}
+}
+
+ 
+/*
+###################
+# P¡GINAS DO SISTEMA
+###################
+*/
+.table-usuarios-col-status {
+	width: 30px;
+	text-align: center;
+}
+
+.logic-bus-vermelho {
+	color: #d00;
+}

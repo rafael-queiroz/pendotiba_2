@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Consulta Arquivo de Escala Importado</h1>
+				</div>
+				
+				<div class="col-xs-2" sec:authorize-url="/importacao-arquivo-escala/importar">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/importacao-arquivo-escala/importar}">
+							<i class="glyphicon  glyphicon-import"></i> <span class="hidden-xs  hidden-sm">Importar arquivo de escala</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="GET" th:object="${arquivoImportado}">
+			
+			<div class="row">
+				<div class="form-group  col-sm-6">
+					<label for="dataCompetenciaInicial">Data de competência</label>
+					<div class="form-inline">
+						<input type="text" class="form-control  js-date" id="dataCompetencia" th:field="*{dataCompetencia}" autocomplete="off"/>
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<button class="btn  btn-primary" type="submit">Consultar</button>
+			</div>
+		</form>
+		
+		<div class="table-responsive">
+			<table id="tabelaArquivosImportados" class="table  table-striped  table-bordered  table-hover  table-condensed  js-sticky-table">
+				<thead class="logic-table-header-solid">
+					<tr>
+						<th>Data de Competência</th>
+						<th><logic-bus:order page="${pagina}" field="nomeArquivoOriginal" text="Arquivo"/></th>
+						<th>Data de Importação</th>
+						<th>Responsável</th>
+						<th>Status</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr th:each="arquivoImportado : ${pagina.conteudo}">
+						<td th:text="${{arquivoImportado.dataCompetencia}}"></td>
+						<td th:text="${arquivoImportado.nomeArquivoOriginal}"></td>
+						<td th:text="${{arquivoImportado.dataImportacao}}"></td>
+						<td th:text="${arquivoImportado.usuario != null ? arquivoImportado.usuario.funcionario.nome : ''}"></td>
+						<td th:text="${arquivoImportado.erro ? 'Erro' : 'Importado'}"></td>
+					</tr>
+					<tr th:if="${pagina.vazia}">
+						<td colspan="5">Nenhum arquivo importado encontrado</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<logic-bus:pagination page="${pagina}"/>
+	</div>
+	
+</section>
+
+</body>
+</html>
+	

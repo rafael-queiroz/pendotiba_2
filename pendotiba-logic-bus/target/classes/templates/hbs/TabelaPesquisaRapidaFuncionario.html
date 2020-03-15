@@ -1,0 +1,29 @@
+<script id="tabela-pesquisa-rapida-funcionario" type="text/x-handlebars-template">
+<div class="table-responsive  logic-tabela-simples" style="margin-top: 15px">
+	<table class="table  table-hover">
+		<thead>
+			<tr>
+				<th class="col-sm-2">Matr&iacute;cula</th>
+				<th class="col-sm-8">Nome</th>
+				<th class="col-sm-2">Fun&ccedil;&atilde;o</th>
+			</tr>
+		</thead>
+				
+		<tbody>
+			{{#if .}}
+				{{#each .}}
+					<tr data-id="{{id}}" data-nome="{{nome}}" class="js-funcionario-pesquisa-rapida">
+						<td>{{matricula}}</td>
+						<td>{{nome}}</td>
+						<td>{{funcao.descricao}}</td>
+ 					</tr>
+				{{/each}}
+			{{else}}
+				<tr>
+					<td colspan="3">Nenhum funcion&aacute;rio encontrado</td>
+				</tr>
+			{{/if}}
+		</tbody>
+	</table>
+</div>
+</script>

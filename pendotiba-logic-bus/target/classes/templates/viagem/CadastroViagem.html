@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com">
+	
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${viagem.nova}">Cadastro de viagem para programação</h1>
+					<h1 th:unless="${viagem.nova}">Edição de viagem da programação - [[${viagem.horaSaidaProgramada}]]</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/viagem}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<form method="POST" th:object="${viagem}" class="form-vertical  js-form-loading" 
+			th:action="@{/viagem/nova/programacao/{id}(id=${viagem.programacao.id})}">
+		
+			<logic-bus:message />
+			
+			<input type="hidden" th:field="*{id}"/>
+			<input type="hidden" th:field="*{ordemViagem}"/>
+			<!-- <input type="hidden" th:field="*{programacao}"/> -->
+			<input type="hidden" th:field="*{dataCompetencia}"/>
+			
+			<div class="row">
+				<!-- 
+				<div class="form-group  col-sm-3  logic-bus-required" logic-bus:classforerror="dataCompetencia">
+					<label for="dataCompetencia" class="control-label">Competência</label>
+					<input type="text" class="form-control  js-date" id="dataCompetencia" th:field="*{{dataCompetencia}}" 	/>
+				</div> 
+				-->
+				
+				<div class="form-group  col-sm-3  logic-bus-required" logic-bus:classforerror="horaSaidaProgramada">
+					<label for="horaSaidaProgramada" class="control-label" >Hora de saída programada</label>
+					<input type="text" class="form-control  js-hora" id="horaSaidaProgramada" th:field="*{horaSaidaProgramada}"/>
+				</div>
+				
+				<div class="form-group  col-sm-3  logic-bus-required" logic-bus:classforerror="horaSaidaRealizada">
+					<label for="horaSaidaRealizada" class="control-label" >Hora de saída realizada</label>
+					<input type="text" class="form-control  js-hora" id="horaSaidaRealizada" th:field="*{horaSaidaRealizada}" />
+				</div>
+				
+				<div class="form-group  col-sm-3  logic-bus-required" logic-bus:classforerror="horaChegada">
+					<label for="horaChegada" class="control-label" >Hora de chegada</label>
+					<input type="text" class="form-control  js-hora" id="horaChegada" th:field="*{horaChegada}" />
+				</div>
+			</div>
+			
+			<!-- <div class="row">
+				<div class="form-group  col-sm-6" >
+					<label for="carroProgramado" class="control-label">Carro programado</label>
+					<input type="text" class="form-control" id="carroProgramado" th:field="*{programacao.carroProgramado.numeroDeOrdem}" th:disabled="disabled"/>
+				</div>
+				
+				<div class="form-group  col-sm-6" >
+					<label for="carroRealizado" class="control-label">Carro realizado</label>
+					<select id="carroRealizado" class="form-control" th:field="*{carroRealizado.id}" >
+						<option value="" >Selecione</option>
+						<option th:each="carroRealizado : ${carros}" th:value="${carroRealizado.id}" th:text="${carroRealizado}"/>
+					</select>
+				</div>
+			</div> -->
+			
+			<div class="row">	
+				<div class="form-group  col-sm-6  logic-bus-required" logic-bus:classforerror="linhaProgramada">
+					<label for="linhaProgramada" class="control-label">Linha programada</label>
+					<select id="linhaProgramada" class="form-control" th:field="*{linhaProgramada}">
+						<option value="">Selecione</option>
+						<option th:each="linhaProgramada : ${linhas}" th:value="${linhaProgramada.id}" th:text="${linhaProgramada}" />
+					</select>
+				</div>
+				
+				<div class="form-group  col-sm-6" >
+					<label for="linhaRealizada" class="control-label">Linha realizada</label>
+					<select id="linhaRealizada" class="form-control" th:field="*{linhaRealizada}">
+						<option value="">Selecione</option>
+						<option th:each="linhaRealizada : ${linhas}" th:value="${linhaRealizada.id}" th:text="${linhaRealizada}" />
+					</select>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-sm-6  logic-bus-required" logic-bus:classforerror="pontoLinha">
+					<label for="pontoLinha" class="control-label">Relação ponto-linha (ponto origem x ponto destino)</label>
+					<input type="hidden" id="idPontoLinhaSelecionado" th:value="*{pontoLinha} != null ? *{pontoLinha.id}"/>
+					<input type="hidden" id="pontoLinhaSelecionado" th:value="*{pontoLinha} != null ? *{pontoLinha}" >
+					
+					<select id="comboPontoLinha" class="form-control" th:field="*{pontoLinha}" 
+							data:url="@{/rest/ponto-linha/listarPontoLinhaPorLinha}"></select>
+						    				
+					<div class="logic-bus-field-action__icon  js-img-loading" style="display: none">
+						<img th:src="@{/images/mini-loading.gif}"/>
+					</div>
+				</div>
+			
+				<div class="form-group  col-sm-2  logic-bus-required" >
+					<label for="roletaFinal1" class="control-label">Roleta</label>
+					<input type="text" class="form-control" id="roletaFinal1" th:field="*{roletaFinal1}" maxlength="5" />
+				</div>
+				
+				<!-- 
+				<div class="form-group  col-sm-2  logic-bus-required" th:if="${viagem.programacao.carroRealizado != null and viagem.programacao.carroRealizado.exibirRoleta2()}" >
+					<label for="roletaFinal2" class="control-label">Roleta 2</label>
+					<input type="text" class="form-control" id="roletaFinal2" th:field="*{roletaFinal2}" maxlength="5" />
+				</div>
+				
+				<div class="form-group  col-sm-2  logic-bus-required" th:if="${viagem.programacao.carroRealizado != null and viagem.programacao.carroRealizado.exibirRoleta3()}"> 
+					<label for="roletaFinal3" class="control-label">Roleta 3</label>
+					<input type="text" class="form-control" id="roletaFinal3" th:field="*{roletaFinal3}" maxlength="5" />
+				</div> 
+				-->
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-sm-4  logic-bus-required" >
+					<label for="tipoViagemPerdida" class="control-label">Tipo de viagem perdida</label>
+					<select id="tipoViagemPerdida" class="form-control" th:field="*{tipoViagemPerdida}">
+						<option value="">Selecione</option>
+						<option th:each="tipoViagemPerdida : ${tiposViagemPerdida}" th:value="${tipoViagemPerdida.id}" th:text="${tipoViagemPerdida}" />
+					</select>
+				</div>
+				
+				<div class="form-group  col-sm-8  logic-bus-required">
+					<label for="obsViagemPerdida" class="control-label">Observação de viagem perdida</label>
+					<input type="text" class="form-control" id="obsViagemPerdida" th:field="*{obsViagemPerdida}" maxlength="5" />
+				</div>
+			</div>
+			
+			<div class="row">	
+				<div class="form-group  col-sm-6  logic-bus-required">
+					<label for="usuarioResponsavelSaida" class="control-label">Despachante responsável pela saída</label>
+					<select id="usuarioResponsavelSaida" class="form-control" th:field="*{usuarioResponsavelSaida}">
+						<option value="">Selecione</option>
+						<option th:each="usuarioResponsavelSaida : ${usuarios}" th:value="${usuarioResponsavelSaida.id}" th:text="${usuarioResponsavelSaida}" />
+					</select>
+				</div>
+				
+				<div class="form-group  col-sm-6  logic-bus-required" >
+					<label for="usuarioResponsavelChegada" class="control-label">Despachante responsável pela chegada</label>
+					<select id="usuarioResponsavelChegada" class="form-control" th:field="*{usuarioResponsavelChegada}">
+						<option value="">Selecione</option>
+						<option th:each="usuarioResponsavelChegada : ${usuarios}" th:value="${usuarioResponsavelChegada.id}" th:text="${usuarioResponsavelChegada}" />
+					</select>
+				</div>
+			</div>
+				
+			<div class="form-group">
+				<a th:href="@{/programacao/{id}(id=${viagem.programacao.id})}" class="btn  btn-default" >Voltar</a>
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+			</div>
+	
+		</form>
+	</div>
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/combo-aninhada-ponto-linha.js}"></script>
+</th:block>
+
+</html>

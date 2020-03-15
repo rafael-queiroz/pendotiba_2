@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com">
+	
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${dispositivoMovel.novo}">Cadastro de dispositivo móvel</h1>
+					<h1 th:unless="${dispositivoMovel.novo}">Edição de dispositivo móvel de imei - [[${dispositivoMovel.imei}]]</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/dispositivo-movel}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<form method="POST" th:object="${dispositivoMovel}" class="form-vertical  js-form-loading" th:action="@{/dispositivo-movel/novo}">
+		
+			<logic-bus:message />
+			
+			<input type="hidden" th:field="*{id}"/>
+			<input type="hidden" th:field="*{imei}" th:if="${dispositivoMovel.id != null}"/>
+			
+			<div class="row">
+				<div class="form-group  col-sm-4  logic-bus-required" logic-bus:classforerror="imei">
+					<label for="imei" class="control-label">UUID</label>
+					<input id="imei" type="text" class="form-control" th:field="*{imei}" th:disabled="${dispositivoMovel.id != null}"/>
+				</div>
+				
+				<div class="form-group  col-sm-4" >
+					<label for="ponto" class="control-label">Ponto</label>
+					<select id="ponto" class="form-control" th:field="*{ponto}">
+						<option value="">Selecione o ponto</option>
+						<option th:each="ponto : ${pontos}" th:value="${ponto.id}" th:text="${ponto}" />
+					</select>
+				</div>
+			</div>
+			
+			
+			<div class="row">
+				<div class="form-group  col-sm-12">
+					<label for="observacao" class="control-label">Observação</label>
+					<input id="observacao" type="text" class="form-control" th:field="*{observacao}"/>
+				</div>
+			</div>
+			
+			<div class="table-responsive" th:if="${historico != null}">
+				<label class="control-label">Histórico</label>
+				<table class="table  table-striped  table-bordered  table-hover  table-condensed  js-sticky-table" >
+					<thead>
+						<tr>
+							<th class="logic-bus-col20p">Data cadastro</th>
+							<th>Ponto</th>
+							<th>Usuário</th>
+							<th>Observação</th>
+						</tr>
+					</thead>
+					
+					<tbody>
+						<tr th:each="his : ${historico}" >
+							<td th:text="${{his.dataCadastro}}"></td>
+							<td th:text="${his.ponto}"></td>
+							<td th:text="${his.usuario}"></td>
+							<td th:text="${his.observacao}"></td>
+						</tr>
+						<tr th:if="${historico.isEmpty()}">
+							<td colspan="3">Nenhuma histórico encontrado</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<div class="form-group">
+				<a href="javascript:history.back()" class="btn  btn-default">Cancelar</a>
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+			</div>
+	
+		</form>
+	</div>
+</section>
+	
+</html>

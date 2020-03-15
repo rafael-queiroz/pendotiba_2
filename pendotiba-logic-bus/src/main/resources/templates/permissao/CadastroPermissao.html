@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com">
+	
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${permissao.nova}">Cadastro de permissão</h1>
+					<h1 th:unless="${permissao.nova}">Edição da permissão - [[${permissao.nome}]]</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/permissao}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<form method="POST" th:object="${permissao}" class="form-vertical  js-form-loading" th:action="@{/permissao/novo}">
+		
+			<logic-bus:message />
+			
+			<input type="hidden" th:field="*{id}"/>
+			
+			<div class="row">
+				<div class="col-sm-4  form-group">
+					<label for="moduloAcesso" class="control-label">Módulos de acesso</label>
+					<select id="moduloAcesso" class="form-control" th:field="*{moduloAcesso}" >
+						<option value="">Selecione o módulo de acesso</option>
+						<option th:each="moduloAcesso : ${modulosAcesso}" th:value="${moduloAcesso.id}" th:text="${moduloAcesso}"/>
+					</select>
+				</div>
+
+				<div class="form-group  col-sm-4  logic-bus-required" logic-bus:classforerror="nome">
+					<label for="nome" class="control-label">Nome</label>
+					<input id="nome" type="text" class="form-control" autofocus="autofocus" th:field="*{nome}"/>
+				</div>
+				
+				<div class="form-group  col-sm-4  logic-bus-required" logic-bus:classforerror="url">
+					<label for="url" class="control-label">Url</label>
+					<input id="url" type="text" class="form-control" th:field="*{url}"/>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<a href="javascript:history.back()" class="btn  btn-default">Cancelar</a>
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+			</div>
+	
+		</form>
+	</div>
+	
+</section>
+
+</html>

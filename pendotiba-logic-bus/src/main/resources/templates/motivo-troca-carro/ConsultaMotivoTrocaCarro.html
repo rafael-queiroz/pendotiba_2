@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Consulta de motivo para troca de carro</h1>
+				</div>
+				
+				<div class="col-xs-2" sec:authorize-url="/motivo-troca-carro/novo">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/motivo-troca-carro/novo}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Novo motivo para troca de carro</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<div class="table-responsive">
+			<table id="tabela-motivo-troca-carros" class="table  table-striped  table-bordered  table-hover  table-condensed  js-sticky-table">
+				<thead class="logic-table-header-solid">
+					<tr>
+						<th>Descrição</th>
+						<th class="logic-bus-colCentro" >Ações</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="motivoTrocaCarro : ${motivosTrocaCarro}">
+						<td th:text="${motivoTrocaCarro.descricao}" />
+						<td class="logic-bus-colCentro  logic-bus-col10p">
+							<a class="btn  btn-link  btn-xs" title="Editar" th:href="@{/motivo-troca-carro/{id}(id=${motivoTrocaCarro.id})}">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+							<a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir" href="#" 
+								data:url="@{/motivo-troca-carro/{id}(id=${motivoTrocaCarro.id})}"
+								data:objeto="${motivoTrocaCarro.descricao}">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</td>
+					</tr>
+					<tr th:if="${motivosTrocaCarro.isEmpty()}">
+						<td colspan="2">Nenhum motivo encontrado</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+	</div>
+</section>
+
+</body>
+</html>
+	

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:logic-bus="http://logic-bus.rqueiroz.com"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	
+<body>
+	
+<aside class="logic-layout-sidebar  js-sidebar" th:fragment="layout-sidebar">
+	<div class="logic-layout-sidebar__content">
+	
+    	<nav class="logic-menu  js-menu">
+      		<ul class="logic-menu__list">
+
+        		<li class="logic-menu__item" logic-bus:menu="@{/}">
+          			<a th:href="@{/}"><i class="fa  fa-fw  fa-home"></i><span>Página Inicial</span></a>
+        		</li>
+        		
+        		<li class="logic-menu__item">
+          			<a href="#">
+            			<i class="fa  fa-fw  fa-edit"></i><span>Cadastros</span>
+            			<i class="logic-menu__navigation-icon  fa"></i>
+          			</a>
+
+          			<ul class="logic-menu__list  logic-menu__list--sublist">
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/bomba-abastecimento" logic-bus:menu="@{/bomba-abastecimento}">
+			            	<a th:href="@{/bomba-abastecimento}">Bombas de abastecimento</a>
+			            </li>
+          			
+          				<li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/carro" logic-bus:menu="@{/carro.*}">
+			            	<a th:href="@{/carro/inicial}">Carros</a>
+			            </li>
+			            
+          			 	<li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/dispositivo-movel" logic-bus:menu="@{/dispositivo-movel.*}">
+			            	<a th:href="@{/dispositivo-movel}">Dispositivos móveis</a>
+			            </li>
+			            
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/funcionario" logic-bus:menu="@{/funcionario.*}">
+			            	<a th:href="@{/funcionario}">Funcionários</a>
+			            </li>
+			            
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/linha" logic-bus:menu="@{/linha.*}">
+			            	<a th:href="@{/linha}">Linhas</a>
+			            </li>
+			            
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/motivo-troca-carro" logic-bus:menu="@{/motivo-troca-carro.*}">
+			            	<a th:href="@{/motivo-troca-carro}">Motivo troca de carro</a>
+			            </li>
+			            
+			             <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/motivo-pulo-viagem" logic-bus:menu="@{/motivo-pulo-viagem.*}">
+			            	<a th:href="@{/motivo-pulo-viagem}">Motivo de pular a viagem</a>
+			            </li>
+			            
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/parametros-consumo" logic-bus:menu="@{/parametros-consumo.*}">
+			            	<a th:href="@{/parametros-consumo}">Parâmentros de consumo</a>
+			            </li>
+			            
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/ponto" logic-bus:menu="@{/ponto.*}">
+			            	<a th:href="@{/ponto}">Pontos</a>
+			            </li>
+			            
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/ponto-linha" logic-bus:menu="@{/ponto-linha.*}">
+			            	<a th:href="@{/ponto-linha}">Relação ponto-linha</a>
+			            </li>
+			            
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/tipo-chassi" logic-bus:menu="@{/tipo-chassi.*}">
+			            	<a th:href="@{/tipo-chassi}">Tipo de chassi</a>
+			            </li>
+			            
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/tipo-observacao" logic-bus:menu="@{/tipo-observacao.*}">
+			            	<a th:href="@{/tipo-observacao}">Tipo de observação</a>
+			            </li>
+			            
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/tipo-reclamacao" logic-bus:menu="@{/tipo-reclamacao.*}">
+			            	<a th:href="@{/tipo-reclamacao}">Tipo de reclamação</a>
+			            </li>
+			            
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/tipo-viagem-perdida" logic-bus:menu="@{/tipo-viagem-perdida.*}">
+			            	<a th:href="@{/tipo-viagem-perdida}">Tipo de viagem perdida</a>
+			            </li>
+          			</ul>
+        		</li>
+        		
+        		<li class="logic-menu__item">
+          			<a href="#">
+            			<i class="fa  fa-fw  fa-sitemap"></i><span>Mapas</span>
+            			<i class="logic-menu__navigation-icon  fa"></i>
+          			</a>
+
+          			<ul class="logic-menu__list  logic-menu__list--sublist">
+          				<li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/mapa-diario-carro" logic-bus:menu="@{/mapa-diario-carro.*}">
+			            	<a th:href="@{/mapa-diario-carro/inicial}">Carros</a>
+			            </li>
+			            
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/mapa-diario-bomba-abastecimento" logic-bus:menu="@{/mapa-diario-bomba-abastecimento.*}">
+			            	<a th:href="@{/mapa-diario-bomba-abastecimento/inicial}">Bomba de combustíveis</a>
+			            </li>
+					</ul>
+				</li>
+        		
+        		<li class="logic-menu__item">
+          			<a href="#">
+            			<i class="fa  fa-fw  fa-file-text"></i><span>Importação</span>
+            			<i class="logic-menu__navigation-icon  fa"></i>
+          			</a>
+
+          			<ul class="logic-menu__list  logic-menu__list--sublist">
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/importacao-arquivo-programacao" logic-bus:menu="@{/importacao-arquivo-programacao.*}">
+			            	<a th:href="@{/importacao-arquivo-programacao}">Importar programação</a>
+			            </li>
+          			</ul>
+          			
+          			<ul class="logic-menu__list  logic-menu__list--sublist">
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/importacao-arquivo-escala" logic-bus:menu="@{/importacao-arquivo-escala.*}">
+			            	<a th:href="@{/importacao-arquivo-escala}">Importar escala</a>
+			            </li>
+          			</ul>
+        		</li>
+        		
+        		<li class="logic-menu__item">
+          			<a href="#">
+            			<i class="fa  fa-fw  fa-gears"></i><span>Operação</span>
+            			<i class="logic-menu__navigation-icon  fa"></i>
+          			</a>
+
+          			<ul class="logic-menu__list  logic-menu__list--sublist">
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/programacao" logic-bus:menu="@{/programacao.*}">
+			            	<a th:href="@{/programacao/inicial}">Programações</a>
+			            </li>
+          			</ul>
+          			
+          			<ul class="logic-menu__list  logic-menu__list--sublist">
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/entrada-saida-de-carro-da-garagem" logic-bus:menu="@{/entrada-saida-de-carro-da-garagem.*}">
+			            	<a th:href="@{/entrada-saida-de-carro-da-garagem/inicial}">Entrada/Saída Garagem</a>
+			            </li>
+          			</ul>
+        		</li>
+        		
+        		<li class="logic-menu__item" sec:authorize-url="/relatorios/*">
+          			<a href="#">
+            			<i class="fa  fa-fw  fa-bar-chart"></i><span>Relatórios</span>
+            			<i class="logic-menu__navigation-icon  fa"></i>
+          			</a>
+          			
+          			<ul class="logic-menu__list  logic-menu__list--sublist">
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/relatorios/abastecimento-por-bomba" 
+			            	logic-bus:menu="@{/relatorios/abastecimento-por-bomba}">
+			            	<a th:href="@{/relatorios/abastecimento-por-bomba}">Abast. por bomba</a>
+			            </li>
+          			</ul>
+          			
+          			<ul class="logic-menu__list  logic-menu__list--sublist">
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/relatorios/abastecimento-por-carro" 
+			            	logic-bus:menu="@{/relatorios/abastecimento-por-carro}">
+			            	<a th:href="@{/relatorios/abastecimento-por-carro}">Abast. por carro</a>
+			            </li>
+          			</ul>
+          			
+          			<ul class="logic-menu__list  logic-menu__list--sublist">
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/relatorios/entrada-saida-por-horario" 
+			            	logic-bus:menu="@{/relatorios/entrada-saida-por-horario}">
+			            	<a th:href="@{/relatorios/entrada-saida-por-horario}">E/S por horário</a>
+			            </li>
+          			</ul>
+
+          			<ul class="logic-menu__list  logic-menu__list--sublist">
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/relatorios/motorista-fora-do-programado" 
+			            	logic-bus:menu="@{/relatorios/motorista-fora-do-programado}">
+			            	<a th:href="@{/relatorios/motorista-fora-do-programado}">Motoristas fora do horário programado</a>
+			            </li>
+          			</ul>
+          			
+          			<ul class="logic-menu__list  logic-menu__list--sublist">
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/relatorios/programacao-iniciada-fora-do-horario-programado" 
+			            	logic-bus:menu="@{/relatorios/programacao-iniciada-fora-do-horario-programado}">
+			            	<a th:href="@{/relatorios/programacao-iniciada-fora-do-horario-programado}">Programações inciadas fora do horário programado</a>
+			            </li>
+          			</ul>
+          			
+          			<ul class="logic-menu__list  logic-menu__list--sublist">
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/relatorios/reclamacao" logic-bus:menu="@{/relatorios/reclamacao.*}">
+			            	<a th:href="@{/relatorios/reclamacao/inicial}">Reclamações</a>
+			            </li>
+          			</ul>
+          			
+          			<ul class="logic-menu__list  logic-menu__list--sublist">
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/relatorios/observacao" logic-bus:menu="@{/relatorios/observacao.*}">
+			            	<a th:href="@{/relatorios/observacao/inicial}">Observações</a>
+			            </li>
+          			</ul>
+        		</li>
+        		
+        		<li class="logic-menu__item">
+          			<a href="#">
+            			<i class="fa  fa-fw  fa-unlock-alt"></i><span>Segurança</span>
+            			<i class="logic-menu__navigation-icon  fa"></i>
+          			</a>
+
+          			<ul class="logic-menu__list  logic-menu__list--sublist">
+          				<li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/perfil" logic-bus:menu="@{/perfil.*}">
+			            	<a th:href="@{/perfil}">Perfil de usuário</a>
+			            </li>
+			            
+						<li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/permissao" logic-bus:menu="@{/permissao.*}">
+			            	<a th:href="@{/permissao}">Permissões de acesso</a>
+			            </li>
+			            
+			            <li class="logic-menu__item  logic-menu__item--link" sec:authorize-url="/usuario" logic-bus:menu="@{/usuario.*}">
+			            	<a th:href="@{/usuario}">Usuário</a>
+			            </li>
+					</ul>
+				</li>
+        		
+      		</ul>
+    	</nav>
+	</div>
+</aside>
+</body>
+</html>
+
+<!-- <html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:logic-bus="http://logic-bus.rqueiroz.com">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+<style> 
+#panel, #flip {
+    padding: 5px;
+    text-align: center;
+    background-color: #e5eecc;
+    border: solid 1px #c3c3c3;
+}
+
+#panel {
+    padding: 50px;
+    display: none;
+}
+</style>
+
+<body>
+	<aside class="logic-layout-sidebar js-sidebar" th:fragment="layout-sidebar">
+	 	
+	 	<div id="flip">Click to slide the panel down or up</div>
+		<div id="panel">Hello world!</div>
+		
+	</aside>
+
+<script> 
+$(document).ready(function(){
+    $("#flip").click(function(){
+        $("#panel").slideToggle("slow");
+    });
+});
+</script>
+
+</body>
+</html> --> 

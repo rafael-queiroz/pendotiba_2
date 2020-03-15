@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+	<title>Programação</title>
+	
+	<link rel="stylesheet" th:href="@{/stylesheets/vendors/easy-autocomplete.min.css}"/>
+	<link rel="stylesheet" th:href="@{/stylesheets/vendors/easy-autocomplete.themes.min.css}"/>
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${programacao.nova}">Cadastro de programação</h1>
+					<h1 th:unless="${programacao.nova}">Edição da programação do dia [[${{programacao.dataCompetencia}}]]</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/programacao}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<form method="POST" th:object="${programacao}" class="form-vertical  js-form-loading" th:action="@{/programacao/novo}">
+	
+			<logic-bus:message/>
+			
+			<input type="hidden" id="uuid" th:field="*{uuid}"/>
+			<input id="id" type="hidden" th:field="*{id}"/>
+			<input type="hidden" th:field="*{carroRealizado}"/>
+			<input type="hidden" th:field="*{horaLiberacao}"/>
+			<input type="hidden" th:field="*{viagens}"/>
+			<input type="hidden" th:field="*{roletas}"/>
+			<input type="hidden" th:field="*{motoristaProgramado}"/>
+			
+			<div class="row">
+				<div class="form-group  col-sm-3  logic-bus-required" logic-bus:classforerror="dataCompetencia">
+					<label for="dataCompetencia" class="control-label">Data de competência</label>
+					<input type="text" class="form-control  js-date" id="dataCompetencia" th:field="*{{dataCompetencia}}" autocomplete="off"/>
+				</div>
+
+				<div class="form-group  col-sm-3" logic-bus:classforerror="carroProgramado" > 
+					<label for="carroProgramado" class="control-label">Carro</label>
+					<select id="carroProgramado" class="form-control" th:field="*{carroProgramado}">
+						<option value="">Selecione o carro</option>
+						<option th:each="carro : ${carros}" th:value="${carro.id}" th:text="${carro}" />
+					</select>
+				</div>
+				
+				<div class="form-group  col-sm-3  logic-bus-required" logic-bus:classforerror="turno">
+					<label for="turno" class="control-label">Turno</label>
+					<select id="turno" class="form-control" th:field="*{turno}">
+						<option value="">Selecione o turno</option>
+						<option th:each="turno : ${turnos}" th:value="${turno.id}" th:text="${turno}" />
+					</select> 
+				</div>
+				
+				<div class="form-group  col-sm-3">
+					<label for="status" class="control-label">Status</label>
+					<select id="status" class="form-control" th:field="*{status}">
+						<option th:each="status : ${status}" th:value="${status.id}" th:text="${status}" />
+					</select>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-sm-6">
+					<label for="motorista" class="control-label">Motorista programado</label>
+					<output class="form-control" id="motorista" th:text="${programacao.motoristaProgramado}" th:disabled="disable" ></output>
+				</div>
+			
+				<div class="form-group  col-sm-6  logic-required" logic-bus:classforerror="motorista.nome">
+					<label class="control-label" for="nomeMotorista">Motorista realizado</label>
+					<div class="input-group">
+				      <input id="nomeMotorista" type="text" readonly="readonly" class="form-control" th:field="*{motorista.nome}" placeholder="Clique na lupa para pesquisar o motorista"/>
+				      <input id="idMotorista" type="hidden" th:field="*{motorista}"/>
+				      <span class="input-group-btn">
+				        <button class="btn  btn-default  js-tooltip" type="button" title="Pesquisa avançada" data-toggle="modal" data-target="#pesquisaRapidaMotorista" >
+				        	<i class="glyphicon  glyphicon-search"></i>
+				        </button>
+				      </span>
+				    </div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-sm-6">
+					<label class="control-label" for="nomeCobrador">Cobrador</label>
+					<div class="input-group">
+				      <input id="nomeCobrador" type="text" readonly="readonly" class="form-control" th:field="*{parceiro.nome}" placeholder="Clique na lupa para pesquisar o cobrador"/>
+				      <input id="idCobrador" type="hidden" th:field="*{parceiro}"/>
+				      <span class="input-group-btn">
+				        <button class="btn  btn-default  js-tooltip" type="button" title="Pesquisa avançada" data-toggle="modal" data-target="#pesquisaRapidaCobrador" >
+				        	<i class="glyphicon  glyphicon-search"></i>
+				        </button>
+				        
+				        <button class="btn  btn-default  js-tooltip js-remover-cobrador-btn" type="button" title="Remover cobrador">
+				        	<i class="glyphicon glyphicon-remove"></i>
+				        </button>
+				      </span>
+				    </div>
+				</div>
+			
+				<div class="form-group  col-sm-6  logic-bus-required" logic-bus:classforerror="linha">
+					<label for="linha" class="control-label">Linha</label>
+					<select id="linha" class="form-control" th:field="*{linha}">
+						<option value="">Selecione a linha</option>
+						<option th:each="linha : ${linhas}" th:value="${linha.id}" th:text="${linha}" />
+					</select>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-sm-6  logic-bus-required" logic-bus:classforerror="pontoPegadaMotorista">
+					<label for="pontoPegadaMotorista" class="control-label">Ponto de pegada</label>
+					<select id="pontoPegadaMotorista" class="form-control" th:field="*{pontoPegadaMotorista}" >
+						<option value="">Selecione a linha</option>
+						<option th:each="ponto : ${pontos}" th:value="${ponto.id}" th:text="${ponto}" />
+					</select>
+				</div>
+				<div class="form-group  col-sm-2  logic-bus-required" logic-bus:classforerror="inicioJornada">
+					<label for="inicioJornada" class="control-label" >Início da jornada</label>
+					<input type="text" class="form-control  js-hora" id="inicioJornada" th:field="*{inicioJornada}" />
+				</div>
+
+				<div class="form-group  col-sm-2  logic-bus-required" >
+					<label for="terminoJornada" class="control-label">Término da jornada</label>
+					<input type="text" class="form-control  js-hora" id="terminoJornada" th:field="*{terminoJornada}" />
+				</div>
+				
+				<div class="form-group  col-sm-2  logic-bus-required" logic-bus:classforerror="inicioTrabalho">
+					<label for=inicioTrabalho class="control-label">Início do trabalho</label>
+					<input type="text" class="form-control  js-hora" id="inicioTrabalho" th:field="*{inicioTrabalho}" />
+				</div>
+
+				<!-- 
+				<div class="form-group  col-sm-2" th:if="${programacao.exibirRoleta1()}">
+					<label for="roletaInicial1" class="control-label">Roleta inicial 1</label>
+					<input type="text" class="form-control" id="roletaInicial1" th:field="*{roletaInicial1}" maxlength="5" />
+				</div>
+				<div class="form-group  col-sm-2" th:if="${programacao.exibirRoleta2()}">
+					<label for="roletaInicial2" class="control-label">Roleta inicial 2</label>
+					<input type="text" class="form-control" id="roletaInicial2" th:field="*{roletaInicial2}" maxlength="5" />
+				</div>
+				
+				<div class="form-group  col-sm-2" th:if="${programacao.exibirRoleta3()}">
+					<label for="roletaInicial3" class="control-label">Roleta inicial 3</label>
+					<input type="text" class="form-control" id="roletaInicial3" th:field="*{roletaInicial3}" maxlength="5" />
+				</div> 
+				-->
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-sm-12" >
+					<label for="obsLiberacao" class="control-label">Observações sobre a liberação</label>
+					<textArea class="form-control" id="obsLiberacao" th:field="*{obsLiberacao}" rows="3" style="resize: none" ></textArea>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<a class="btn  btn-default" th:href="@{/programacao/inicial}" >Voltar</a>
+				<button type="submit" class="btn  btn-primary " data:acao="salvar" >Salvar</button>
+			</div>
+			
+			
+			<div class="logic-field-action__icon" th:unless="${programacao.nova}">
+				<label class="control-label">Viagens</label>
+				<a th:href="@{/viagem/nova/programacao/{id}(id=${programacao.id})}">
+					<i class="glyphicon  glyphicon-plus-sign  bw-glyphicon-large"></i>
+				</a>
+				<!-- <a href="#" data-toggle="modal" data-target="#cadastroViagemModal" >
+					<i class="glyphicon  glyphicon-plus-sign  bw-glyphicon-large"></i>
+				</a> -->
+			</div>
+			
+			<div class="js-tabela-viagens-container" th:unless="${programacao.nova}">
+				<th:block th:replace="programacao/TabelaViagemProgramacao"/>
+			</div>
+		</form>
+	</div>
+	
+	<th:block th:replace="funcionario/PesquisaRapidaMotorista :: pesquisaRapidaMotorista"></th:block>
+	<th:block th:replace="funcionario/PesquisaRapidaCobrador :: pesquisaRapidaCobrador"></th:block>
+	<!-- <div th:replace="viagem/CadastroViagemModal :: modal"></div> -->
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/vendors/handlebars.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/bootstrap-switch.min.js}"></script>
+	<script th:src="@{/javascripts/programacao-botoes-submit.js}"></script>
+	
+	<script th:src="@{/javascripts/pesquisa-rapida-motorista.js}"></script>
+	<script th:src="@{/javascripts/pesquisa-rapida-cobrador.js}"></script>
+	
+	<script th:src="@{/javascripts/remover-cobrador.js}"></script>
+	
+	<!-- <script th:src="@{/javascripts/tabela-viagem-programacao.js}"></script> -->
+	<!-- <script th:src="@{/javascripts/programacao.js}"></script> -->
+	<script>
+		$('.js-status').bootstrapSwitch();
+	</script>
+</th:block>
+	
+</html>

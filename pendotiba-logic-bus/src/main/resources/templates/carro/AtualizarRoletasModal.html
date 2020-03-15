@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com">
+	
+<div class="modal  fade" id="atualizarRoletasModal" tabindex="-1" role="dialog" th:fragment="atualizarRoletasModal">
+ 	<div class="modal-dialog">
+   		<div class="modal-content">
+   			<div class="modal-header">
+       			<button type="button" class="close" data-dismiss="modal"><i>&times;</i></button>
+        		<h4 class="modal-title">Atualizar roletas carro <output id="numeroCarro" name="numeroCarro"></output> </h4>
+      		</div>
+      		
+   			<div class="modal-body">
+   				<div class="alert  alert-danger  hidden  js-mensagem-erro" role="alert">
+					<button type="button" class="close" data-dismiss="alert" ><span aria-hidden="true">&times;</span></button>
+					<div><i class="fa  fa-exclamation-circle"></i> Todos os campos são obrigatórios </div>
+				</div>
+					
+   				<form class="form">
+   					<div class="row">
+						<div class="col-sm-2  form-group  logic-bus-required" >
+							<label for="roletaFinal1" class="control-label">Roleta 1</label>
+							<input id="roletaFinal1" type="text" class="form-control" th:maxlength="5" autofocus="autofocus"/>
+						</div>
+					</div>
+		            
+		            <button type="submit" class="btn  btn-primary  js-atualizar-roletas-btn">Salvar</button>
+		            <a href="#" class="btn  btn-default" data-dismiss="modal">Cancelar</a>	
+		        </form>
+     		</div>
+   		</div>
+ 	</div>
+</div>
+	
+</html>

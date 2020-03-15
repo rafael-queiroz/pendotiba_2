@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Mapas diários de carros</h1>
+				</div>
+				
+				<div class="col-xs-2"  sec:authorize-url="/mapa-diario-carro/novo">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/mapa-diario-carro/novo}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Novo mapa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="GET" th:object="${mapaDiarioCarroFilter}" th:action="@{/mapa-diario-carro}" >
+		
+			<logic-bus:message />
+			
+			<div class="row">
+				<div class="form-group  col-sm-3">
+					<label for="carro" class="control-label">Carro</label>
+					<select id="carro" class="form-control" th:field="*{carro}" >
+						<option value="">Todos os carros</option>
+						<option th:each="carro : ${carros}" th:value="${carro.id}" th:text="${carro}"/>
+					</select>
+				</div>
+				
+				<div class="form-group  col-sm-3">
+					<label for="bombaAbastecimento" class="control-label">Bomba de abastecimento</label>
+					<select id="bombaAbastecimento" class="form-control" th:field="*{bombaAbastecimento}" >
+						<option value="">Todas as bombas</option>
+						<option th:each="bombaAbastecimento : ${bombas}" th:value="${bombaAbastecimento.id}" th:text="${bombaAbastecimento}"/>
+					</select>
+				</div>
+					
+				<div class="form-group  col-sm-4">
+					<label for="dataInicial">Período</label>
+					<div class="form-inline ">
+						<input type="text" class="form-control  logic-form-control-inline-sm  js-date" id="dataInicial" th:field="*{dataInicial}" autocomplete="off" />
+						<label for="dataFinal" class="logic-form-label-between">até</label>
+						<input type="text" class="form-control  logic-form-control-inline-sm  js-date" id="dataFinal" th:field="*{dataFinal}" autocomplete="off" />
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<button class="btn  btn-primary" type="submit">Consultar</button>
+				<a class="btn btn-info"  title="Imprimir" th:href="@{/mapa-diario-carro/exportardiesel}" th:unless="${pagina.vazia}">Exportar Diesel</a>
+				<a class="btn btn-info"  title="ImprimirArla" th:href="@{/mapa-diario-carro/exportararla}" th:unless="${pagina.vazia}">Exportar Arla</a>
+			</div>
+		</form>
+		
+		<div class="table-responsive">
+			<table id="tabelaCarros" class="table  table-striped  table-bordered  table-hover  table-condensed  js-sticky-table">
+				<thead class="logic-table-header-solid">
+					<tr>
+						<th>Data de competência</th>
+						<th>Carro</th>
+						<th>Linha</th>
+						<th>Bomba abast. diesel</th>
+						<th>Volume diesel</th>
+						<th>Bomba abast. arla</th>
+						<th>Volume arla</th>
+						<th>Odômetro</th>
+						<th>Roleta</th>
+						<th class="logic-bus-colCentro  logic-bus-col10p" >Ações</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="mapaDiarioCarro : ${pagina.conteudo}" > 
+						<td th:text="${{mapaDiarioCarro.dataCompetencia}}" />
+						<td th:text="${mapaDiarioCarro.carro}" />
+						<td th:text="${mapaDiarioCarro.linha}" />
+						<td th:text="${mapaDiarioCarro.bombaAbastecimentoDiesel}" class="logic-bus-colCentro"/>
+						<td th:text="${mapaDiarioCarro.volumeDieselStr}" class="logic-bus-colDireita js-volume" />
+						<td th:text="${mapaDiarioCarro.bombaAbastecimentoArla}" class="logic-bus-colCentro"/>
+						<td th:text="${mapaDiarioCarro.volumeArlaStr}" class="logic-bus-colDireita" />
+						<td th:text="${mapaDiarioCarro.odometroStr}" class="logic-bus-colDireita" />
+						<td th:text="${mapaDiarioCarro.roletaStr}" class="logic-bus-colDireita" />
+						<td class="logic-bus-colCentro">
+							<a class="btn  btn-link  btn-xs" title="Editar" th:href="@{/mapa-diario-carro/{id}(id=${mapaDiarioCarro.id})}" th:if="${mapaDiarioCarro.podeAlterar}">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+							 
+							<a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir" href="#" th:if="${mapaDiarioCarro.podeAlterar}"
+								data:url="@{/mapa-diario-carro/{id}(id=${mapaDiarioCarro.id})}"
+								data:objeto="${mapaDiarioCarro.carro}">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a> 
+						</td>
+					</tr>
+					<tr th:if="${pagina.vazia}">
+						<td colspan="10">Nenhum registro encontrado</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<logic-bus:pagination page="${pagina}"/>
+	</div>
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/vendors/bootstrap-switch.min.js}"></script>
+	<script>
+		$('.js-status').bootstrapSwitch();
+	</script>
+</th:block>
+
+</body>
+</html>
+	

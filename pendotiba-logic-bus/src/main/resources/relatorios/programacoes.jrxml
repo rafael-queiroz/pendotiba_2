@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="programacoes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9f080b22-32a2-4c20-8f77-82989ae029f0">
+	<property name="ireport.zoom" value="1.9487171000000014"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="zebra" mode="Opaque">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) != 0)]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FBFBFB"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="fornecedor" class="java.lang.String"/>
+	<parameter name="dataInicial" class="java.util.Date"/>
+	<parameter name="dataFinal" class="java.util.Date"/>
+	<field name="inicioJornada" class="java.util.Date"/>
+	<field name="motorista" class="java.lang.Object"/>
+	<field name="linha.codigo" class="java.lang.String"/>
+	<field name="turno.descricao" class="java.lang.String"/>
+	<field name="carroProgramado.numeroDeOrdem" class="java.lang.String"/>
+	<field name="pontoPegadaMotorista.codigo" class="java.lang.String"/>
+	<field name="parceiro" class="java.lang.Object"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="62" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="1" width="555" height="59" uuid="a71c0bd3-2873-466d-9281-396f52a2ff99"/>
+				<graphicElement>
+					<pen lineWidth="0.1"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="3" y="3" width="429" height="12" uuid="18db8955-14b5-4a04-993f-d5b6cef6426d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[VIAÇÃO PENDOTIBA  -  TELEFONE: 21 2703-4350]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="71" y="31" width="68" height="12" uuid="17902279-2ee2-4c05-9b67-dda9dc685c6e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataInicial}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="220" y="17" width="33" height="12" uuid="a2195029-553b-4df2-ab27-349c084c142d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[DATA: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="17" width="180" height="12" uuid="3f5c1ee6-ced6-4ed7-a590-6b5964543d32"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[PROGRAMAÇÕES]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH:mm">
+				<reportElement x="253" y="17" width="154" height="12" uuid="2e9e1ffa-aca6-4ac2-b810-02cd192c767b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="31" width="62" height="12" uuid="e55d449a-5e15-446b-ba31-b4c4e65d03ac"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[PERÍODO DE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="139" y="31" width="21" height="12" uuid="67236497-eb62-47a4-9329-7e145b39614c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[ATÉ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="160" y="31" width="68" height="12" uuid="939d8d35-48e4-4644-8d78-929436fc8e00"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataFinal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="14" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="93" y="0" width="138" height="14" backcolor="#DDDDDD" uuid="d3d3c65c-e321-4f91-b61d-00ab5326ce2f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[MOTORISTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="53" y="0" width="39" height="14" backcolor="#DDDDDD" uuid="8bfdba1c-4a5a-4f28-abbb-6fa0e6489336"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[LINHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="480" y="0" width="74" height="14" backcolor="#DDDDDD" uuid="4223578d-6f37-48b8-9bee-575f42bc1a3b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[PONTO PEGADA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="424" y="0" width="55" height="14" backcolor="#DDDDDD" uuid="01f36538-81da-4ef1-9af5-54d72e83780d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[CARRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="368" y="0" width="55" height="14" backcolor="#DDDDDD" uuid="c682153f-5be2-4462-a823-f9f0c8d8db0d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[TURNO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="52" height="14" backcolor="#DDDDDD" uuid="9dbba708-4c61-4257-9075-dcc0afa64541"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[HORA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="232" y="0" width="135" height="14" backcolor="#DDDDDD" uuid="f12f6adf-8b2e-40e7-a79e-9ec433b3cfbc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[COBRADOR]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField pattern="HH:mm" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="1" y="0" width="51" height="12" uuid="29052c44-a61b-453a-8fb5-610ab86dcfa1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inicioJornada}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="53" y="0" width="39" height="12" uuid="24a7529c-0b3c-4c96-a51b-9d77a4558f77"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{linha.codigo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="93" y="0" width="138" height="12" uuid="f4c530cc-fe5f-4fb8-95fe-475c532c7090"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{motorista} != null ? $F{motorista} : ""]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="368" y="0" width="55" height="12" uuid="94dca5e7-c3e1-488d-b043-8c481deaa459"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{turno.descricao}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="425" y="0" width="54" height="12" uuid="026336b8-8e56-4ade-b01f-2170cbf98ffc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{carroProgramado.numeroDeOrdem}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement style="zebra" mode="Opaque" x="480" y="0" width="74" height="12" uuid="7b7d743b-5e0a-4a40-bd2a-fa36f0120fda"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pontoPegadaMotorista.codigo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement style="zebra" mode="Opaque" x="232" y="0" width="135" height="12" uuid="795cdb57-931c-4ec6-af43-14caf4b23a94"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Courier New" size="9" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{parceiro} != null ? $F{parceiro} : ""]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="28" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="2" width="555" height="2" uuid="003bd5ff-530c-4798-81af-ab42cf63147d"/>
+				<graphicElement>
+					<pen lineWidth="0.25"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="454" y="10" width="80" height="10" uuid="cf7fa5cd-21fd-43dd-883f-083bc1c68d2f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="537" y="10" width="18" height="10" uuid="24ad1ac3-81af-4107-8509-586d13ae791b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="14" splitType="Stretch"/>
+	</summary>
+</jasperReport>

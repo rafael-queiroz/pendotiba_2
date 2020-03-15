@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com">
+	
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${entradaSaidaDeCarroDaGaragem.nova}">Cadastro entrada/saída de carro da garagem</h1>
+					<h1 th:unless="${entradaSaidaDeCarroDaGaragem.nova}">Edição de entrada/saída de carro da garagem - [[${entradaSaidaDeCarroDaGaragem.carro.numeroDeOrdem}]] do dia [[${{entradaSaidaDeCarroDaGaragem.dataCompetencia}}]]</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/entrada-saida-de-carro-da-garagem/inicial}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<form method="POST" th:object="${entradaSaidaDeCarroDaGaragem}" class="form-vertical  js-form-loading" 
+			th:action="${entradaSaidaDeCarroDaGaragem.nova} ? @{/entrada-saida-de-carro-da-garagem/novo} : @{/entrada-saida-de-carro-da-garagem/{id}(id=${entradaSaidaDeCarroDaGaragem.id})}">
+		
+			<logic-bus:message />
+			
+			<input type="hidden" th:field="*{id}">
+			<input type="hidden" th:field="*{dataHoraCadastro}">
+			<input type="hidden" th:field="*{dataHoraEntrada}">
+							
+			<div class="row">
+				<div class="form-group  col-sm-3 logic-bus-required" logic-bus:classforerror="dataCompetencia">
+					<label for="dataCompetencia" class="control-label">Data de competência</label>
+					<input type="text" class="form-control  js-date" id="dataCompetencia" th:field="*{{dataCompetencia}}" autocomplete="off" />
+				</div>
+				
+				<div class="form-group col-sm-3  logic-bus-required" logic-bus:classforerror="carro">
+					<label for="carro" class="control-label">Carro</label>
+					<select id="carro" class="form-control" th:field="*{carro}">
+						<option value="">Selecione o carro</option>
+						<option th:each="carro : ${carros}" th:value="${carro.id}" th:text="${carro}" />
+					</select>
+				</div>
+				
+				<div class="form-group col-sm-6 logic-bus-required" logic-bus:classforerror="linha" >
+					<label for="linha" class="control-label">Linha</label>
+					<select id="linha" class="form-control" th:field="*{linha}">
+						<option value="">Selecione a linha</option>
+						<option th:each="linha : ${linhas}" th:value="${linha.id}" th:text="${linha}" />
+					</select>
+				</div>
+			</div>
+				
+			<div class="row">
+				<div class="form-group col-sm-3 logic-bus-required" logic-bus:classforerror="turno" >
+					<label for="turno" class="control-label">Turno</label>
+					<select id="turno" class="form-control" th:field="*{turno}">
+						<option value="">Selecione o turno</option>
+						<option th:each="turno : ${turnos}" th:value="${turno.id}" th:text="${turno}" />
+					</select>
+				</div>
+				
+				<div class="col-sm-3  form-group" >
+					<label for="qtdPassageiro" class="control-label">Qtd passageiros</label>
+					<input id="qtdPassageiro" type="text" class="form-control" th:field="*{qtdPassageiro}" maxlength="3" />
+				</div>
+			</div>
+				
+			<div class="row">
+				<div class="col-sm-3  form-group" >
+					<label for="qtdViagemProgramadaIda" class="control-label">Qtd viagens programadas ida</label>
+					<input id="qtdViagemProgramadaIda" type="text" class="form-control" th:field="*{qtdViagemProgramadaIda}" maxlength="3" />
+				</div>
+				
+				<div class="col-sm-3  form-group" >
+					<label for="qtdViagemProgramadaVolta" class="control-label">Qtd viagens programadas volta</label>
+					<input id="qtdViagemProgramadaVolta" type="text" class="form-control" th:field="*{qtdViagemProgramadaVolta}" maxlength="3" />
+				</div>
+				
+				<div class="col-sm-3  form-group" >
+					<label for="qtdViagemRealizadaIda" class="control-label">Qtd viagens realizadas ida</label>
+					<input id="qtdViagemRealizadaIda" type="text" class="form-control" th:field="*{qtdViagemRealizadaIda}" maxlength="3" />
+				</div>
+				
+				<div class="col-sm-3  form-group" >
+					<label for="qtdViagemRealizadaVolta" class="control-label">Qtd viagens realizadas volta</label>
+					<input id="qtdViagemRealizadaVolta" type="text" class="form-control" th:field="*{qtdViagemRealizadaVolta}" maxlength="3" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<a th:href="@{/entrada-saida-de-carro-da-garagem/inicial}" class="btn  btn-default" >Voltar</a>
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+			</div>
+		</form>
+	</div>
+</section>
+	
+<th:block layout:fragment="javascript-extra">
+	
+</th:block>
+
+</html>

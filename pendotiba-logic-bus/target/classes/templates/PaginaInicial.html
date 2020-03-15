@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:logic-bus="http://logic-bus.logic.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	
+<head>
+	<title>Logic Bus - Logic Bus</title>
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<h1>Página Inicial</h1>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="logic-box">
+				</div>
+			</div>
+			
+			<div class="col-sm-4">
+				<div class="logic-box">
+				</div>
+			</div>
+			
+			<div class="col-sm-4">
+				<div class="logic-box">
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="logic-box">
+				</div>
+			</div>
+			
+			<div class="col-sm-4">
+				<div class="logic-box">
+				</div>
+			</div>
+			
+			<div class="col-sm-4">
+				<div class="logic-box">
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="logic-graph-box">
+				</div>
+			</div>
+			
+			<div class="col-sm-6">
+				<div class="logic-graph-box">
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<th:block layout:fragment="javascript-extra">
+
+</th:block>
+
+</html>

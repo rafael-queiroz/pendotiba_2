@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	
+<head>
+	<title>Programação</title>
+	
+	<link rel="stylesheet" th:href="@{/stylesheets/vendors/easy-autocomplete.min.css}"/>
+	<link rel="stylesheet" th:href="@{/stylesheets/vendors/easy-autocomplete.themes.min.css}"/>
+</head>
+
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Consulta programação</h1>
+				</div>
+				
+				<div class="col-xs-2" sec:authorize-url="/programacao/novo">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/programacao/novo}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Nova programação</span>
+						</a>
+					</div>
+				</div> 
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="GET" th:object="${programacaoFilter}" th:action="@{/programacao}">
+		
+			<logic-bus:message/>
+			
+			<div class="row">
+				<div class="form-group  col-sm-2" >
+					<label for="linha" class="control-label">Linha</label>
+					<select id="linha" class="form-control" th:field="*{linha}">
+						<option value="">Selecione a linha</option>
+						<option th:each="linha : ${linhas}" th:value="${linha.id}" th:text="${linha}" />
+					</select>
+				</div>
+				
+				<div class="form-group  col-sm-3" >
+					<label for="ponto" class="control-label">Ponto</label>
+					<select id="ponto" class="form-control" th:field="*{ponto}">
+						<option value="">Selecione o ponto</option>
+						<option th:each="ponto : ${pontos}" th:value="${ponto.id}" th:text="${ponto}" />
+					</select>
+				</div>
+				
+				<div class="form-group  col-sm-3" >
+					<label for="status" class="control-label">Turno</label>
+					<select id="status" class="form-control" th:field="*{turno}">
+						<option value="">Selecione o turno</option>
+						<option th:each="turno : ${turnos}" th:value="${turno.id}" th:text="${turno}" />
+					</select>
+				</div>
+				
+				<div class="form-group  col-sm-4">
+					<label for="dataCompetenciaInicial">Data de competência</label>
+					<div class="form-inline">
+						<input type="text" class="form-control  logic-form-control-inline-sm  js-date" id="dataInicial" th:field="*{dataInicial}" autocomplete="off"/>
+						<label for="dataCompetenciaFinal" class="logic-form-label-between">até</label>
+						<input type="text" class="form-control  logic-form-control-inline-sm  js-date" id="dataFinal" th:field="*{dataFinal}" autocomplete="off"/>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-sm-3" >
+					<label for="carro" class="control-label">Carro atual</label>
+					<select id="carro" class="form-control" th:field="*{carro.id}">
+						<option value="">Selecione o carro</option>
+						<option th:each="carro : ${carros}"  th:value="${carro.id}" th:text="${carro}" />
+					</select>
+				</div>
+				
+				<div class="form-group  col-sm-6  logic-required" logic-bus:classforerror="motorista.nome">
+					<label class="control-label" for="nomeMotorista">Motorista realizado</label>
+					<div class="input-group">
+				      <input id="nomeMotorista" type="text" readonly="readonly" class="form-control" th:field="*{motorista.nome}" placeholder="Clique na lupa para pesquisar o motorista"/>
+				      <input id="idMotorista" type="hidden" th:field="*{motorista}"/>
+				      <span class="input-group-btn">
+				        <button class="btn  btn-default  js-tooltip" type="button" title="Pesquisa avançada" data-toggle="modal" data-target="#pesquisaRapidaMotorista" >
+				        	<i class="glyphicon  glyphicon-search"></i>
+				        </button>
+				      </span>
+				    </div>
+				</div>
+				
+				<div class="form-group  col-sm-3" >
+					<label for="status" class="control-label">Status</label>
+					<select id="status" class="form-control" th:field="*{status}">
+						<option value="">Selecione o status</option>
+						<option th:each="status : ${status}" th:value="${status.id}" th:text="${status}" />
+					</select>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-sm-12">
+					<label class="control-label">Tipos de carro</label> 
+					<div>
+						<th:block th:each="tipoCarro : ${tiposCarro}">
+	  						<div class="checkbox  checkbox-inline"> 
+		    					<input type="checkbox" th:value="${tipoCarro.id}" th:field="*{tiposCarro}"/>
+		    					<label th:for="${#ids.prev('tiposCarro')}" th:text="${tipoCarro}">Rodoviário</label>
+	    					</div>
+	    				</th:block>
+					</div>
+  				</div>
+			</div>
+			
+			<a th:href="@{/programacao}" class="btn  btn-default" >Limpar filtros</a>
+			<button type="submit" class="btn  btn-primary">Pesquisar</button>
+			
+			<a class="btn btn-info"  title="Imprimir" th:href="@{/programacao/imprimir}" target="_blank" th:unless="${pagina.vazia}"> 
+				<i class="glyphicon glyphicon-print"></i>
+			</a>
+		</form>
+		
+		<br />
+		
+		<div class="table-responsive">
+			<table class="table  table-striped  table-bordered  table-hover  table-condensed  js-sticky-table">
+				<thead>
+					<tr>
+						<th>Data</th>
+						<th>Hora de saída</th>
+						<th>Motorista</th>
+						<th>Cobrador</th>
+						<th>Linha</th>
+						<th>Descrição linha</th>
+						<th>Turno</th>
+						<th>Carro atual</th>
+						<th>Ponto de pegada</th>
+						<th class="logic-bus-colCentro">Status</th>
+						<th class="logic-bus-colCentro">Ações</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr th:each="programacao : ${pagina.conteudo}" th:classappend="${programacao.possuiViagens()} ? logic-bus-vermelho">
+						<td th:text="${{programacao.dataCompetencia}}" ></td>
+						<td th:text="${{programacao.inicioJornada}}"></td>
+						<td th:text="${programacao.motorista != null ? programacao.motorista.matricula : 'N/E'}" th:classappend="${programacao.motorista == null} ? logic-bus-vermelho"></td>
+						<td th:text="${programacao.parceiro != null ? programacao.parceiro.matricula : 'N/E'}" th:classappend="${programacao.parceiro == null} ? logic-bus-vermelho"></td>
+						<td th:text="${programacao.linha != null ? programacao.linha.codigo : 'N/E'}" th:classappend="${programacao.linha == null} ? logic-bus-vermelho"></td>
+						<td th:text="${programacao.linha != null ? programacao.linha.descricao : 'N/E'}" th:classappend="${programacao.linha == null} ? logic-bus-vermelho"></td>
+						<td th:text="${programacao.turno != null ? programacao.turno.descricao : 'N/E'}" th:classappend="${programacao.turno == null} ? logic-bus-vermelho"></td>
+						<td th:text="${programacao.carroRealizado != null ? programacao.carroRealizado.numeroDeOrdem : 'N/E'}" th:classappend="${programacao.carroRealizado == null} ? logic-bus-vermelho"></td>
+						<td th:text="${programacao.pontoPegadaMotorista != null ? programacao.pontoPegadaMotorista.descricao : 'N/E'}" th:classappend="${programacao.pontoPegadaMotorista == null} ? logic-bus-vermelho"></td>
+						<!-- 
+						<td class="logic-bus-colCentro">
+							<th:block th:if="${programacao.completa}">
+								<span class="label  label-success">Sim</span>
+							</th:block>
+							<th:block th:if="${not programacao.completa}">
+								<span class="label  label-danger">Não</span>
+							</th:block>
+						</td> 
+						-->
+						<td th:text="${programacao.status.descricao}" class="logic-bus-colCentro"></td>
+						
+						<td class="text-center">
+							<a class="btn  btn-link  btn-xs  js-tooltip" title="Editar" th:href="@{/programacao/{id}(id=${programacao.id})}" th:if="${programacao.podeAlterar()}"> 
+								<i class="glyphicon  glyphicon-pencil"></i>
+							</a>
+							<a class="btn  btn-link  btn-xs  js-tooltip" title="Encerrar" th:href="@{/encerrar-programacao/{id}(id=${programacao.id})}" th:if="${programacao.podeEncerrar()}"> 
+								<i class="glyphicon  glyphicon-pushpin"></i>
+							</a>
+							<a class="btn  btn-link  btn-xs  js-tooltip" title="Visualizar" th:href="@{/programacao/visualizar/{id}(id=${programacao.id})}" th:unless="${programacao.podeAlterar()}"> 
+								<i class="glyphicon  glyphicon-eye-open"></i>
+							</a>
+							<!-- 
+							<a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir" href="#" th:if="${programacao.podeAlterar()}">
+								<i class="glyphicon  glyphicon-trash"></i>
+							</a>
+							 -->
+							<a class="btn  btn-link  btn-xs  js-tooltip  js-liberar-btn" title="Liberar" href="#" th:if="${programacao.podeLiberar()}"
+								data:url="@{/programacao/liberar/{id}(id=${programacao.id})}"
+								data:carro="${programacao.carroRealizado != null ? programacao.carroRealizado.numeroDeOrdem : ''}"
+								data:motorista="${programacao.motorista != null ? programacao.motorista.nome : ''}" >
+								<i class="glyphicon  glyphicon-road"></i>
+							</a>
+							
+							<!-- 
+							<a class="btn  btn-link  btn-xs  js-tooltip" title="Trocar carro" th:href="@{/trocar-carro-programacao/{id}(id=${programacao.id})}" 
+								th:if="${programacao.podeTrocarCarro()}" >
+								<i class="glyphicon  glyphicon-transfer"></i>
+							</a>
+							 -->
+						</td>
+					</tr>
+					<tr th:if="${pagina.vazia}">
+						<td colspan="12">Nenhuma programação encontrada</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<logic-bus:pagination page="${pagina}"/>
+	</div>
+	
+	<th:block th:replace="funcionario/PesquisaRapidaMotorista :: pesquisaRapidaMotorista"></th:block>
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/vendors/handlebars.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/bootstrap-switch.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/jquery.easy-autocomplete.min.js}"></script>
+	<!-- <script th:src="@{/javascripts/autocomplete-funcionario.js}"></script> -->
+	<script th:src="@{/javascripts/dialog-liberar-programacao.js}"></script>
+	<script th:src="@{/javascripts/pesquisa-rapida-motorista.js}"></script>
+	<script>
+		$('.js-status').bootstrapSwitch();
+	</script>
+</th:block>
+
+</html>
+	

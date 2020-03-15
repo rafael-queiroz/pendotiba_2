@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	layout:decorator="~{layout/LayoutPadrao}">
+
+<head>
+	<title>Cadastro de usuário</title>
+	
+	<link rel="stylesheet" th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}"/>
+	<link rel="stylesheet" th:href="@{/stylesheets/vendors/easy-autocomplete.min.css}"/>
+	<link rel="stylesheet" th:href="@{/stylesheets/vendors/easy-autocomplete.themes.min.css}"/>
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${perfil.novo}">Cadastro de perfil</h1>
+					<h1 th:unless="${perfil.novo}">Edição do perfil - [[${perfil.nome}]]</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/perfil}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="POST" th:object="${perfil}" class="form-vertical  js-form-loading" th:action="${perfil.novo}">
+			
+			<logic-bus:message/>
+			
+			<input type="hidden" th:field="*{id}"/>
+			<input type="hidden" th:field="*{hierarquia}"/>
+			
+			<div class="row">
+				<div class="form-group  col-sm-4  logic-bus-required" logic-bus:classforerror="nome">
+					<label for="nome" class="control-label">Nome</label>
+					<input type="text" class="form-control" id="nome" autofocus="autofocus" th:field="*{nome}"/>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+					<label class="control-label">Permissões</label> 
+					<div>
+            			<div class="checkbox  logic-checkbox-no-margin">
+            				<input type="checkbox" class="js-selecao-todos"/>
+            				<label>Todas</label>
+            			</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-lg-12">
+					<ul class="nav nav-tabs  js-abas-perfil">
+					  <li role="presentation" class="active"><a href="#cadastros">Cadastros</a></li>
+					  <li role="presentation"><a href="#mapas">Mapas</a></li>
+					  <li role="presentation"><a href="#importacoes">Importações</a></li>
+					  <li role="presentation"><a href="#operacao">Operação</a></li>
+					  <li role="presentation"><a href="#relatorios">Relatórios</a></li>
+					  <li role="presentation"><a href="#aplicativos">Aplicativos</a></li>
+					  <li role="presentation"><a href="#seguranca">Segurança</a></li>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="tab-content">
+				<div class="tab-pane active" id="cadastros">
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Bomba de abastecimento</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesBombaAbastecimento}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Carro</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesCarro}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Dispositivo móvel</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesDispositivoMovel}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Funcionário</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesFuncionario}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Linha</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesLinha}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Motivo para troca de carro</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesMotivosTrocaCarro}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Motivo para pular Viagem</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesMotivosPuloViagem}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Parâmentros de consumo</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesParametrosConsumo}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Ponto</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesPonto}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Relação ponto-linha</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesPontoLinha}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Tipo de chassi</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesTipoChassi}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Tipo de observação</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesTipoObservacao}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Tipo de reclamação</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesTipoReclamacao}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Tipo de viagem perdida</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesTipoViagemPerdida}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				
+				<div class="tab-pane" id="mapas">
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Mapa diário de carro</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesMapaDiarioCarro}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Mapa diário de bomba de abastecimento</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesMapaDiarioBomba}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+
+				<div class="tab-pane" id="importacoes">
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Programações</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesImportarArquivoProgramacao}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Escalas</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesImportarArquivoEscala}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="tab-pane" id="operacao">
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Programações</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesProgramacao}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Viagens</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesViagem}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Entrada e saída de carros da garagem</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesEntradaSaidaDeCarrosDaGaragem}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="tab-pane" id="relatorios">
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Relatórios</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesRelatorios}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="tab-pane" id="aplicativos">
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Mapa diário de carro</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesAppMapaDiarioCarro}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Mapa diário de bomba de abastecimento</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesAppMapaDiarioBombaAbastecimento}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+				</div>
+			
+				<div class="tab-pane" id="seguranca">
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Perfil</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesPerfil}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row" th:if="${#authentication.principal.usuario.perfil.id == 1}">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Permissão</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesPermissao}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group  col-sm-12  logic-bus-required" logic-bus:classforerror="permissoes">
+							<label class="control-label">Usuário</label> 
+							<div>
+		  						<th:block th:each="permissao : ${permissoesUsuario}">
+			  						<div class="checkbox  checkbox-inline"> 
+				    					<input type="checkbox" class="js-selecao" th:value="${permissao.id}" th:field="*{permissoes}"/>
+				    					<label th:for="${#ids.prev('permissoes')}" th:text="${permissao.nome}"></label>
+			    					</div>
+			    				</th:block>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<a href="javascript:history.back()" class="btn  btn-default">Voltar</a>
+				<button type="submit" class="btn  btn-primary" onClick="">Salvar</button>
+			</div>
+		</form>
+	</div>
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/vendors/bootstrap-switch.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/javascripts/autocomplete-funcionario.js}"></script>
+	<script th:src="@{/javascripts/multiselecao-permissao.js}"></script>
+	<script>
+		$(function() {
+			$('.js-abas-perfil a').click(function (e) {
+				e.preventDefault();
+				$(this).tab('show');
+			});
+		});
+	</script>
+</th:block>
+</html>

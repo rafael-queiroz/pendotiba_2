@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Consulta da Relação Ponto-Linha</h1>
+				</div>
+				
+				<div class="col-xs-2" sec:authorize-url="/ponto-linha/novo">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/ponto-linha/novo}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Nova relação ponto-linha</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="GET" th:object="${pontoLinhaFilter}" th:action="@{/ponto-linha}">
+		
+			<logic-bus:message/>
+		
+			<div class="row">
+				<div class="form-group  col-sm-3" >
+					<label for="linha" class="control-label">Linha</label>
+					<select id="linha" class="form-control" th:field="*{linha}">
+						<option value="">Selecione a linha</option>
+						<option th:each="linha : ${linhas}" th:value="${linha.id}" th:text="${linha}" />
+					</select>
+				</div>
+				
+				<div class="form-group  col-sm-3" >
+					<label for="pontoOrigem" class="control-label">Ponto origem</label>
+					<select id="pontoOrigem" class="form-control" th:field="*{pontoOrigem}">
+						<option value="">Selecione o ponto de origem</option>
+						<option th:each="pontoOrigem : ${pontos}" th:value="${pontoOrigem.id}" th:text="${pontoOrigem}" />
+					</select>
+				</div>
+				
+				<div class="form-group  col-sm-3" >
+					<label for="pontoDestino" class="control-label">Ponto destino</label>
+					<select id="pontoDestino" class="form-control" th:field="*{pontoDestino}">
+						<option value="">Selecione o ponto de destino</option>
+						<option th:each="pontoDestino : ${pontos}" th:value="${pontoDestino.id}" th:text="${pontoDestino}" />
+					</select>
+				</div>
+				
+				<div class="form-group  col-sm-3" >
+					<label for="sentido" class="control-label">Sentido</label>
+					<select id="sentido" class="form-control" th:field="*{sentido}">
+						<option value="">Selecione o sentido</option>
+						<option th:each="sentido : ${sentidos}" th:value="${sentido}" th:text="${sentido}" />
+					</select>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<button class="btn  btn-primary" type="submit">
+					<i class="fa  fa-child"></i><span>Consultar</span>
+				</button>
+			</div>
+		</form>
+		
+		<div class="table-responsive">
+			<table id="tabela-ponto-linha" class="table  table-striped  table-bordered  table-hover  table-condensed  js-sticky-table">
+				<thead class="logic-table-header-solid">
+					<tr>
+						<th>Linha</th>
+						<th>Ponto Origem</th>
+						<th>Ponto Destino</th>
+						<th>Sentido</th>
+						<th>Distância ociosa</th>
+						<th>Distância produtiva</th>
+						<th class="logic-bus-colCentro  logic-bus-col10p" >Ações</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="pontoLinha : ${pontosLinha}">
+						<td th:text="${pontoLinha.linha}" />
+						<td th:text="${pontoLinha.pontoOrigem}" />
+						<td th:text="${pontoLinha.pontoDestino}" />
+						<td th:text="${pontoLinha.sentido}" />
+						<td th:text="${pontoLinha.distanciaOciosaStr}" />
+						<td th:text="${pontoLinha.distanciaProdutivaStr}" />
+						<td class="logic-bus-colCentro">
+							<a class="btn  btn-link  btn-xs" title="Editar" th:href="@{/ponto-linha/{id}(id=${pontoLinha.id})}">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+							<a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir" href="#" 
+								data:url="@{/ponto-linha/{id}(id=${pontoLinha.id})}"
+								data:objeto="${pontoLinha}">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</td>
+					</tr>
+					<tr th:if="${pontosLinha.isEmpty()}">
+						<td colspan="7">Nenhuma linha encontrada</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/excluir-modal.js}"></script>
+</th:block>
+
+</body>
+</html>
+	

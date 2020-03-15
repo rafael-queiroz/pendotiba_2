@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	layout:decorator="~{layout/LayoutPadrao}">
+
+<head>
+	<title>Cadastro de usuário</title>
+	
+	<link rel="stylesheet" th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}"/>
+	<link rel="stylesheet" th:href="@{/stylesheets/vendors/easy-autocomplete.min.css}"/>
+	<link rel="stylesheet" th:href="@{/stylesheets/vendors/easy-autocomplete.themes.min.css}"/>
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${usuario.novo}">Cadastro de usuário</h1>
+					<h1 th:unless="${usuario.novo}">Edição de usuário - [[${usuario.funcionario.nome}]]</h1>
+				</div>
+			
+				<div class="col-xs-2">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/usuario}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="POST" th:object="${usuario}" class="form-vertical  js-form-loading" 
+			  th:action="${usuario.novo} ? @{/usuario/novo} : @{/usuario/{id}(id=${usuario.id})}">
+			
+			<logic-bus:message/>
+			
+			<input type="hidden" th:field="*{id}"/>
+			
+			<div class="row">
+				<div class="form-group  col-sm-4  logic-required" logic-bus:classforerror="funcionario.nome">
+					<label class="control-label" for="nomeFuncionario">Funcionário</label>
+					<div class="input-group  col-sm-12">
+				      <input id="nomeFuncionario" type="text" readonly="readonly" class="form-control" th:field="*{funcionario.nome}" 
+				      		 placeholder="Clique na lupa para pesquisar o funcionário" />
+				      <input id="idFuncionario" type="hidden" th:field="*{funcionario}" />
+				      <span class="input-group-btn" th:if="${usuario.id == null}">
+				        <button class="btn  btn-default  js-tooltip" type="button" title="Pesquisa avançada" 
+				        	data-toggle="modal" data-target="#pesquisaRapidaFuncionario" >
+				        	<i class="glyphicon  glyphicon-search" th:if="${usuario.id == null}"></i>
+				        </button>
+				      </span>
+				    </div>
+				</div>
+
+				<div class="form-group  col-sm-4  logic-bus-required" logic-bus:classforerror="email">
+					<label for="email" class="control-label">E-mail</label>
+					<input type="text" class="form-control" id="email" th:field="*{email}" autocomplete="off"/>
+				</div>
+				
+				<div class="col-sm-4  form-group  logic-bus-required" logic-bus:classforerror="perfil">
+					<label for="perfil" class="control-label">Perfil</label>
+					<select id="perfil" class="form-control" th:field="*{perfil}">
+						<option value="">Selecione o perfil</option>
+						<option th:each="perfil : ${perfis}" th:value="${perfil.id}" th:text="${perfil}" />
+					</select>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-sm-3" logic-bus:classforerror="senha" th:classappend="${usuario.novo} ? logic-bus-required">
+					<label for="senha" class="control-label">Senha</label> 
+					<input type="password" class="form-control" id="senha" th:field="*{senha}" autocomplete="off"/>
+				</div>
+				
+				<div class="form-group  col-sm-3" logic-bus:classforerror="confirmacaoSenha">
+					<label for="confirmacaoSenha" class="control-label">Confirmação de senha</label> 
+					<input type="password" class="form-control" id="confirmacaoSenha" th:field="*{confirmacaoSenha}" autocomplete="off" />
+				</div>
+				
+				<div class="form-group  col-sm-3" th:if="${#authentication.principal.usuario.id != usuario.id}">
+					<label class="control-label">Status</label>
+					<div>
+						<input type="checkbox" class="js-status" data-size="small" data-off-color="danger" 
+							data-on-text="Ativo" data-off-text="Inativo" th:field="*{ativo}"/>
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="form-group">
+				<a href="javascript:history.back()" class="btn  btn-default" th:unless="${usuario.novo}">Voltar</a>
+				<a onClick="history.go(-2)" class="btn  btn-default" th:if="${usuario.novo}">Voltar</a>
+				<button type="submit" class="btn  btn-primary">Salvar</button>
+			</div>
+		</form>
+	</div>
+	
+	<th:block th:replace="funcionario/PesquisaRapidaFuncionario :: pesquisaRapidaFuncionario"></th:block>
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javascripts/vendors/handlebars.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/bootstrap-switch.min.js}"></script>
+	<script th:src="@{/javascripts/vendors/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/javascripts/autocomplete-funcionario.js}"></script>
+	<script th:src="@{/javascripts/pesquisa-rapida-funcionario.js}"></script>
+	<script>
+		$('.js-status').bootstrapSwitch();
+	</script>
+</th:block>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:logic-bus="http://logic-bus.logicbiz.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	layout:decorator="~{layout/LayoutPadrao}"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Consulta de motivo para pular viagem</h1>
+				</div>
+				
+				<div class="col-xs-2" sec:authorize-url="/motivo-pulo-viagem/novo">
+					<div class="logic-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/motivo-pulo-viagem/novo}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Novo motivo para pular viagem</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<div class="table-responsive">
+			<table id="tabela-motivo-pulo-viagems" class="table  table-striped  table-bordered  table-hover  table-condensed  js-sticky-table">
+				<thead class="logic-table-header-solid">
+					<tr>
+						<th>Descrição</th>
+						<th class="logic-bus-colCentro" >Ações</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="motivoPuloViagem : ${motivosPuloViagem}">
+						<td th:text="${motivoPuloViagem.descricao}" />
+						<td class="logic-bus-colCentro  logic-bus-col10p">
+							<a class="btn  btn-link  btn-xs" title="Editar" th:href="@{/motivo-pulo-viagem/{id}(id=${motivoPuloViagem.id})}">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+							<a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir" href="#" 
+								data:url="@{/motivo-pulo-viagem/{id}(id=${motivoPuloViagem.id})}"
+								data:objeto="${motivoPuloViagem.descricao}">
+								<i class="glyphicon glyphicon-trash"></i>
+							</a>
+						</td>
+					</tr>
+					<tr th:if="${motivosPuloViagem.isEmpty()}">
+						<td colspan="2">Nenhum motivo encontrado</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+	</div>
+</section>
+
+</body>
+</html>
+	
