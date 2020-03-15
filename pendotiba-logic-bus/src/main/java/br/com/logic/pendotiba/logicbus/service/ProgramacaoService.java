@@ -1,40 +1,7 @@
 package br.com.logic.pendotiba.logicbus.service;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import br.com.logic.pendotiba.core.model.Carro;
-import br.com.logic.pendotiba.core.model.CarroProgramacao;
-import br.com.logic.pendotiba.core.model.ErroProgramacao;
-import br.com.logic.pendotiba.core.model.EscalaImportada;
-import br.com.logic.pendotiba.core.model.Ponto;
-import br.com.logic.pendotiba.core.model.Programacao;
-import br.com.logic.pendotiba.core.model.ProgramacaoImportada;
-import br.com.logic.pendotiba.core.model.Status;
-import br.com.logic.pendotiba.core.model.Viagem;
-import br.com.logic.pendotiba.core.repository.CarroProgramacaoRepository;
-import br.com.logic.pendotiba.core.repository.CarroRepository;
-import br.com.logic.pendotiba.core.repository.ErroProgramacaoRepository;
-import br.com.logic.pendotiba.core.repository.ErroViagemRepository;
-import br.com.logic.pendotiba.core.repository.EscalaImportadaRepository;
-import br.com.logic.pendotiba.core.repository.FuncionarioRepository;
-import br.com.logic.pendotiba.core.repository.GaragemRepository;
-import br.com.logic.pendotiba.core.repository.LinhaRepository;
-import br.com.logic.pendotiba.core.repository.PontoLinhaRepository;
-import br.com.logic.pendotiba.core.repository.PontoRepository;
-import br.com.logic.pendotiba.core.repository.ProgramacaoImportadaRepository;
-import br.com.logic.pendotiba.core.repository.ProgramacaoRepository;
-import br.com.logic.pendotiba.core.repository.StatusRepository;
-import br.com.logic.pendotiba.core.repository.TurnoRepository;
-import br.com.logic.pendotiba.core.repository.UsuarioRepository;
-import br.com.logic.pendotiba.core.repository.ViagemImportadaRepository;
-import br.com.logic.pendotiba.core.repository.ViagemRepository;
+import br.com.logic.pendotiba.core.model.*;
+import br.com.logic.pendotiba.core.repository.*;
 import br.com.logic.pendotiba.core.util.DataUtil;
 import br.com.logic.pendotiba.logicbus.repo.PontoLinhaRepositoryImpl;
 import br.com.logic.pendotiba.logicbus.repo.ProgramacaoImportadaRepositoryImpl;
@@ -46,6 +13,14 @@ import br.com.logic.pendotiba.logicbus.resources.dto.TrocaMotoristaProgramacaoDT
 import br.com.logic.pendotiba.logicbus.service.exception.NegocioException;
 import br.com.logic.pendotiba.logicbus.validation.ImportacaoProgramacaoValidation;
 import br.com.logic.pendotiba.logicbus.validation.ImportacaoViagemValidation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class ProgramacaoService {
@@ -200,7 +175,7 @@ public class ProgramacaoService {
         }
 		
 		programacao.setCarroRealizado(programacao.getCarroProgramado());
-		programacao.setStatus(statusRepository.findOne(Status.ATIVO));
+		programacao.setStatus(statusRepository.findById(Status.ATIVO).orElse(null));
 		
 		Integer contadorOrdemViagem = 1;
 		for (ProgramacaoImportada viagemImportada : viagens) {
@@ -249,7 +224,7 @@ public class ProgramacaoService {
 		
 		programacao.setTerminoTrabalho(DataUtil.getTime(DataUtil.getDataStringYYYYMMDD(programacao.getDataCompetencia()), dto.getTerminoTrabalho()));
 		programacao.setTerminoJornada(DataUtil.getTime(DataUtil.getDataStringYYYYMMDD(programacao.getDataCompetencia()), dto.getTerminoJornada()));
-		programacao.setStatus(statusRepository.findOne(Status.ENCERRADO));
+		programacao.setStatus(statusRepository.findById(Status.ENCERRADO).orElse(null));
 		
 		ultimaViagem = viagemRepositoryImpl.buscarUltimaViagemPorProgramacao(programacao);
 		if(dto.getRoletaFinal1() == null && ultimaViagem != null) {
@@ -272,10 +247,10 @@ public class ProgramacaoService {
 
 	
 	void verificarPegadaMotorista(ProgramacaoDTO dto, Programacao programacao) {
-		Ponto pontoPegada = pontoRepository.findOne(dto.getIdPontoPegadaMotorista());
+		Ponto pontoPegada = pontoRepository.findById(dto.getIdPontoPegadaMotorista()).orElse(null);
 		
 		if(!pontoPegada.equals(programacao.getPontoPegadaMotorista())) {
-			programacao.setPontoPegadaMotorista(pontoRepository.findOne(dto.getIdPontoPegadaMotorista()));
+			programacao.setPontoPegadaMotorista(pontoRepository.findById(dto.getIdPontoPegadaMotorista()).orElse(null));
 			programacao.setMudouPontoPegada(1);
 			Integer contadorOrdemViagem = 1;
 			for (Viagem viagem : programacao.getViagens()) {
@@ -297,7 +272,7 @@ public class ProgramacaoService {
 
 	public Programacao realizarTrocaCarroProgramacao(TrocaCarroProgramacaoDTO dto) {
 		Programacao programacao = programacaoRepository.carregarProgramacao(dto.getIdProgramacao());
-		Carro novoCarro = carroRepository.findOne(dto.getIdCarro());
+		Carro novoCarro = carroRepository.findById(dto.getIdCarro()).orElse(null);
 		if(programacao.getStatus().getId().equals(Status.LIBERADO) && programacaoRepositoryImpl.buscarPorDataCompetenciaCarroProgramadoAtiva(programacao, novoCarro) != null)
 			throw new NegocioException("Já existe uma programação ativa para a data e carro informado");
 		
@@ -325,19 +300,19 @@ public class ProgramacaoService {
 		programacao.setInicioTrabalho(DataUtil.getTime(dto.getDataCompetencia(), dto.getInicioTrabalho()));
 		programacao.setInicioTrabalho(DataUtil.getTime(dto.getDataCompetencia(), dto.getInicioTrabalho()));
 		
-		//programacao.setPontoPegadaMotorista(pontoRepository.findOne(dto.getIdPontoPegadaMotorista()));
+		//programacao.setPontoPegadaMotorista(pontoRepository.findById(dto.getIdPontoPegadaMotorista()));
 		
-		programacao.setMotorista(funcionarioRepository.findOne(dto.getIdMotorista()));
-		programacao.setParceiro(funcionarioRepository.findOne(dto.getIdParceiro()));
-		programacao.setLinha(linhaRepository.findOne(dto.getIdLinha()));
-		programacao.setTurno(turnoRepository.findOne(dto.getIdTurno()));
-		programacao.setCarroProgramado(dto.getIdCarroProgramado() != null ? carroRepository.findOne(dto.getIdCarroProgramado()) : null);
-		programacao.setCarroRealizado(dto.getIdCarroRealizado() != null ? carroRepository.findOne(dto.getIdCarroRealizado()) : null);
-		programacao.setStatus(statusRepository.findOne(dto.getLiberadoGaragem()));
+		programacao.setMotorista(funcionarioRepository.findById(dto.getIdMotorista()).orElse(null));
+		programacao.setParceiro(funcionarioRepository.findById(dto.getIdParceiro()).orElse(null));
+		programacao.setLinha(linhaRepository.findById(dto.getIdLinha()).orElse(null));
+		programacao.setTurno(turnoRepository.findById(dto.getIdTurno()).orElse(null));
+		programacao.setCarroProgramado(dto.getIdCarroProgramado() != null ? carroRepository.findById(dto.getIdCarroProgramado()).orElse(null) : null);
+		programacao.setCarroRealizado(dto.getIdCarroRealizado() != null ? carroRepository.findById(dto.getIdCarroRealizado()).orElse(null) : null);
+		programacao.setStatus(statusRepository.findById(dto.getLiberadoGaragem()).orElse(null));
 		
 		//Rafael 20190322
 		if(dto.getIdUsuario() != null)
-			programacao.setUsuario(dto.getIdUsuario() != null ? usuarioRepository.findOne(dto.getIdUsuario()) : null );
+			programacao.setUsuario(dto.getIdUsuario() != null ? usuarioRepository.findById(dto.getIdUsuario()).orElse(null) : null );
 		programacao.setHoraLiberacao(DataUtil.getTime(dto.getDataCompetencia(), dto.getHoraLiberacao()));
 		
 		programacao.getRoletas().clear();
@@ -361,7 +336,7 @@ public class ProgramacaoService {
 	
 	Programacao realizarTrocaMotoristaProgramacao(TrocaMotoristaProgramacaoDTO dto) {
 		Programacao programacao = programacaoRepository.carregarProgramacao(dto.getIdProgramacao());
-		programacao.setMotorista(funcionarioRepository.findOne(dto.getIdMotorista()));
+		programacao.setMotorista(funcionarioRepository.findById(dto.getIdMotorista()).orElse(null));
 		return programacaoRepository.save(programacao);
 	}
 
@@ -370,7 +345,7 @@ public class ProgramacaoService {
 		List<Programacao> programacoes = new ArrayList<>(); 
 		for (ProgramacaoDTO dto : programacoesDTO) {
 			Programacao p = programacaoRepository.carregarProgramacao(dto.getId());
-			p.setStatus(statusRepository.findOne(Status.CORTADO));
+			p.setStatus(statusRepository.findById(Status.CORTADO).orElse(null));
 			programacoes.add(programacaoRepository.save(p));
 		}
 		return programacoes;

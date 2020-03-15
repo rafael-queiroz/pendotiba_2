@@ -199,50 +199,50 @@ public class MapaDiarioCarroService {
 	/*
 	// APP - INÍCIO
 	public MapaDiarioCarro salvarRoleta(AbastecimentoOdometroRoletaDTO dto) {
-		MapaDiarioCarro obj = mapaDiarioCarroRepository.findOne(dto.getId());
+		MapaDiarioCarro obj = mapaDiarioCarroRepository.findById(dto.getId());
 		obj.setRoleta(dto.getRoleta());
 		obj.setRoletaAnterior(dto.getRoletaAnterior());
-		obj.setFuncionarioRoleta(funcionarioRepository.findOne(dto.getIdFuncionarioRoleta()));
+		obj.setFuncionarioRoleta(funcionarioRepository.findById(dto.getIdFuncionarioRoleta()));
 		obj.setDataHoraCadastro(new Date());
 		atualizarValores(obj);
 		return mapaDiarioCarroRepository.save(obj);
 	}
 	
 	public MapaDiarioCarro salvarAbastecimento(AbastecimentoOdometroRoletaDTO dto) {
-		MapaDiarioCarro obj = mapaDiarioCarroRepository.findOne(dto.getId());
+		MapaDiarioCarro obj = mapaDiarioCarroRepository.findById(dto.getId());
 		obj.setVolumeDiesel(dto.getVolumeDiesel());
-		obj.setBombaAbastecimentoDiesel(bombaAbastecimentoRepository.findOne(dto.getIdBombaAbastecimentoDiesel()));
+		obj.setBombaAbastecimentoDiesel(bombaAbastecimentoRepository.findById(dto.getIdBombaAbastecimentoDiesel()));
 		obj.setVolumeDieselAnterior(dto.getVolumeDieselAnterior());
-		obj.setFuncionarioAbastecimentoOdometro(funcionarioRepository.findOne(dto.getIdFuncionarioAbastecimentoOdometro()));
+		obj.setFuncionarioAbastecimentoOdometro(funcionarioRepository.findById(dto.getIdFuncionarioAbastecimentoOdometro()));
 		obj.setDataHoraCadastro(new Date());
 		atualizarValores(obj);
 		return mapaDiarioCarroRepository.save(obj);
 	}
 	
 	public MapaDiarioCarro salvarAbastecimentoArla(AbastecimentoOdometroRoletaDTO dto) {
-		MapaDiarioCarro obj = mapaDiarioCarroRepository.findOne(dto.getId());
+		MapaDiarioCarro obj = mapaDiarioCarroRepository.findById(dto.getId());
 		obj.setVolumeArla(dto.getVolumeArla());
-		obj.setBombaAbastecimentoArla(bombaAbastecimentoRepository.findOne(dto.getIdBombaAbastecimentoArla()));
-		obj.setFuncionarioAbastecimentoOdometro(funcionarioRepository.findOne(dto.getIdFuncionarioAbastecimentoOdometro()));
+		obj.setBombaAbastecimentoArla(bombaAbastecimentoRepository.findById(dto.getIdBombaAbastecimentoArla()));
+		obj.setFuncionarioAbastecimentoOdometro(funcionarioRepository.findById(dto.getIdFuncionarioAbastecimentoOdometro()));
 		obj.setDataHoraCadastro(new Date());
 		atualizarValores(obj);
 		return mapaDiarioCarroRepository.save(obj);
 	}
 	
 	public MapaDiarioCarro salvarOdometro(AbastecimentoOdometroRoletaDTO dto) {
-		MapaDiarioCarro obj = mapaDiarioCarroRepository.findOne(dto.getId());
+		MapaDiarioCarro obj = mapaDiarioCarroRepository.findById(dto.getId());
 		obj.setOdometro(dto.getOdometro());
 		obj.setOdometroAnterior(dto.getOdometroAnterior());
-		obj.setFuncionarioAbastecimentoOdometro(funcionarioRepository.findOne(dto.getIdFuncionarioAbastecimentoOdometro()));
+		obj.setFuncionarioAbastecimentoOdometro(funcionarioRepository.findById(dto.getIdFuncionarioAbastecimentoOdometro()));
 		obj.setDataHoraCadastro(new Date());
 		atualizarValores(obj);
 		return mapaDiarioCarroRepository.save(obj);
 	}
 	
 	public MapaDiarioCarro salvarTanqueCheio(AbastecimentoOdometroRoletaDTO dto) {
-		MapaDiarioCarro obj = mapaDiarioCarroRepository.findOne(dto.getId());
+		MapaDiarioCarro obj = mapaDiarioCarroRepository.findById(dto.getId());
 		obj.setVolumeDiesel(dto.getVolumeDiesel());
-		obj.setFuncionarioAbastecimentoOdometro(funcionarioRepository.findOne(dto.getIdFuncionarioAbastecimentoOdometro()));
+		obj.setFuncionarioAbastecimentoOdometro(funcionarioRepository.findById(dto.getIdFuncionarioAbastecimentoOdometro()));
 		obj.setDataHoraCadastro(new Date());
 		return mapaDiarioCarroRepository.save(obj);
 	}

@@ -1,20 +1,6 @@
 package br.com.logic.pendotiba.despachante.service;
 
-import java.math.BigInteger;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import br.com.logic.pendotiba.core.model.Carro;
-import br.com.logic.pendotiba.core.model.CarroProgramacao;
-import br.com.logic.pendotiba.core.model.Ponto;
-import br.com.logic.pendotiba.core.model.Programacao;
-import br.com.logic.pendotiba.core.model.Status;
-import br.com.logic.pendotiba.core.model.Viagem;
+import br.com.logic.pendotiba.core.model.*;
 import br.com.logic.pendotiba.core.repository.ProgramacaoRepository;
 import br.com.logic.pendotiba.core.repository.ViagemRepository;
 import br.com.logic.pendotiba.core.util.DataUtil;
@@ -25,6 +11,14 @@ import br.com.logic.pendotiba.despachante.dto.TrocaMotoristaProgramacaoDTO;
 import br.com.logic.pendotiba.despachante.exception.NegocioException;
 import br.com.logic.pendotiba.despachante.repository.ProgramacaoRepositoryImpl;
 import br.com.logic.pendotiba.despachante.repository.ViagemRepositoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigInteger;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProgramacaoService {
@@ -80,7 +74,7 @@ public class ProgramacaoService {
 	
 
 	public Programacao buscarPorId(Long id) {
-		return programacaoRepository.findOne(id);
+		return programacaoRepository.findById(id).orElse(null);
 	}
 	
 	public Programacao carregarProgramacao(Long id) {

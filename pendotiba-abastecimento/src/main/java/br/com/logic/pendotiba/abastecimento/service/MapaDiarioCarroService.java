@@ -1,14 +1,13 @@
 package br.com.logic.pendotiba.abastecimento.service;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import br.com.logic.pendotiba.abastecimento.dto.MapaDiarioCarroDTO;
 import br.com.logic.pendotiba.core.model.MapaDiarioCarro;
 import br.com.logic.pendotiba.core.repository.MapaDiarioCarroRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Service
 public class MapaDiarioCarroService {
@@ -25,7 +24,7 @@ public class MapaDiarioCarroService {
 	
 	
 	public MapaDiarioCarro buscarPorId(Long id) {
-		return mapaDiarioCarroRepository.findOne(id);
+		return mapaDiarioCarroRepository.findById(id).orElse(null);
 	}
 	
 	public MapaDiarioCarro salvar(MapaDiarioCarro mapaCarro){

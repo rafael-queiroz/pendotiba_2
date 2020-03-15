@@ -1,18 +1,14 @@
 package br.com.logic.pendotiba.logicbus.config;
 
-import java.math.BigDecimal;
-import java.time.format.DateTimeFormatter;
-
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.boot.web.servlet.ErrorPage;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.format.number.NumberStyleFormatter;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
 
 @Configuration
 @EnableCaching
@@ -29,6 +25,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		dateTimeFormatter.registerFormatters(registry);
 	}
 
+	/*
 	@Bean
 	public EmbeddedServletContainerCustomizer containerCustomizerNotFound(){
 		return ( container -> {
@@ -44,6 +41,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 			container.addErrorPages(paginaCustom500);
 		});
 	}
+	*/
 	
 	/*
 	@Bean

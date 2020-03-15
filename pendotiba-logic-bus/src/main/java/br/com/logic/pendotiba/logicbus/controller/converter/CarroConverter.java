@@ -15,9 +15,9 @@ public class CarroConverter implements Converter<Long, Carro>{
 	
 	@Override
 	public Carro convert(Long id) {
-		if (id != null) 
-			return carroRepository.findOne(id);
-		return null;
+		//if (id != null)
+			return carroRepository.findById(id).orElse(null);
+		//return null;
 	}
 
 }

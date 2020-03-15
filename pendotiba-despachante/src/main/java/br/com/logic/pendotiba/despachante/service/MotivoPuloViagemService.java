@@ -14,7 +14,7 @@ public class MotivoPuloViagemService {
 	
 
 	public MotivoPuloViagem buscarPorId(Long id) {
-		return motivoPuloViagemRepository.findOne(id);
+		return motivoPuloViagemRepository.findById(id).orElse(null);
 	}
 	
 }

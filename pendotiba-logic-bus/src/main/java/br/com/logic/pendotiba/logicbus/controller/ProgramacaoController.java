@@ -1,14 +1,17 @@
 package br.com.logic.pendotiba.logicbus.controller;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
+import br.com.logic.pendotiba.core.model.Programacao;
+import br.com.logic.pendotiba.core.model.Status;
+import br.com.logic.pendotiba.core.repository.*;
+import br.com.logic.pendotiba.logicbus.controller.page.PageWrapper;
+import br.com.logic.pendotiba.logicbus.filter.ProgramacaoFilter;
+import br.com.logic.pendotiba.logicbus.repo.ProgramacaoRepositoryImpl;
+import br.com.logic.pendotiba.logicbus.service.*;
+import br.com.logic.pendotiba.logicbus.service.exception.ImpossivelLiberarCarroException;
+import br.com.logic.pendotiba.logicbus.service.exception.NegocioException;
+import br.com.logic.pendotiba.logicbus.session.TabelaViagemSession;
+import br.com.logic.pendotiba.logicbus.validation.ProgramacaoValidation;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -16,40 +19,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.com.logic.pendotiba.core.model.Programacao;
-import br.com.logic.pendotiba.core.model.Status;
-import br.com.logic.pendotiba.core.repository.CarroRepository;
-import br.com.logic.pendotiba.core.repository.FuncionarioRepository;
-import br.com.logic.pendotiba.core.repository.GaragemRepository;
-import br.com.logic.pendotiba.core.repository.LinhaRepository;
-import br.com.logic.pendotiba.core.repository.PontoLinhaRepository;
-import br.com.logic.pendotiba.core.repository.PontoRepository;
-import br.com.logic.pendotiba.core.repository.ProgramacaoRepository;
-import br.com.logic.pendotiba.core.repository.StatusRepository;
-import br.com.logic.pendotiba.core.repository.TipoCarroRepository;
-import br.com.logic.pendotiba.core.repository.TurnoRepository;
-import br.com.logic.pendotiba.logicbus.controller.page.PageWrapper;
-import br.com.logic.pendotiba.logicbus.filter.ProgramacaoFilter;
-import br.com.logic.pendotiba.logicbus.repo.ProgramacaoRepositoryImpl;
-import br.com.logic.pendotiba.logicbus.service.CarroService;
-import br.com.logic.pendotiba.logicbus.service.FuncionarioService;
-import br.com.logic.pendotiba.logicbus.service.ImpressaoService;
-import br.com.logic.pendotiba.logicbus.service.MapaDiarioCarroService;
-import br.com.logic.pendotiba.logicbus.service.ProgramacaoService;
-import br.com.logic.pendotiba.logicbus.service.exception.ImpossivelLiberarCarroException;
-import br.com.logic.pendotiba.logicbus.service.exception.NegocioException;
-import br.com.logic.pendotiba.logicbus.session.TabelaViagemSession;
-import br.com.logic.pendotiba.logicbus.validation.ProgramacaoValidation;
-import net.sf.jasperreports.engine.JRException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
 
 
 @RestController
@@ -157,7 +137,7 @@ public class ProgramacaoController {
 		mv.addObject("parceiros", funcionarioRepository.findByFuncaoCobradorTrueOrderByMatricula());
 		mv.addObject("viagens", programacao.getViagens());
 		if(programacao.getStatus() == null)
-			programacao.setStatus(statusRepository.findOne(Status.ATIVO));
+			programacao.setStatus(statusRepository.findById(Status.ATIVO).get());
 		return mv;
 	}
 	
@@ -223,7 +203,7 @@ public class ProgramacaoController {
 	@PostMapping("/liberar/{id}")
 	public @ResponseBody ResponseEntity<?> liberar(@PathVariable("id") Programacao programacao) {
 		try {
-			programacao.setStatus(statusRepository.findOne(Status.LIBERADO));
+			programacao.setStatus(statusRepository.findById(Status.LIBERADO).orElse(null));
 			programacao.carroAtual().setRoletaInicial1(programacao.getCarroRealizado().getRoleta1());
 			programacaoValidation.validarLiberarProgramacaoDireto(programacao);
 			programacaoService.salvar(programacao);
@@ -240,7 +220,7 @@ public class ProgramacaoController {
 		
 		Viagem viagem = new Viagem();
 		viagem.setHoraSaidaProgramada(DataUtil.getTime(horaSaidaProgramada));
-		viagem.setLinhaProgramada(linhaRepository.findOne(linhaProgramada));
+		viagem.setLinhaProgramada(linhaRepository.findById(linhaProgramada));
 		viagem.setPontoLinha(pontoLinhaRepository.findByPontoOrigemIdAndPontoDestinoIdAndLinhaId(pontoOrigem, pontoDestino, linhaProgramada).get());
 		
 		tabelaViagemSession.adicionarViagem(uuid, viagem);

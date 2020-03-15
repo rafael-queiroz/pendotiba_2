@@ -1,22 +1,16 @@
 package br.com.logic.pendotiba.logicbus.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import br.com.logic.pendotiba.core.model.Reclamacao;
+import br.com.logic.pendotiba.core.repository.*;
+import br.com.logic.pendotiba.core.util.DataUtil;
+import br.com.logic.pendotiba.logicbus.resources.dto.ReclamacaoDTO;
+import br.com.logic.pendotiba.logicbus.service.exception.ImpossivelExcluirEntidadeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import br.com.logic.pendotiba.core.model.Reclamacao;
-import br.com.logic.pendotiba.core.repository.CarroRepository;
-import br.com.logic.pendotiba.core.repository.LinhaRepository;
-import br.com.logic.pendotiba.core.repository.ProgramacaoRepository;
-import br.com.logic.pendotiba.core.repository.ReclamacaoRepository;
-import br.com.logic.pendotiba.core.repository.TipoReclamacaoRepository;
-import br.com.logic.pendotiba.core.repository.UsuarioRepository;
-import br.com.logic.pendotiba.core.util.DataUtil;
-import br.com.logic.pendotiba.logicbus.resources.dto.ReclamacaoDTO;
-import br.com.logic.pendotiba.logicbus.service.exception.ImpossivelExcluirEntidadeException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ReclamacaoService {
@@ -44,11 +38,11 @@ public class ReclamacaoService {
 	public Reclamacao salvarReclamacaoDTO(ReclamacaoDTO dto) {
 		Reclamacao reclamacao = new Reclamacao();
 		
-		reclamacao.setProgramacao(programacaoRepository.findOne(dto.getIdProgramacao()));
-		reclamacao.setTipoReclamacao(tipoReclamacaoRepository.findOne(dto.getIdTipoReclamacao()));
-		reclamacao.setCarro(carroRepository.findOne(dto.getIdCarro()));
-		reclamacao.setLinha(linhaRepository.findOne(dto.getIdLinha()));
-		reclamacao.setUsuario(usuarioRepository.findOne(dto.getIdUsuario()));
+		reclamacao.setProgramacao(programacaoRepository.findById(dto.getIdProgramacao()).orElse(null));
+		reclamacao.setTipoReclamacao(tipoReclamacaoRepository.findById(dto.getIdTipoReclamacao()).orElse(null));
+		reclamacao.setCarro(carroRepository.findById(dto.getIdCarro()).orElse(null));
+		reclamacao.setLinha(linhaRepository.findById(dto.getIdLinha()).orElse(null));
+		reclamacao.setUsuario(usuarioRepository.findById(dto.getIdUsuario()).orElse(null));
 		reclamacao.setHora(DataUtil.getTime(DataUtil.getDataStringYYYYMMDD(reclamacao.getProgramacao().getDataCompetencia()), dto.getHora()));
 		reclamacao.setObservacao(dto.getObservacao());
 	

@@ -1,21 +1,6 @@
 package br.com.logic.pendotiba.despachante.service;
 
-import java.math.BigInteger;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import br.com.logic.pendotiba.core.model.Carro;
-import br.com.logic.pendotiba.core.model.Linha;
-import br.com.logic.pendotiba.core.model.Ponto;
-import br.com.logic.pendotiba.core.model.PontoLinha;
-import br.com.logic.pendotiba.core.model.Programacao;
-import br.com.logic.pendotiba.core.model.Status;
-import br.com.logic.pendotiba.core.model.Usuario;
-import br.com.logic.pendotiba.core.model.Viagem;
+import br.com.logic.pendotiba.core.model.*;
 import br.com.logic.pendotiba.core.repository.ViagemRepository;
 import br.com.logic.pendotiba.core.util.DataUtil;
 import br.com.logic.pendotiba.despachante.dto.RespostaIdDTO;
@@ -24,6 +9,13 @@ import br.com.logic.pendotiba.despachante.dto.ViagemPerdidaDTO;
 import br.com.logic.pendotiba.despachante.dto.ViagemProximasChegadasDTO;
 import br.com.logic.pendotiba.despachante.exception.ImpossivelIncluirEntidadeException;
 import br.com.logic.pendotiba.despachante.repository.ViagemRepositoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.math.BigInteger;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ViagemService {
@@ -64,7 +56,7 @@ public class ViagemService {
 	
 		
 	public Viagem buscarPorId(Long id) {
-		return viagemRepository.findOne(id);
+		return viagemRepository.findById(id).orElse(null);
 	}
 	
 	public List<ViagemDTO> listarPorImeiDataCompetencia(String imei, String data) {

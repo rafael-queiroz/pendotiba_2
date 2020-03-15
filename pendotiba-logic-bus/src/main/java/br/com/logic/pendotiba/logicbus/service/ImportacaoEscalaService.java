@@ -1,15 +1,5 @@
 package br.com.logic.pendotiba.logicbus.service;
 
-import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestTemplate;
-
 import br.com.logic.pendotiba.core.model.EscalaImportada;
 import br.com.logic.pendotiba.core.model.Linha;
 import br.com.logic.pendotiba.core.model.ProgramacaoImportada;
@@ -20,6 +10,15 @@ import br.com.logic.pendotiba.core.repository.ViagemImportadaRepository;
 import br.com.logic.pendotiba.core.util.DataUtil;
 import br.com.logic.pendotiba.logicbus.repo.ProgramacaoImportadaRepositoryImpl;
 import br.com.logic.pendotiba.logicbus.vo.EscalaVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.Date;
 
 @Service
 public class ImportacaoEscalaService {
@@ -117,19 +116,19 @@ public class ImportacaoEscalaService {
 						pi = programacaoImportadaRepository.findByOrdemProgramacaoAndOrdemViagemAndVersao(pi.getOrdemProgramacao(), 2L, pi.getVersao());
 					
 					if (pi.getOrdemProgramacao().contains("A"))
-						ei.setTurno(turnoRepository.findOne(1L));
+						ei.setTurno(turnoRepository.findById(1L).orElse(null));
 					
 					else if (pi.getOrdemProgramacao().contains("B"))
-						ei.setTurno(turnoRepository.findOne(2L));
+						ei.setTurno(turnoRepository.findById(2L).orElse(null));
 					
 					else if (pi.getOrdemProgramacao().contains("C"))
-						ei.setTurno(turnoRepository.findOne(3L));
+						ei.setTurno(turnoRepository.findById(3L).orElse(null));
 					
 					else if (pi.getOrdemProgramacao().contains("E"))
-						ei.setTurno(turnoRepository.findOne(4L));
+						ei.setTurno(turnoRepository.findById(4L).orElse(null));
 					
 					else if (pi.getOrdemProgramacao().contains("F"))
-						ei.setTurno(turnoRepository.findOne(5L));
+						ei.setTurno(turnoRepository.findById(5L).orElse(null));
 	
 					ei.setOrdemProgramacao(pi.getOrdemProgramacao());
 					//ei.setOrdemViagem(pi.getOrdemViagem());

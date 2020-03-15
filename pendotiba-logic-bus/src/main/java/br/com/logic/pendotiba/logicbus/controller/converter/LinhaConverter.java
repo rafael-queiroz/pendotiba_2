@@ -15,10 +15,10 @@ public class LinhaConverter implements Converter<Long, Linha>{
 	
 	@Override
 	public Linha convert(Long id) {
-		if (id != null)
-			return linhaRepository.findOne(id);
+		//if (id != null)
+			return linhaRepository.findById(id).orElse(null);
 		
-		return null;
+		//return null;
 	}
 
 }

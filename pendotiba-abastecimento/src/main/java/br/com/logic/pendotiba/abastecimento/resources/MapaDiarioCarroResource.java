@@ -1,22 +1,5 @@
 package br.com.logic.pendotiba.abastecimento.resources;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import br.com.logic.pendotiba.abastecimento.dto.MapaDiarioCarroDTO;
 import br.com.logic.pendotiba.abastecimento.dto.RespostaMensagemDTO;
 import br.com.logic.pendotiba.abastecimento.service.CarroService;
@@ -24,6 +7,15 @@ import br.com.logic.pendotiba.abastecimento.service.MapaDiarioCarroService;
 import br.com.logic.pendotiba.core.model.MapaDiarioCarro;
 import br.com.logic.pendotiba.core.repository.MapaDiarioCarroRepository;
 import br.com.logic.pendotiba.core.util.DataUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/mapa-diario-carro")
@@ -75,9 +67,9 @@ public class MapaDiarioCarroResource {
 	
 	@GetMapping(value = "/{id}" ,produces = MediaType.APPLICATION_JSON_VALUE)
 	MapaDiarioCarroDTO buscarPorId(@PathVariable("id") Long id) {
-		MapaDiarioCarro obj = mapaDiarioCarroRepository.findOne(id);
-		if(obj != null)
-			return new MapaDiarioCarroDTO(obj);
+		Optional<MapaDiarioCarro> obj = mapaDiarioCarroRepository.findById(id);
+		if(obj.isPresent())
+			return new MapaDiarioCarroDTO(obj.get());
 		return null;
 	}
 		

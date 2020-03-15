@@ -1,15 +1,5 @@
 package br.com.logic.pendotiba.abastecimento.service;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import br.com.logic.pendotiba.abastecimento.dto.MapaDiarioBombaAbastecimentoDTO;
 import br.com.logic.pendotiba.abastecimento.dto.StatusDescricaoVO;
 import br.com.logic.pendotiba.core.model.MapaDiarioBombaAbastecimento;
@@ -19,6 +9,14 @@ import br.com.logic.pendotiba.core.repository.MapaDiarioCarroRepository;
 import br.com.logic.pendotiba.core.util.ConsumoNumberUtil;
 import br.com.logic.pendotiba.core.util.DataUtil;
 import br.com.logic.pendotiba.core.util.VolumeNumberUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MapaDiarioBombaAbastecimentoService {
@@ -32,7 +30,7 @@ public class MapaDiarioBombaAbastecimentoService {
 	
 	
 	public MapaDiarioBombaAbastecimento buscarPorId(Long id) {
-		return mapaDiarioBombaAbastecimentoRepository.findOne(id);
+		return mapaDiarioBombaAbastecimentoRepository.findById(id).orElse(null);
 	}
 	
 	@Transactional

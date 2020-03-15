@@ -14,7 +14,7 @@ public class FuncionarioService {
 	
 
 	public Funcionario buscarPorId(Long id) {
-		return funcionarioRepository.findOne(id);
+		return funcionarioRepository.findById(id).orElse(null);
 	}
 	
 }

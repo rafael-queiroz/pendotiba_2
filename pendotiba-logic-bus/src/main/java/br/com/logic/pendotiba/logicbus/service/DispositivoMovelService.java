@@ -1,14 +1,5 @@
 package br.com.logic.pendotiba.logicbus.service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import br.com.logic.pendotiba.core.model.DispositivoMovel;
 import br.com.logic.pendotiba.core.model.HistoricoDispositivoMovel;
 import br.com.logic.pendotiba.core.model.Usuario;
@@ -16,6 +7,14 @@ import br.com.logic.pendotiba.core.repository.DispositivoMovelRepository;
 import br.com.logic.pendotiba.core.repository.HistoricoDispositivoMovelRepository;
 import br.com.logic.pendotiba.logicbus.service.exception.ImpossivelExcluirEntidadeException;
 import br.com.logic.pendotiba.logicbus.service.exception.NegocioException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DispositivoMovelService {
@@ -42,7 +41,7 @@ public class DispositivoMovelService {
 	public void excluir(DispositivoMovel dispositivoMovel){
 		try {
 			List<HistoricoDispositivoMovel> historico = historicoDispositivoMovelRepository.findByDispositivoMovel(dispositivoMovel);
-			historicoDispositivoMovelRepository.delete(historico);
+			historico.forEach(h -> historicoDispositivoMovelRepository.delete(h));
 			dispositivoMovelRepository.delete(dispositivoMovel);
 		} catch (DataIntegrityViolationException e) {
 			throw new ImpossivelExcluirEntidadeException("Existe registros cadastrados para o dispositivo móvel " + dispositivoMovel);

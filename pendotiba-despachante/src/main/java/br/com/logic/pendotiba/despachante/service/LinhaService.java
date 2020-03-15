@@ -14,7 +14,7 @@ public class LinhaService {
 	
 
 	public Linha buscarPorId(Long id) {
-		return linhaRepository.findOne(id);
+		return linhaRepository.findById(id).orElse(null);
 	}
 	
 }

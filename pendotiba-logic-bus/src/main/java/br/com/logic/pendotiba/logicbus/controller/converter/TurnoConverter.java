@@ -16,10 +16,10 @@ public class TurnoConverter implements Converter<Long, Turno>{
 
 	@Override
 	public Turno convert(Long id) {
-		if (id != null)
-			return turnoRepository.findOne(id);
+		//if (id != null)
+			return turnoRepository.findById(id).orElse(null);
 		
-		return null;
+		//return null;
 	}
 
 }

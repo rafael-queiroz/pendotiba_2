@@ -14,7 +14,7 @@ public class MotivoTrocaCarroService {
 	
 
 	public MotivoTrocaCarro buscarPorId(Long id) {
-		return motivoTrocaCarroRepository.findOne(id);
+		return motivoTrocaCarroRepository.findById(id).orElse(null);
 	}
 	
 }

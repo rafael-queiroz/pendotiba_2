@@ -1,11 +1,12 @@
 package br.com.logic.pendotiba.logicbus.service;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Date;
-import java.util.Iterator;
-
+import br.com.logic.pendotiba.core.enums.TipoArquivoEnum;
+import br.com.logic.pendotiba.core.model.*;
+import br.com.logic.pendotiba.core.repository.*;
+import br.com.logic.pendotiba.core.util.DataUtil;
+import br.com.logic.pendotiba.logicbus.repo.ProgramacaoImportadaRepositoryImpl;
+import br.com.logic.pendotiba.logicbus.storage.local.ArquivoImportadoStorageLocal;
+import br.com.logic.pendotiba.logicbus.util.ArquivoImportadoUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -14,22 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.logic.pendotiba.core.enums.TipoArquivoEnum;
-import br.com.logic.pendotiba.core.model.ArquivoImportado;
-import br.com.logic.pendotiba.core.model.Carro;
-import br.com.logic.pendotiba.core.model.EscalaImportada;
-import br.com.logic.pendotiba.core.model.Funcionario;
-import br.com.logic.pendotiba.core.model.Linha;
-import br.com.logic.pendotiba.core.model.ProgramacaoImportada;
-import br.com.logic.pendotiba.core.repository.ArquivoImportadoRepository;
-import br.com.logic.pendotiba.core.repository.EscalaImportadaRepository;
-import br.com.logic.pendotiba.core.repository.ProgramacaoImportadaRepository;
-import br.com.logic.pendotiba.core.repository.TurnoRepository;
-import br.com.logic.pendotiba.core.repository.ViagemImportadaRepository;
-import br.com.logic.pendotiba.core.util.DataUtil;
-import br.com.logic.pendotiba.logicbus.repo.ProgramacaoImportadaRepositoryImpl;
-import br.com.logic.pendotiba.logicbus.storage.local.ArquivoImportadoStorageLocal;
-import br.com.logic.pendotiba.logicbus.util.ArquivoImportadoUtil;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Date;
+import java.util.Iterator;
 
 @Service
 public class ArquivoEscalaImportadoService {
@@ -175,9 +165,9 @@ public class ArquivoEscalaImportadoService {
 						pi = programacaoImportadaRepository.findByOrdemProgramacaoAndOrdemViagem("1A", 1L);
 
 					if (pi.getOrdemProgramacao().contains("A"))
-						ei.setTurno(turnoRepository.findOne(1L));
+						ei.setTurno(turnoRepository.findById(1L));
 					else 
-						ei.setTurno(turnoRepository.findOne(2L));
+						ei.setTurno(turnoRepository.findById(2L));
 
 					ei.setOrdemProgramacao(pi.getOrdemProgramacao());
 					//ei.setOrdemViagem(pi.getOrdemViagem());
@@ -212,19 +202,19 @@ public class ArquivoEscalaImportadoService {
 						pi = programacaoImportadaRepository.findByOrdemProgramacaoAndOrdemViagemAndVersao(pi.getOrdemProgramacao(), 2L, pi.getVersao());
 					
 					if (pi.getOrdemProgramacao().contains("A"))
-						ei.setTurno(turnoRepository.findOne(1L));
+						ei.setTurno(turnoRepository.findById(1L).orElse(null));
 					
 					else if (pi.getOrdemProgramacao().contains("B"))
-						ei.setTurno(turnoRepository.findOne(2L));
+						ei.setTurno(turnoRepository.findById(2L).orElse(null));
 					
 					else if (pi.getOrdemProgramacao().contains("C"))
-						ei.setTurno(turnoRepository.findOne(3L));
+						ei.setTurno(turnoRepository.findById(3L).orElse(null));
 					
 					else if (pi.getOrdemProgramacao().contains("E"))
-						ei.setTurno(turnoRepository.findOne(4L));
+						ei.setTurno(turnoRepository.findById(4L).orElse(null));
 					
 					else if (pi.getOrdemProgramacao().contains("F"))
-						ei.setTurno(turnoRepository.findOne(5L));
+						ei.setTurno(turnoRepository.findById(5L).orElse(null));
 	
 					ei.setOrdemProgramacao(pi.getOrdemProgramacao());
 					//ei.setOrdemViagem(pi.getOrdemViagem());

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/logic-pendotiba.iml" filepath="$PROJECT_DIR$/logic-pendotiba.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pendotiba-abastecimento/pendotiba-abastecimento.iml" filepath="$PROJECT_DIR$/pendotiba-abastecimento/pendotiba-abastecimento.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pendotiba-core/pendotiba-core.iml" filepath="$PROJECT_DIR$/pendotiba-core/pendotiba-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pendotiba-despachante/pendotiba-despachante.iml" filepath="$PROJECT_DIR$/pendotiba-despachante/pendotiba-despachante.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pendotiba-logic-bus/pendotiba-logic-bus.iml" filepath="$PROJECT_DIR$/pendotiba-logic-bus/pendotiba-logic-bus.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,23 +1,17 @@
 package br.com.logic.pendotiba.logicbus.resources;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import br.com.logic.pendotiba.core.model.Usuario;
 import br.com.logic.pendotiba.core.repository.UsuarioRepository;
 import br.com.logic.pendotiba.logicbus.resources.dto.LoginUsuarioDTO;
 import br.com.logic.pendotiba.logicbus.resources.dto.UsuarioDTO;
 import br.com.logic.pendotiba.logicbus.security.MD5PasswordEncoder;
 import br.com.logic.pendotiba.logicbus.service.MapaDiarioBombaAbastecimentoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/rest/usuario")
@@ -38,7 +32,7 @@ public class UsuarioRestController {
 	@ResponseBody List<UsuarioDTO> listarTodos() {
 		List<UsuarioDTO> usuariosDTO = new ArrayList<>();
 		List<Usuario> usuarios = (List<Usuario>) usuarioRepository.findAll();
-		usuarios.forEach(ui -> usuariosDTO.add(new UsuarioDTO(usuarioRepository.findOne(ui.getId()))));
+		usuarios.forEach(ui -> usuariosDTO.add(new UsuarioDTO(usuarioRepository.findById(ui.getId()).orElse(null))));
 		return usuariosDTO;
 	}
 	
@@ -51,7 +45,7 @@ public class UsuarioRestController {
 		Usuario usuario = usuarioRepository.findByFuncionarioMatriculaAndSenhaAndAtivoTrue(matricula, passwordEncoder.encode(senha));
 	
 		if(usuario != null && usuario.isAppAbastecimentoOdometroRoleta())
-			return new LoginUsuarioDTO(usuarioRepository.findOne(usuario.getId()), "success", mapaDiarioBombaAbastecimentoService.podeAbastecer());
+			return new LoginUsuarioDTO(usuarioRepository.findById(usuario.getId()).orElse(null), "success", mapaDiarioBombaAbastecimentoService.podeAbastecer());
 		else
 			return new LoginUsuarioDTO("error", "Matrícula e/ou senha não conferem");
 	}

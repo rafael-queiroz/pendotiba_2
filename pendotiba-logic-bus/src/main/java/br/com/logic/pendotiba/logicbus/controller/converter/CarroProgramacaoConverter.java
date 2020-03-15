@@ -15,9 +15,9 @@ public class CarroProgramacaoConverter implements Converter<Long,  CarroPrograma
 	
 	@Override
 	public  CarroProgramacao convert(Long id) {
-		if (id != null) 
-			return carroProgramacaoRepository.findOne(id);
-		return null;
+		//if (id != null)
+			return carroProgramacaoRepository.findById(id).orElse(null);
+		//return null;
 	}
 
 }

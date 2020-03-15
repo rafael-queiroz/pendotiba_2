@@ -17,9 +17,9 @@ public class FuncionarioConverter implements Converter<Long, Funcionario>{
 	
 	@Override
 	public Funcionario convert(Long id) {
-		if (id != null) 
-			return funcionarioRepository.findOne(id);
-		return null;
+		//if (id != null)
+			return funcionarioRepository.findById(id).orElse(null);
+		//return null;
 	}
 
 }

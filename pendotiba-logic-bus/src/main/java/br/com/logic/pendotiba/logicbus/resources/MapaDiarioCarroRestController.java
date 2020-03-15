@@ -1,16 +1,5 @@
 package br.com.logic.pendotiba.logicbus.resources;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import br.com.logic.pendotiba.core.model.MapaDiarioCarro;
 import br.com.logic.pendotiba.core.repository.CarroRepository;
 import br.com.logic.pendotiba.core.repository.MapaDiarioCarroRepository;
@@ -18,6 +7,13 @@ import br.com.logic.pendotiba.core.util.DataUtil;
 import br.com.logic.pendotiba.logicbus.resources.dto.AbastecimentoOdometroRoletaDTO;
 import br.com.logic.pendotiba.logicbus.service.CarroService;
 import br.com.logic.pendotiba.logicbus.service.MapaDiarioCarroService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/rest/abastecimento-odometro-roleta")
@@ -73,9 +69,9 @@ public class MapaDiarioCarroRestController {
 	
 	@GetMapping(value = "/{id}" ,produces = MediaType.APPLICATION_JSON_VALUE)
 	AbastecimentoOdometroRoletaDTO buscarPorId(@PathVariable("id") Long id) {
-		MapaDiarioCarro obj = mapaDiarioCarroRepository.findOne(id);
-		if(obj != null)
-			return new AbastecimentoOdometroRoletaDTO(obj);
+		Optional<MapaDiarioCarro> obj = mapaDiarioCarroRepository.findById(id);
+		if(obj.isPresent())
+			return new AbastecimentoOdometroRoletaDTO(obj.get());
 		return null;
 	}
 	
@@ -99,7 +95,7 @@ public class MapaDiarioCarroRestController {
 	@ResponseBody RespostaMensagemDTO salvarAbastecimentoOdometro(@RequestBody AbastecimentoOdometroRoletaDTO dto, BindingResult result) {
 		try {
 			if(dto.getId() == null) {
-				MapaDiarioCarro obj = new MapaDiarioCarro(DataUtil.getDataAppAbastecimentoOdometroRoleta(), carroRepository.findOne(dto.getIdCarro()));
+				MapaDiarioCarro obj = new MapaDiarioCarro(DataUtil.getDataAppAbastecimentoOdometroRoleta(), carroRepository.findById(dto.getIdCarro()));
 				MapaDiarioCarro objSalvo = mapaDiarioCarroService.salvar(obj);
 				dto.setId(objSalvo.getId());
 			}

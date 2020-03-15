@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="pendotiba-logic-bus" />
+        <module name="pendotiba-abastecimento" />
+        <module name="pendotiba-core" />
+        <module name="pendotiba-despachante" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="logic-pendotiba" target="1.8" />
+      <module name="pendotiba-abastecimento" target="1.8" />
+      <module name="pendotiba-core" target="1.8" />
+      <module name="pendotiba-despachante" target="1.8" />
+      <module name="pendotiba-logic-bus" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="pendotiba-abastecimento" options="-parameters" />
+      <module name="pendotiba-core" options="-parameters" />
+      <module name="pendotiba-despachante" options="-parameters" />
+      <module name="pendotiba-logic-bus" options="-parameters" />
+    </option>
+  </component>
+</project>

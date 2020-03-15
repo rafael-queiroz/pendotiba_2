@@ -1,14 +1,5 @@
 package br.com.logic.pendotiba.logicbus.service;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Service;
-
 import br.com.logic.pendotiba.core.model.Carro;
 import br.com.logic.pendotiba.core.model.MapaDiarioCarro;
 import br.com.logic.pendotiba.core.model.Programacao;
@@ -18,6 +9,14 @@ import br.com.logic.pendotiba.core.repository.TipoCarroRepository;
 import br.com.logic.pendotiba.logicbus.repo.CarroRepositoryImpl;
 import br.com.logic.pendotiba.logicbus.service.exception.ImpossivelExcluirEntidadeException;
 import br.com.logic.pendotiba.logicbus.service.exception.NegocioException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CarroService {
@@ -69,7 +68,7 @@ public class CarroService {
 
 	public void atualizarRoletas(Carro carro, BigInteger roleta) {
 		if(roleta != null) {
-			Carro carroPersistido = carroRepository.findOne(carro.getId());
+			Carro carroPersistido = carroRepository.findById(carro.getId()).get();
 			carroPersistido.setRoleta1(roleta);
 			carroRepository.save(carroPersistido);
 		}
@@ -77,7 +76,7 @@ public class CarroService {
 	
 	public void atualizarOdometro(Carro carro, BigInteger odometro) {
 		if(odometro != null) {
-			Carro carroPersistido = carroRepository.findOne(carro.getId());
+			Carro carroPersistido = carroRepository.findById(carro.getId()).get();
 			carroPersistido.setOdometro(odometro);
 			carroRepository.save(carroPersistido);
 		}
@@ -85,7 +84,7 @@ public class CarroService {
 	
 	public void atualizarUltimoAbastecimentoDiesel(Carro carro, BigDecimal volumeDiesel) {
 		if(volumeDiesel != null) {
-			Carro carroPersistido = carroRepository.findOne(carro.getId());
+			Carro carroPersistido = carroRepository.findById(carro.getId()).get();
 			carroPersistido.setUltimoAbastecimentoDiesel(volumeDiesel);
 			carroRepository.save(carroPersistido);
 		}
@@ -93,14 +92,14 @@ public class CarroService {
 	
 	public void atualizarUltimoAbastecimentoArla(Carro carro, BigDecimal volumeArla) {
 		if(volumeArla != null) {
-			Carro carroPersistido = carroRepository.findOne(carro.getId());
+			Carro carroPersistido = carroRepository.findById(carro.getId()).get();
 			carroPersistido.setUltimoAbastecimentoArla(volumeArla);
 			carroRepository.save(carroPersistido);
 		}
 	}
 	
 	public void atualizarPeloMapaDiario(Carro carro, MapaDiarioCarro mapa) {
-		Carro carroPersistido = carroRepository.findOne(carro.getId());
+		Carro carroPersistido = carroRepository.findById(carro.getId()).get();
 
 		if(mapa.getRoleta() != null)
 			carroPersistido.setRoleta1(mapa.getRoleta());

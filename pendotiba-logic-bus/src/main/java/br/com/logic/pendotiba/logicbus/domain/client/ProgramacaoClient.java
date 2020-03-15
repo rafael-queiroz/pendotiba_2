@@ -2,12 +2,12 @@ package br.com.logic.pendotiba.logicbus.domain.client;
 
 import br.com.logic.pendotiba.logicbus.domain.response.ProgramacaoStatusResponse;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient
+@FeignClient(url = "http://transoceanico.wplexon.com.br/schedule-exporter/by-date/transoceanicows/", name = "programacao")
 public interface ProgramacaoClient {
 
-    @RequestMapping(method = RequestMethod.GET, value = "http://transoceanico.wplexon.com.br/schedule-exporter/by-date/transoceanicows/{data}}")
-    ProgramacaoStatusResponse getProgramacaoStatusResponse(String data);
+    @GetMapping("{data}")
+    ProgramacaoStatusResponse getProgramacaoStatusResponse(@PathVariable("data") String data);
 }

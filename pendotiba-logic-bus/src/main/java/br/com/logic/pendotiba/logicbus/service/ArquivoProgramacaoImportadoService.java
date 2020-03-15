@@ -1,16 +1,5 @@
 package br.com.logic.pendotiba.logicbus.service;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import br.com.logic.pendotiba.core.enums.TipoArquivoEnum;
 import br.com.logic.pendotiba.core.model.ArquivoImportado;
 import br.com.logic.pendotiba.core.model.Linha;
@@ -21,6 +10,16 @@ import br.com.logic.pendotiba.core.repository.ViagemImportadaRepository;
 import br.com.logic.pendotiba.core.util.DataUtil;
 import br.com.logic.pendotiba.logicbus.repo.ProgramacaoImportadaRepositoryImpl;
 import br.com.logic.pendotiba.logicbus.storage.local.ArquivoImportadoStorageLocal;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class ArquivoProgramacaoImportadoService {
@@ -168,7 +167,7 @@ public class ArquivoProgramacaoImportadoService {
 	
 	
 	void deletarProgramacoes(List<ProgramacaoImportada> programacoesImportadas) {
-		programacoesImportadas.forEach(p -> programacaoImportadaRepository.delete(p.getId()));
+		programacoesImportadas.forEach(p -> programacaoImportadaRepository.delete(p));
 	}
 	
 }

@@ -1,31 +1,21 @@
 package br.com.logic.pendotiba.logicbus.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-
 import br.com.logic.pendotiba.core.model.Observacao;
-import br.com.logic.pendotiba.core.repository.CarroRepository;
-import br.com.logic.pendotiba.core.repository.FuncionarioRepository;
-import br.com.logic.pendotiba.core.repository.LinhaRepository;
-import br.com.logic.pendotiba.core.repository.ObservacaoRepository;
-import br.com.logic.pendotiba.core.repository.TipoObservacaoRepository;
+import br.com.logic.pendotiba.core.repository.*;
 import br.com.logic.pendotiba.logicbus.controller.page.PageWrapper;
 import br.com.logic.pendotiba.logicbus.filter.ObservacaoFilter;
 import br.com.logic.pendotiba.logicbus.repo.ObservacaoRepositoryImpl;
 import br.com.logic.pendotiba.logicbus.service.ObservacaoService;
 import br.com.logic.pendotiba.logicbus.service.exception.ImpossivelExcluirEntidadeException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 @RestController
@@ -88,7 +78,7 @@ public class ObservacaoController {
 	@GetMapping("/visualizar/{id}")
 	public ModelAndView visualizar(@PathVariable Long id) {
 		ModelAndView mv = new ModelAndView("observacao/VisualizaObservacao");
-		Observacao observacao = observacaoRepository.findOne(id);
+		Observacao observacao = observacaoRepository.findById(id).get();
 		mv.addObject(observacao);
 		return mv;
 	}

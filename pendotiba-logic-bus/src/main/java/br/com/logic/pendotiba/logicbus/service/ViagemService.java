@@ -1,34 +1,21 @@
 package br.com.logic.pendotiba.logicbus.service;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Service;
-
-import br.com.logic.pendotiba.core.model.Carro;
-import br.com.logic.pendotiba.core.model.Linha;
-import br.com.logic.pendotiba.core.model.PontoLinha;
-import br.com.logic.pendotiba.core.model.Programacao;
-import br.com.logic.pendotiba.core.model.Usuario;
-import br.com.logic.pendotiba.core.model.Viagem;
-import br.com.logic.pendotiba.core.repository.CarroRepository;
-import br.com.logic.pendotiba.core.repository.LinhaRepository;
-import br.com.logic.pendotiba.core.repository.MotivoPuloViagemRepository;
-import br.com.logic.pendotiba.core.repository.PontoLinhaRepository;
-import br.com.logic.pendotiba.core.repository.ProgramacaoRepository;
-import br.com.logic.pendotiba.core.repository.TipoViagemPerdidaRepository;
-import br.com.logic.pendotiba.core.repository.UsuarioRepository;
-import br.com.logic.pendotiba.core.repository.ViagemRepository;
+import br.com.logic.pendotiba.core.model.*;
+import br.com.logic.pendotiba.core.repository.*;
 import br.com.logic.pendotiba.core.util.DataUtil;
 import br.com.logic.pendotiba.logicbus.repo.PontoLinhaRepositoryImpl;
 import br.com.logic.pendotiba.logicbus.repo.ViagemRepositoryImpl;
 import br.com.logic.pendotiba.logicbus.resources.dto.ViagemDTO;
 import br.com.logic.pendotiba.logicbus.service.exception.ImpossivelExcluirEntidadeException;
 import br.com.logic.pendotiba.logicbus.service.exception.ImpossivelIncluirEntidadeException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class ViagemService {
@@ -79,12 +66,12 @@ public class ViagemService {
 		Viagem viagem = new Viagem();
 		
 		if(dto.getId() == null) {
-			viagem.setProgramacao(programacaoRepository.findOne(dto.getIdProgramacao()));
+			viagem.setProgramacao(programacaoRepository.findById(dto.getIdProgramacao()).orElse(null));
 			viagem.setHoraSaidaProgramada(DataUtil.getTime(DataUtil.getDataStringYYYYMMDD(viagem.getProgramacao().getDataCompetencia()), dto.getHoraSaidaProgramada()));
 			viagem.setDataCompetencia(viagem.getProgramacao().getDataCompetencia());
 			viagem.setOrdemViagem(dto.getOrdemViagem());
 		} else 
-			viagem = viagemRepository.findOne(dto.getId());
+			viagem = viagemRepository.findById(dto.getId()).orElse(null);
 		
 		//mudar validação  
 		if(viagem.getHoraSaidaRealizada() == null || dto.getHoraSaidaRealizada() != null || dto.getFlagEditada().equals(new BigInteger("1")))
@@ -97,24 +84,24 @@ public class ViagemService {
 			viagem.setRoletaFinal1(dto.getRoletaFinal1() != null ? dto.getRoletaFinal1() : null);
 		
 		if(viagem.getLinhaRealizada() == null || dto.getIdLinhaRealizada() != null || dto.getFlagEditada().equals(new BigInteger("1"))) // pode dar errado quando tiver linha realizada diferente de linha programada
-			viagem.setLinhaRealizada(dto.getIdLinhaRealizada() != null ? linhaRepository.findOne(dto.getIdLinhaRealizada()) : null);
+			viagem.setLinhaRealizada(dto.getIdLinhaRealizada() != null ? linhaRepository.findById(dto.getIdLinhaRealizada()).orElse(null) : null);
 			
 		// verificar o sincronismo com o serviço de troca de carro, pois pode dar problema quando o carro programado for diferente do carro realizado
 		// se for enviado flagSD diferente de null (1 ou qq outro valor), sera atualizado o carro
 		if( (dto.getIdCarroRealizado() != null && dto.getFlagSD() == null) || viagem.getCarroRealizado() == null || dto.getFlagEditada().equals(new BigInteger("1")) ) 
-			viagem.setCarroRealizado(dto.getIdCarroRealizado() != null ? carroRepository.findOne(dto.getIdCarroRealizado()) : null);
+			viagem.setCarroRealizado(dto.getIdCarroRealizado() != null ? carroRepository.findById(dto.getIdCarroRealizado()).orElse(null) : null);
 		
 		if(viagem.getTipoViagemPerdida() == null || dto.getIdTipoViagemPerdida() != null )
-			viagem.setTipoViagemPerdida(dto.getIdTipoViagemPerdida() != null ? tipoViagemPerdidaRepository.findOne(dto.getIdTipoViagemPerdida()) : null);
+			viagem.setTipoViagemPerdida(dto.getIdTipoViagemPerdida() != null ? tipoViagemPerdidaRepository.findById(dto.getIdTipoViagemPerdida()).orElse(null) : null);
 		
 		if(viagem.getMotivoPuloViagem() == null || dto.getIdMotivoPuloViagem() != null )
-			viagem.setMotivoPuloViagem(dto.getIdMotivoPuloViagem() != null ? motivoPuloViagemRepository.findOne(dto.getIdMotivoPuloViagem()) : null);
+			viagem.setMotivoPuloViagem(dto.getIdMotivoPuloViagem() != null ? motivoPuloViagemRepository.findById(dto.getIdMotivoPuloViagem()).orElse(null) : null);
 			
 		if(viagem.getUsuarioResponsavelSaida() == null || dto.getIdUsuarioResponsavelSaida() != null || dto.getFlagEditada().equals(new BigInteger("1")))
-			viagem.setUsuarioResponsavelSaida(dto.getIdUsuarioResponsavelSaida() != null ? usuarioRepository.findOne(dto.getIdUsuarioResponsavelSaida()) : null);
+			viagem.setUsuarioResponsavelSaida(dto.getIdUsuarioResponsavelSaida() != null ? usuarioRepository.findById(dto.getIdUsuarioResponsavelSaida()).orElse(null) : null);
 		
 		if(viagem.getUsuarioResponsavelChegada() == null || dto.getIdUsuarioResponsavelChegada() != null)
-			viagem.setUsuarioResponsavelChegada(dto.getIdUsuarioResponsavelChegada() != null ? usuarioRepository.findOne(dto.getIdUsuarioResponsavelChegada()) : null);
+			viagem.setUsuarioResponsavelChegada(dto.getIdUsuarioResponsavelChegada() != null ? usuarioRepository.findById(dto.getIdUsuarioResponsavelChegada()).orElse(null) : null);
 			
 		if(viagem.getObsViagemPerdida() == null || dto.getObsViagemPerdida() != null)
 			viagem.setObsViagemPerdida(dto.getObsViagemPerdida());
@@ -181,7 +168,7 @@ public class ViagemService {
 			Programacao programacao = programacaoRepository.carregarProgramacao(dto.getIdProgramacao());
 			Date dataCompetencia = programacao.getDataCompetencia();
 			Date horaSaidaProgramada = DataUtil.getTime(programacao.getDataCompetencia(), dto.getHoraSaidaProgramada());
-			Linha linhaProgramada = linhaRepository.findOne(dto.getIdLinhaProgramada());
+			Linha linhaProgramada = linhaRepository.findById(dto.getIdLinhaProgramada()).orElse(null);
 			PontoLinha pontoLinha = pontoLinhaRepository.findByPontoOrigemIdAndPontoDestinoIdAndLinhaId(dto.getIdPontoOrigem(), dto.getIdPontoDestino(), dto.getIdLinhaProgramada()).get();
 			
 			Viagem viagem = new Viagem(programacao, dataCompetencia, horaSaidaProgramada, linhaProgramada, pontoLinha);
@@ -206,10 +193,10 @@ public class ViagemService {
 			Programacao programacao = programacaoRepository.carregarProgramacao(dto.getIdProgramacao());
 			Date dataCompetencia = programacao.getDataCompetencia();
 			Date horaSaidaRealizada = DataUtil.getTime(programacao.getDataCompetencia(), dto.getHoraSaidaRealizada());
-			Linha linhaRealizada = linhaRepository.findOne(dto.getIdLinhaRealizada());
+			Linha linhaRealizada = linhaRepository.findById(dto.getIdLinhaRealizada()).orElse(null);
 			PontoLinha pontoLinha = pontoLinhaRepository.findByPontoOrigemIdAndPontoDestinoIdAndLinhaId(dto.getIdPontoOrigem(), dto.getIdPontoDestino(), dto.getIdLinhaRealizada()).get();
-			Carro carroRealizado = carroRepository.findOne(dto.getIdCarroRealizado());
-			Usuario usuarioRespSaida = usuarioRepository.findOne(dto.getIdUsuarioResponsavelSaida()); 
+			Carro carroRealizado = carroRepository.findById(dto.getIdCarroRealizado()).orElse(null);
+			Usuario usuarioRespSaida = usuarioRepository.findById(dto.getIdUsuarioResponsavelSaida()).orElse(null);
 			//BigInteger roletaFinal1 = programacao.carroAtual().getRoletaInicial1();
 			BigInteger roletaFinal1 = dto.getRoletaFinal1();
 			

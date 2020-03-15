@@ -14,6 +14,6 @@ public class BombaAbastecimentoService {
 	
 
 	public BombaAbastecimento buscarPorId(Long id) {
-		return bombaAbastecimentoRepository.findOne(id);
+		return bombaAbastecimentoRepository.findById(id).orElse(null);
 	}
 }

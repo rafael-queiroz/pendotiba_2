@@ -14,7 +14,7 @@ public class StatusService {
 	
 
 	public Status buscarPorId(Long id) {
-		return statusRepository.findOne(id);
+		return statusRepository.findById(id).orElse(null);
 	}
 	
 }

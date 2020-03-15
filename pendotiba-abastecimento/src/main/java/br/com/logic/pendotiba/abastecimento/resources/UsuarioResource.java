@@ -1,17 +1,5 @@
 package br.com.logic.pendotiba.abastecimento.resources;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import br.com.logic.pendotiba.abastecimento.dto.LoginUsuarioDTO;
 import br.com.logic.pendotiba.abastecimento.dto.UsuarioDTO;
 import br.com.logic.pendotiba.abastecimento.security.MD5PasswordEncoder;
@@ -19,6 +7,12 @@ import br.com.logic.pendotiba.abastecimento.service.MapaDiarioBombaAbastecimento
 import br.com.logic.pendotiba.abastecimento.service.UsuarioService;
 import br.com.logic.pendotiba.core.model.Usuario;
 import br.com.logic.pendotiba.core.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/usuario")
@@ -42,7 +36,7 @@ public class UsuarioResource {
 	@ResponseBody List<UsuarioDTO> listarTodos() {
 		List<UsuarioDTO> usuariosDTO = new ArrayList<>();
 		List<Usuario> usuarios = usuarioRepository.findAll();
-		usuarios.forEach(ui -> usuariosDTO.add(new UsuarioDTO(usuarioRepository.findOne(ui.getId()))));
+		usuarios.forEach(ui -> usuariosDTO.add(new UsuarioDTO(usuarioRepository.findById(ui.getId()).get())));
 		return usuariosDTO;
 	}
 	
